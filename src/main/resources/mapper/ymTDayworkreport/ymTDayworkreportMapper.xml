@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTDayworkreport.YmTDayworkreportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTDayworkreport.YmTDayworkreport">
+        <id column="N_ID" property="nId"/>
+        <result column="VC_ORGID" property="vcOrgid"/>
+        <result column="VC_ORGNAME" property="vcOrgname"/>
+        <result column="VC_STATIONID" property="vcStationid"/>
+        <result column="VC_STATIONNAME" property="vcStationname"/>
+        <result column="VC_PLACE" property="vcPlace"/>
+        <result column="VC_WORKINFO" property="vcWorkinfo"/>
+        <result column="VC_WORKPERSON" property="vcWorkperson"/>
+        <result column="VC_WORKPNUM" property="vcWorkpnum"/>
+        <result column="VC_NOTE" property="vcNote"/>
+        <result column="VC_TOMWORKINFO" property="vcTomworkinfo"/>
+        <result column="DT_DATE" property="dtDate"/>
+        <result column="VC_WRITER" property="vcWriter"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="VC_WSAPPINFO" property="vcWsappinfo"/>
+        <result column="VC_WSAPPPERID" property="vcWsappperid"/>
+        <result column="VC_WSAPPPERNAME" property="vcWsapppername"/>
+        <result column="VC_SEGAPPINFO" property="vcSegappinfo"/>
+        <result column="VC_SEGAPPPERID" property="vcSegappperid"/>
+        <result column="VC_SEGAPPPERNAME" property="vcSegapppername"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTDayworkreportById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  VC_ORGID,  VC_ORGNAME,  VC_STATIONID,  VC_STATIONNAME,  VC_PLACE,  VC_WORKINFO,  VC_WORKPERSON,  VC_WORKPNUM,  VC_NOTE,  VC_TOMWORKINFO,  DT_DATE,  VC_WRITER,  VC_STATUS,  VC_WSAPPINFO,  VC_WSAPPPERID,  VC_WSAPPPERNAME,  VC_SEGAPPINFO,  VC_SEGAPPPERID,  VC_SEGAPPPERNAME         from YM_T_DAYWORKREPORT
+                        where N_ID = #{nId}
+                    </select>
+
+
+    <!--调用存储过程-->
+    <select id="createdayreport" statementType="CALLABLE" parameterType="map" resultType="Integer">
+        call ym_pd_autocreatdaywork(#{dtdate,mode=IN,jdbcType=VARCHAR},#{orgid,mode=IN,jdbcType=VARCHAR},#{writer,mode=IN,jdbcType=VARCHAR})
+    </select>
+    <!-- 多条件参数查询 -->
+    <select id="getYmTDayworkreportList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, VC_ORGID, VC_ORGNAME, VC_STATIONID, VC_STATIONNAME, VC_PLACE, VC_WORKINFO, VC_WORKPERSON,
+        VC_WORKPNUM, VC_NOTE, VC_TOMWORKINFO, DT_DATE, VC_WRITER, VC_STATUS, VC_WSAPPINFO, VC_WSAPPPERID,
+        VC_WSAPPPERNAME, VC_SEGAPPINFO, VC_SEGAPPPERID, VC_SEGAPPPERNAME from YM_T_DAYWORKREPORT
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcOrgid != null and vcOrgid != ''">
+                and VC_ORGID = #{vcOrgid}
+            </if>
+            <if test="vcOrgname != null and vcOrgname != ''">
+                and VC_ORGNAME = #{vcOrgname}
+            </if>
+            <if test="vcStationid != null and vcStationid != ''">
+                and VC_STATIONID = #{vcStationid}
+            </if>
+            <if test="vcStationname != null and vcStationname != ''">
+                and VC_STATIONNAME = #{vcStationname}
+            </if>
+            <if test="vcPlace != null and vcPlace != ''">
+                and VC_PLACE = #{vcPlace}
+            </if>
+            <if test="vcWorkinfo != null and vcWorkinfo != ''">
+                and VC_WORKINFO = #{vcWorkinfo}
+            </if>
+            <if test="vcWorkperson != null and vcWorkperson != ''">
+                and VC_WORKPERSON = #{vcWorkperson}
+            </if>
+            <if test="vcWorkpnum != null and vcWorkpnum != ''">
+                and VC_WORKPNUM = #{vcWorkpnum}
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                and VC_NOTE = #{vcNote}
+            </if>
+            <if test="vcTomworkinfo != null and vcTomworkinfo != ''">
+                and VC_TOMWORKINFO = #{vcTomworkinfo}
+            </if>
+            <if test="dtDate != null">
+                and DT_DATE = #{dtDate}
+            </if>
+            <if test="vcWriter != null and vcWriter != ''">
+                and VC_WRITER = #{vcWriter}
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS in
+                <foreach collection="vcStatus" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="vcWsappinfo != null and vcWsappinfo != ''">
+                and VC_WSAPPINFO = #{vcWsappinfo}
+            </if>
+            <if test="vcWsappperid != null and vcWsappperid != ''">
+                and VC_WSAPPPERID = #{vcWsappperid}
+            </if>
+            <if test="vcWsapppername != null and vcWsapppername != ''">
+                and VC_WSAPPPERNAME = #{vcWsapppername}
+            </if>
+            <if test="vcSegappinfo != null and vcSegappinfo != ''">
+                and VC_SEGAPPINFO = #{vcSegappinfo}
+            </if>
+            <if test="vcSegappperid != null and vcSegappperid != ''">
+                and VC_SEGAPPPERID = #{vcSegappperid}
+            </if>
+            <if test="vcSegapppername != null and vcSegapppername != ''">
+                and VC_SEGAPPPERNAME = #{vcSegapppername}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTDayworkreport" parameterType="com.tieda.alarm.entity.ymTDayworkreport.YmTDayworkreport">
+        insert into YM_T_DAYWORKREPORT (N_ID, VC_ORGID, VC_ORGNAME, VC_STATIONID, VC_STATIONNAME, VC_PLACE, VC_WORKINFO, VC_WORKPERSON, VC_WORKPNUM, VC_NOTE, VC_TOMWORKINFO, DT_DATE, VC_WRITER, VC_STATUS, VC_WSAPPINFO, VC_WSAPPPERID, VC_WSAPPPERNAME, VC_SEGAPPINFO, VC_SEGAPPPERID, VC_SEGAPPPERNAME )
+        values (                #{nId,jdbcType = VARCHAR},                    #{vcOrgid,jdbcType = VARCHAR},                    #{vcOrgname,jdbcType = VARCHAR},                    #{vcStationid,jdbcType = VARCHAR},                    #{vcStationname,jdbcType = VARCHAR},                    #{vcPlace,jdbcType = VARCHAR},                    #{vcWorkinfo,jdbcType = VARCHAR},                    #{vcWorkperson,jdbcType = VARCHAR},                    #{vcWorkpnum,jdbcType = VARCHAR},                    #{vcNote,jdbcType = VARCHAR},                    #{vcTomworkinfo,jdbcType = VARCHAR},                    #{dtDate,jdbcType = VARCHAR},                    #{vcWriter,jdbcType = VARCHAR},                    #{vcStatus,jdbcType = VARCHAR},                    #{vcWsappinfo,jdbcType = VARCHAR},                    #{vcWsappperid,jdbcType = VARCHAR},                    #{vcWsapppername,jdbcType = VARCHAR},                    #{vcSegappinfo,jdbcType = VARCHAR},                    #{vcSegappperid,jdbcType = VARCHAR},                    #{vcSegapppername,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTDayworkreport" parameterType="list">
+        insert into YM_T_DAYWORKREPORT (N_ID, VC_ORGID, VC_ORGNAME, VC_STATIONID, VC_STATIONNAME, VC_PLACE, VC_WORKINFO,
+        VC_WORKPERSON, VC_WORKPNUM, VC_NOTE, VC_TOMWORKINFO, DT_DATE, VC_WRITER, VC_STATUS, VC_WSAPPINFO, VC_WSAPPPERID,
+        VC_WSAPPPERNAME, VC_SEGAPPINFO, VC_SEGAPPPERID, VC_SEGAPPPERNAME ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.vcOrgid}, #{item.vcOrgname}, #{item.vcStationid}, #{item.vcStationname},
+            #{item.vcPlace}, #{item.vcWorkinfo}, #{item.vcWorkperson}, #{item.vcWorkpnum}, #{item.vcNote},
+            #{item.vcTomworkinfo}, #{item.dtDate}, #{item.vcWriter}, #{item.vcStatus}, #{item.vcWsappinfo},
+            #{item.vcWsappperid}, #{item.vcWsapppername}, #{item.vcSegappinfo}, #{item.vcSegappperid},
+            #{item.vcSegapppername} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTDayworkreport" parameterType="com.tieda.alarm.entity.ymTDayworkreport.YmTDayworkreport">
+        update YM_T_DAYWORKREPORT
+        <set>
+            <if test="vcOrgid != null and vcOrgid != ''">
+                VC_ORGID = #{vcOrgid},
+            </if>
+            <if test="vcOrgname != null and vcOrgname != ''">
+                VC_ORGNAME = #{vcOrgname},
+            </if>
+            <if test="vcStationid != null and vcStationid != ''">
+                VC_STATIONID = #{vcStationid},
+            </if>
+            <if test="vcStationname != null and vcStationname != ''">
+                VC_STATIONNAME = #{vcStationname},
+            </if>
+            <if test="vcPlace != null and vcPlace != ''">
+                VC_PLACE = #{vcPlace},
+            </if>
+            <if test="vcWorkinfo != null and vcWorkinfo != ''">
+                VC_WORKINFO = #{vcWorkinfo},
+            </if>
+            <if test="vcWorkperson != null and vcWorkperson != ''">
+                VC_WORKPERSON = #{vcWorkperson},
+            </if>
+            <if test="vcWorkpnum != null and vcWorkpnum != ''">
+                VC_WORKPNUM = #{vcWorkpnum},
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                VC_NOTE = #{vcNote},
+            </if>
+            <if test="vcTomworkinfo != null and vcTomworkinfo != ''">
+                VC_TOMWORKINFO = #{vcTomworkinfo},
+            </if>
+            <if test="dtDate != null">
+                DT_DATE = #{dtDate},
+            </if>
+            <if test="vcWriter != null and vcWriter != ''">
+                VC_WRITER = #{vcWriter},
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus},
+            </if>
+            <if test="vcWsappinfo != null and vcWsappinfo != ''">
+                VC_WSAPPINFO = #{vcWsappinfo},
+            </if>
+            <if test="vcWsappperid != null and vcWsappperid != ''">
+                VC_WSAPPPERID = #{vcWsappperid},
+            </if>
+            <if test="vcWsapppername != null and vcWsapppername != ''">
+                VC_WSAPPPERNAME = #{vcWsapppername},
+            </if>
+            <if test="vcSegappinfo != null and vcSegappinfo != ''">
+                VC_SEGAPPINFO = #{vcSegappinfo},
+            </if>
+            <if test="vcSegappperid != null and vcSegappperid != ''">
+                VC_SEGAPPPERID = #{vcSegappperid},
+            </if>
+            <if test="vcSegapppername != null and vcSegapppername != ''">
+                VC_SEGAPPPERNAME = #{vcSegapppername},
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchYmTDayworkreport" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_DAYWORKREPORT
+            <set>
+                VC_ORGID = #{item.vcOrgid}, VC_ORGNAME = #{item.vcOrgname}, VC_STATIONID = #{item.vcStationid},
+                VC_STATIONNAME = #{item.vcStationname}, VC_PLACE = #{item.vcPlace}, VC_WORKINFO = #{item.vcWorkinfo},
+                VC_WORKPERSON = #{item.vcWorkperson}, VC_WORKPNUM = #{item.vcWorkpnum}, VC_NOTE = #{item.vcNote},
+                VC_TOMWORKINFO = #{item.vcTomworkinfo}, DT_DATE = #{item.dtDate}, VC_WRITER = #{item.vcWriter},
+                VC_STATUS = #{item.vcStatus}, VC_WSAPPINFO = #{item.vcWsappinfo}, VC_WSAPPPERID = #{item.vcWsappperid},
+                VC_WSAPPPERNAME = #{item.vcWsapppername}, VC_SEGAPPINFO = #{item.vcSegappinfo}, VC_SEGAPPPERID =
+                #{item.vcSegappperid}, VC_SEGAPPPERNAME = #{item.vcSegapppername}
+            </set>
+            where
+
+            N_ID = #{item.nId}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTDayworkreportById" parameterType="long">
+        delete from YM_T_DAYWORKREPORT
+        where
+           N_ID = #{nId}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTDayworkreport" parameterType="list">
+        delete from YM_T_DAYWORKREPORT
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="segGetCatalog" parameterType="map" resultMap="BaseResultMap">
+        select t.vc_orgname, t.vc_orgid,trunc(t.dt_date) dt_date,t.vc_status,max(t.vc_writer) as vc_writer
+        from Ym_t_Dayworkreport t, Sys_t_Org p
+        <where>
+            <if test="1==1">
+                t.vc_orgid = p.vc_org$id
+                and p.n_level = '30'
+            </if>
+            <if test="sDate!=null and sDate!=''">
+                <![CDATA[   and  trunc(t.DT_DATE) >= to_Date(#{sDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+            <if test="eDate!=null and eDate!=''">
+                <![CDATA[  and  trunc(t.DT_DATE) <= to_Date(#{eDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+        </where>
+        group by t.vc_orgname, t.vc_orgid, trunc(t.dt_date),t.vc_status
+        order by trunc(t.dt_date) desc,t.vc_orgname
+    </select>
+
+
+    <select id="wsGetCatalog" parameterType="map" resultMap="BaseResultMap">
+        select t.vc_orgname, t.vc_orgid, trunc(t.dt_date) dt_date,t.vc_status,max(t.vc_writer) as vc_writer
+        from Ym_t_Dayworkreport t, Sys_t_Org p
+        <where>
+            <if test="1==1">
+                t.vc_orgid = p.vc_org$id
+                and p.n_level = '30'
+                and
+                t.vc_orgid=#{orgId}
+            </if>
+            <if test="sDate!=null and sDate!=''">
+                <![CDATA[   and  trunc(t.DT_DATE) >= to_Date(#{sDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+            <if test="eDate!=null and eDate!=''">
+                <![CDATA[  and  trunc(t.DT_DATE) <= to_Date(#{eDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+        </where>
+        group by t.vc_orgname, t.vc_orgid, trunc(t.dt_date),t.vc_status
+        order by trunc(t.dt_date) desc,t.vc_orgname
+    </select>
+
+
+    <select id="waGetCatalog" parameterType="map" resultMap="BaseResultMap">
+        select t.vc_orgname, t.vc_orgid, trunc(t.dt_date) dt_date,t.vc_status,max(t.vc_writer) as vc_writer
+        from Ym_t_Dayworkreport t, Sys_t_Org p
+        <where>
+            <if test="1==1">
+                t.vc_orgid = p.vc_org$id
+                and p.n_level = '10'
+                and
+                t.vc_orgid=#{orgId}
+            </if>
+            <if test="sDate!=null and sDate!=''">
+                <![CDATA[   and  trunc(t.DT_DATE) >= to_Date(#{sDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+            <if test="eDate!=null and eDate!=''">
+                <![CDATA[  and trunc(t.DT_DATE) <= to_Date(#{eDate,jdbcType=VARCHAR},'YYYY-MM-DD')]]>
+            </if>
+        </where>
+        group by t.vc_orgname, t.vc_orgid, trunc(t.dt_date),t.vc_status
+        order by trunc(t.dt_date) desc,t.vc_orgname
+    </select>
+
+    <select id="wsGetList" parameterType="map" resultMap="BaseResultMap">
+select * from (select N_ID, VC_ORGID, VC_ORGNAME, VC_STATIONID, VC_STATIONNAME, VC_PLACE, VC_WORKINFO, VC_WORKPERSON,
+        VC_WORKPNUM, VC_NOTE, VC_TOMWORKINFO, DT_DATE, VC_WRITER, VC_STATUS, VC_WSAPPINFO, VC_WSAPPPERID,
+        VC_WSAPPPERNAME, VC_SEGAPPINFO, VC_SEGAPPPERID, VC_SEGAPPPERNAME,
+               0 as norder
+  from Ym_t_Dayworkreport t
+ where t.vc_orgid = #{orgId,jdbcType=VARCHAR} and to_char(t.dt_date,'YYYY-MM-DD')=#{sDate,jdbcType=VARCHAR}
+ union
+select t.N_ID, t.VC_ORGID, t.VC_ORGNAME, t.VC_STATIONID, t.VC_STATIONNAME, t.VC_PLACE, t.VC_WORKINFO, t.VC_WORKPERSON,
+        t.VC_WORKPNUM, t.VC_NOTE, t.VC_TOMWORKINFO, t.DT_DATE, t.VC_WRITER, t.VC_STATUS, t.VC_WSAPPINFO, t.VC_WSAPPPERID,
+        t.VC_WSAPPPERNAME, t.VC_SEGAPPINFO, t.VC_SEGAPPPERID, t.VC_SEGAPPPERNAME,
+               1 as norder
+  from Ym_t_Dayworkreport t,Sys_t_Org q
+ where t.vc_orgid=q.vc_org$id and q.vc_par$org$id=#{orgId,jdbcType=VARCHAR} and t.vc_status not in ('0','4') and to_char(t.dt_date,'YYYY-MM-DD')=#{sDate,jdbcType=VARCHAR} ) order by norder
+    </select>
+    <select id="waGetList" parameterType="map" resultMap="BaseResultMap">
+select N_ID, VC_ORGID, VC_ORGNAME, VC_STATIONID, VC_STATIONNAME, VC_PLACE, VC_WORKINFO, VC_WORKPERSON,
+        VC_WORKPNUM, VC_NOTE, VC_TOMWORKINFO, DT_DATE, VC_WRITER, VC_STATUS, VC_WSAPPINFO, VC_WSAPPPERID,
+        VC_WSAPPPERNAME, VC_SEGAPPINFO, VC_SEGAPPPERID, VC_SEGAPPPERNAME
+  from Ym_t_Dayworkreport t
+ where t.vc_orgid = #{orgId,jdbcType=VARCHAR} and to_char(t.dt_date,'YYYY-MM-DD')=#{sDate,jdbcType=VARCHAR}
+    </select>
+    <update id="updateStatus">
+      update Ym_t_Dayworkreport set vc_status= #{vcStatus,jdbcType=VARCHAR} where vc_orgID= #{orgId,jdbcType=VARCHAR} and to_char(dt_date,'YYYY-MM-DD')=#{sDate,jdbcType=VARCHAR}
+    </update>
+    <update id="updateStatusmore">
+update Ym_t_Dayworkreport
+   set vc_status = #{vcStatus, jdbcType = VARCHAR}
+ where vc_orgID in  (select vc_org$id
+          from sys_T_org p
+         where p.vc_par$org$id = #{orgId,
+         jdbcType = VARCHAR})
+           and to_char(dt_date, 'YYYY-MM-DD') = #{sDate,
+         jdbcType = VARCHAR}
+    </update>
+</mapper>

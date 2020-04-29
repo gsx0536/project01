@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testLiansuoCheck.TestLiansuoCheckMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testLiansuoCheck.TestLiansuoCheck">
+        <result column="ID" property="id"/>
+        <result column="CODE" property="code"/>
+        <result column="NAME" property="name"/>
+        <result column="WJZC_JJQDYXS" property="wjzcJjqdyxs"/>
+        <result column="WJZC_JCJLYXS_D" property="wjzcJcjlyxsD"/>
+        <result column="WJZC_JCJLYXS" property="wjzcJcjlyxs"/>
+        <result column="WJZC_FCJLYXS_D" property="wjzcFcjlyxsD"/>
+        <result column="WJZC_FCJLYXS" property="wjzcFcjlyxs"/>
+        <result column="WJZC_LQL1YXS_D" property="wjzcLql1yxsD"/>
+        <result column="WJZC_LQL1YXS" property="wjzcLql1yxs"/>
+        <result column="WJWC_F_JJQDYXS" property="wjwcFJjqdyxs"/>
+        <result column="WJWC_F_JCJLYXS_D" property="wjwcFJcjlyxsD"/>
+        <result column="WJWC_F_JCJLYXS" property="wjwcFJcjlyxs"/>
+        <result column="WJWC_F_FCJLYXS_D" property="wjwcFFcjlyxsD"/>
+        <result column="WJWC_F_LQL1YXS_D" property="wjwcFLql1yxsD"/>
+        <result column="WJWC_F_LQL1YXS" property="wjwcFLql1yxs"/>
+        <result column="WJWC_F_CXYXS_D" property="wjwcFCxyxsD"/>
+        <result column="WJWC_F_CXYXS" property="wjwcFCxyxs"/>
+        <result column="WJWC_C_JJQDXS_D" property="wjwcCJjqdxsD"/>
+        <result column="WJWC_C_JCJLYXS_D" property="wjwcCJcjlyxsD"/>
+        <result column="WJWC_C_FCJLYXS" property="wjwcCFcjlyxs"/>
+        <result column="WJWC_C_LQL1YXS" property="wjwcCLql1yxs"/>
+        <result column="WJWC_C_CXYXS_D" property="wjwcCCxyxsD"/>
+        <result column="ZJWC_GDYXS_JZ" property="zjwcGdyxsJz"/>
+        <result column="ZJWC_GDYXS_CZ" property="zjwcGdyxsCz"/>
+        <result column="ZJWC_FCJLYXS_JZ" property="zjwcFcjlyxsJz"/>
+        <result column="ZJWC_FCJLYXS_CZ" property="zjwcFcjlyxsCz"/>
+        <result column="ZJWC_LQL1YXS_JZ" property="zjwcLql1yxsJz"/>
+        <result column="ZJWC_LQL1YXS_CZ" property="zjwcLql1yxsCz"/>
+        <result column="LKZX" property="lkzx"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="CHARGE" property="charge"/>
+        <result column="WJWC_F_FCJLYXS" property="wjwcFFcjlyxs"/>
+        <result column="STATIONNAME" property="stationname"/>
+        <result column="DIRECTOR" property="director"/>
+        <result column="DESIGNID" property="designId"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getTestLiansuoCheckById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  CODE,  NAME,  WJZC_JJQDYXS,  WJZC_JCJLYXS_D,  WJZC_JCJLYXS,  WJZC_FCJLYXS_D,  WJZC_FCJLYXS,  WJZC_LQL1YXS_D,  WJZC_LQL1YXS,  WJWC_F_JJQDYXS,  WJWC_F_JCJLYXS_D,  WJWC_F_JCJLYXS,  WJWC_F_FCJLYXS_D,  WJWC_F_LQL1YXS_D,  WJWC_F_LQL1YXS,  WJWC_F_CXYXS_D,  WJWC_F_CXYXS,  WJWC_C_JJQDXS_D,  WJWC_C_JCJLYXS_D,  WJWC_C_FCJLYXS,  WJWC_C_LQL1YXS,  WJWC_C_CXYXS_D,  ZJWC_GDYXS_JZ,  ZJWC_GDYXS_CZ,  ZJWC_FCJLYXS_JZ,  ZJWC_FCJLYXS_CZ,  ZJWC_LQL1YXS_JZ,  ZJWC_LQL1YXS_CZ,  LKZX,  OPERATOR,  CREATEDATE,  CHARGE,  WJWC_F_FCJLYXS,  STATIONNAME,  DIRECTOR,DESIGNID         from TEST_LIANSUO_CHECK
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestLiansuoCheckList" parameterType="map" resultMap="BaseResultMap">
+        select ID, CODE, NAME, WJZC_JJQDYXS, WJZC_JCJLYXS_D, WJZC_JCJLYXS, WJZC_FCJLYXS_D, WJZC_FCJLYXS, WJZC_LQL1YXS_D,
+        WJZC_LQL1YXS, WJWC_F_JJQDYXS, WJWC_F_JCJLYXS_D, WJWC_F_JCJLYXS, WJWC_F_FCJLYXS_D, WJWC_F_LQL1YXS_D,
+        WJWC_F_LQL1YXS, WJWC_F_CXYXS_D, WJWC_F_CXYXS, WJWC_C_JJQDXS_D, WJWC_C_JCJLYXS_D, WJWC_C_FCJLYXS, WJWC_C_LQL1YXS,
+        WJWC_C_CXYXS_D, ZJWC_GDYXS_JZ, ZJWC_GDYXS_CZ, ZJWC_FCJLYXS_JZ, ZJWC_FCJLYXS_CZ, ZJWC_LQL1YXS_JZ,
+        ZJWC_LQL1YXS_CZ, LKZX, OPERATOR, CREATEDATE, CHARGE, WJWC_F_FCJLYXS, STATIONNAME, DIRECTOR,DESIGNID from
+        TEST_LIANSUO_CHECK
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="code != null and code != ''">
+                and CODE = #{code}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="wjzcJjqdyxs != null and wjzcJjqdyxs != ''">
+                and WJZC_JJQDYXS = #{wjzcJjqdyxs}
+            </if>
+            <if test="wjzcJcjlyxsD != null and wjzcJcjlyxsD != ''">
+                and WJZC_JCJLYXS_D = #{wjzcJcjlyxsD}
+            </if>
+            <if test="wjzcJcjlyxs != null and wjzcJcjlyxs != ''">
+                and WJZC_JCJLYXS = #{wjzcJcjlyxs}
+            </if>
+            <if test="wjzcFcjlyxsD != null and wjzcFcjlyxsD != ''">
+                and WJZC_FCJLYXS_D = #{wjzcFcjlyxsD}
+            </if>
+            <if test="wjzcFcjlyxs != null and wjzcFcjlyxs != ''">
+                and WJZC_FCJLYXS = #{wjzcFcjlyxs}
+            </if>
+            <if test="wjzcLql1yxsD != null and wjzcLql1yxsD != ''">
+                and WJZC_LQL1YXS_D = #{wjzcLql1yxsD}
+            </if>
+            <if test="wjzcLql1yxs != null and wjzcLql1yxs != ''">
+                and WJZC_LQL1YXS = #{wjzcLql1yxs}
+            </if>
+            <if test="wjwcFJjqdyxs != null and wjwcFJjqdyxs != ''">
+                and WJWC_F_JJQDYXS = #{wjwcFJjqdyxs}
+            </if>
+            <if test="wjwcFJcjlyxsD != null and wjwcFJcjlyxsD != ''">
+                and WJWC_F_JCJLYXS_D = #{wjwcFJcjlyxsD}
+            </if>
+            <if test="wjwcFJcjlyxs != null and wjwcFJcjlyxs != ''">
+                and WJWC_F_JCJLYXS = #{wjwcFJcjlyxs}
+            </if>
+            <if test="wjwcFFcjlyxsD != null and wjwcFFcjlyxsD != ''">
+                and WJWC_F_FCJLYXS_D = #{wjwcFFcjlyxsD}
+            </if>
+            <if test="wjwcFLql1yxsD != null and wjwcFLql1yxsD != ''">
+                and WJWC_F_LQL1YXS_D = #{wjwcFLql1yxsD}
+            </if>
+            <if test="wjwcFLql1yxs != null and wjwcFLql1yxs != ''">
+                and WJWC_F_LQL1YXS = #{wjwcFLql1yxs}
+            </if>
+            <if test="wjwcFCxyxsD != null and wjwcFCxyxsD != ''">
+                and WJWC_F_CXYXS_D = #{wjwcFCxyxsD}
+            </if>
+            <if test="wjwcFCxyxs != null and wjwcFCxyxs != ''">
+                and WJWC_F_CXYXS = #{wjwcFCxyxs}
+            </if>
+            <if test="wjwcCJjqdxsD != null and wjwcCJjqdxsD != ''">
+                and WJWC_C_JJQDXS_D = #{wjwcCJjqdxsD}
+            </if>
+            <if test="wjwcCJcjlyxsD != null and wjwcCJcjlyxsD != ''">
+                and WJWC_C_JCJLYXS_D = #{wjwcCJcjlyxsD}
+            </if>
+            <if test="wjwcCFcjlyxs != null and wjwcCFcjlyxs != ''">
+                and WJWC_C_FCJLYXS = #{wjwcCFcjlyxs}
+            </if>
+            <if test="wjwcCLql1yxs != null and wjwcCLql1yxs != ''">
+                and WJWC_C_LQL1YXS = #{wjwcCLql1yxs}
+            </if>
+            <if test="wjwcCCxyxsD != null and wjwcCCxyxsD != ''">
+                and WJWC_C_CXYXS_D = #{wjwcCCxyxsD}
+            </if>
+            <if test="zjwcGdyxsJz != null and zjwcGdyxsJz != ''">
+                and ZJWC_GDYXS_JZ = #{zjwcGdyxsJz}
+            </if>
+            <if test="zjwcGdyxsCz != null and zjwcGdyxsCz != ''">
+                and ZJWC_GDYXS_CZ = #{zjwcGdyxsCz}
+            </if>
+            <if test="zjwcFcjlyxsJz != null and zjwcFcjlyxsJz != ''">
+                and ZJWC_FCJLYXS_JZ = #{zjwcFcjlyxsJz}
+            </if>
+            <if test="zjwcFcjlyxsCz != null and zjwcFcjlyxsCz != ''">
+                and ZJWC_FCJLYXS_CZ = #{zjwcFcjlyxsCz}
+            </if>
+            <if test="zjwcLql1yxsJz != null and zjwcLql1yxsJz != ''">
+                and ZJWC_LQL1YXS_JZ = #{zjwcLql1yxsJz}
+            </if>
+            <if test="zjwcLql1yxsCz != null and zjwcLql1yxsCz != ''">
+                and ZJWC_LQL1YXS_CZ = #{zjwcLql1yxsCz}
+            </if>
+            <if test="lkzx != null and lkzx != ''">
+                and LKZX = #{lkzx}
+            </if>
+            <if test="operator != null and operator != ''">
+                and OPERATOR = #{operator}
+            </if>
+            <if test="createdate != null and createdate != ''">
+                and CREATEDATE = #{createdate}
+            </if>
+            <if test="charge != null and charge != ''">
+                and CHARGE = #{charge}
+            </if>
+            <if test="wjwcFFcjlyxs != null and wjwcFFcjlyxs != ''">
+                and WJWC_F_FCJLYXS = #{wjwcFFcjlyxs}
+            </if>
+            <if test="stationname != null and stationname != ''">
+                and STATIONNAME = #{stationname}
+            </if>
+            <if test="director != null and director != ''">
+                and DIRECTOR = #{director}
+            </if>
+            <if test="designId != null and designId != ''">
+                and DESIGNID = #{designId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestLiansuoCheck" parameterType="com.tieda.alarm.entity.testLiansuoCheck.TestLiansuoCheck">
+        insert into TEST_LIANSUO_CHECK (ID, CODE, NAME, WJZC_JJQDYXS, WJZC_JCJLYXS_D, WJZC_JCJLYXS, WJZC_FCJLYXS_D, WJZC_FCJLYXS, WJZC_LQL1YXS_D, WJZC_LQL1YXS, WJWC_F_JJQDYXS, WJWC_F_JCJLYXS_D, WJWC_F_JCJLYXS, WJWC_F_FCJLYXS_D, WJWC_F_LQL1YXS_D, WJWC_F_LQL1YXS, WJWC_F_CXYXS_D, WJWC_F_CXYXS, WJWC_C_JJQDXS_D, WJWC_C_JCJLYXS_D, WJWC_C_FCJLYXS, WJWC_C_LQL1YXS, WJWC_C_CXYXS_D, ZJWC_GDYXS_JZ, ZJWC_GDYXS_CZ, ZJWC_FCJLYXS_JZ, ZJWC_FCJLYXS_CZ, ZJWC_LQL1YXS_JZ, ZJWC_LQL1YXS_CZ, LKZX, OPERATOR, CREATEDATE, CHARGE, WJWC_F_FCJLYXS, STATIONNAME, DIRECTOR,DESIGNID )
+        values (                #{id,jdbcType = VARCHAR},                    #{code,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{wjzcJjqdyxs,jdbcType = VARCHAR},                    #{wjzcJcjlyxsD,jdbcType = VARCHAR},                    #{wjzcJcjlyxs,jdbcType = VARCHAR},                    #{wjzcFcjlyxsD,jdbcType = VARCHAR},                    #{wjzcFcjlyxs,jdbcType = VARCHAR},                    #{wjzcLql1yxsD,jdbcType = VARCHAR},                    #{wjzcLql1yxs,jdbcType = VARCHAR},                    #{wjwcFJjqdyxs,jdbcType = VARCHAR},                    #{wjwcFJcjlyxsD,jdbcType = VARCHAR},                    #{wjwcFJcjlyxs,jdbcType = VARCHAR},                    #{wjwcFFcjlyxsD,jdbcType = VARCHAR},                    #{wjwcFLql1yxsD,jdbcType = VARCHAR},                    #{wjwcFLql1yxs,jdbcType = VARCHAR},                    #{wjwcFCxyxsD,jdbcType = VARCHAR},                    #{wjwcFCxyxs,jdbcType = VARCHAR},                    #{wjwcCJjqdxsD,jdbcType = VARCHAR},                    #{wjwcCJcjlyxsD,jdbcType = VARCHAR},                    #{wjwcCFcjlyxs,jdbcType = VARCHAR},                    #{wjwcCLql1yxs,jdbcType = VARCHAR},                    #{wjwcCCxyxsD,jdbcType = VARCHAR},                    #{zjwcGdyxsJz,jdbcType = VARCHAR},                    #{zjwcGdyxsCz,jdbcType = VARCHAR},                    #{zjwcFcjlyxsJz,jdbcType = VARCHAR},                    #{zjwcFcjlyxsCz,jdbcType = VARCHAR},                    #{zjwcLql1yxsJz,jdbcType = VARCHAR},                    #{zjwcLql1yxsCz,jdbcType = VARCHAR},                    #{lkzx,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{charge,jdbcType = VARCHAR},                    #{wjwcFFcjlyxs,jdbcType = VARCHAR},                    #{stationname,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},#{designId,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestLiansuoCheck" parameterType="list">
+        insert into TEST_LIANSUO_CHECK (ID, CODE, NAME, WJZC_JJQDYXS, WJZC_JCJLYXS_D, WJZC_JCJLYXS, WJZC_FCJLYXS_D,
+        WJZC_FCJLYXS, WJZC_LQL1YXS_D, WJZC_LQL1YXS, WJWC_F_JJQDYXS, WJWC_F_JCJLYXS_D, WJWC_F_JCJLYXS, WJWC_F_FCJLYXS_D,
+        WJWC_F_LQL1YXS_D, WJWC_F_LQL1YXS, WJWC_F_CXYXS_D, WJWC_F_CXYXS, WJWC_C_JJQDXS_D, WJWC_C_JCJLYXS_D,
+        WJWC_C_FCJLYXS, WJWC_C_LQL1YXS, WJWC_C_CXYXS_D, ZJWC_GDYXS_JZ, ZJWC_GDYXS_CZ, ZJWC_FCJLYXS_JZ, ZJWC_FCJLYXS_CZ,
+        ZJWC_LQL1YXS_JZ, ZJWC_LQL1YXS_CZ, LKZX, OPERATOR, CREATEDATE, CHARGE, WJWC_F_FCJLYXS, STATIONNAME, DIRECTOR )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.code}, #{item.name}, #{item.wjzcJjqdyxs}, #{item.wjzcJcjlyxsD}, #{item.wjzcJcjlyxs},
+            #{item.wjzcFcjlyxsD}, #{item.wjzcFcjlyxs}, #{item.wjzcLql1yxsD}, #{item.wjzcLql1yxs}, #{item.wjwcFJjqdyxs},
+            #{item.wjwcFJcjlyxsD}, #{item.wjwcFJcjlyxs}, #{item.wjwcFFcjlyxsD}, #{item.wjwcFLql1yxsD},
+            #{item.wjwcFLql1yxs}, #{item.wjwcFCxyxsD}, #{item.wjwcFCxyxs}, #{item.wjwcCJjqdxsD}, #{item.wjwcCJcjlyxsD},
+            #{item.wjwcCFcjlyxs}, #{item.wjwcCLql1yxs}, #{item.wjwcCCxyxsD}, #{item.zjwcGdyxsJz}, #{item.zjwcGdyxsCz},
+            #{item.zjwcFcjlyxsJz}, #{item.zjwcFcjlyxsCz}, #{item.zjwcLql1yxsJz}, #{item.zjwcLql1yxsCz}, #{item.lkzx},
+            #{item.operator}, #{item.createdate}, #{item.charge}, #{item.wjwcFFcjlyxs}, #{item.stationname},
+            #{item.director} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestLiansuoCheck" parameterType="com.tieda.alarm.entity.testLiansuoCheck.TestLiansuoCheck">
+        update TEST_LIANSUO_CHECK
+        <set>
+            <if test="id != null and id != ''">
+                ID = #{id},
+            </if>
+            <if test="code != null and code != ''">
+                CODE = #{code},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="wjzcJjqdyxs != null and wjzcJjqdyxs != ''">
+                WJZC_JJQDYXS = #{wjzcJjqdyxs},
+            </if>
+            <if test="wjzcJcjlyxsD != null and wjzcJcjlyxsD != ''">
+                WJZC_JCJLYXS_D = #{wjzcJcjlyxsD},
+            </if>
+            <if test="wjzcJcjlyxs != null and wjzcJcjlyxs != ''">
+                WJZC_JCJLYXS = #{wjzcJcjlyxs},
+            </if>
+            <if test="wjzcFcjlyxsD != null and wjzcFcjlyxsD != ''">
+                WJZC_FCJLYXS_D = #{wjzcFcjlyxsD},
+            </if>
+            <if test="wjzcFcjlyxs != null and wjzcFcjlyxs != ''">
+                WJZC_FCJLYXS = #{wjzcFcjlyxs},
+            </if>
+            <if test="wjzcLql1yxsD != null and wjzcLql1yxsD != ''">
+                WJZC_LQL1YXS_D = #{wjzcLql1yxsD},
+            </if>
+            <if test="wjzcLql1yxs != null and wjzcLql1yxs != ''">
+                WJZC_LQL1YXS = #{wjzcLql1yxs},
+            </if>
+            <if test="wjwcFJjqdyxs != null and wjwcFJjqdyxs != ''">
+                WJWC_F_JJQDYXS = #{wjwcFJjqdyxs},
+            </if>
+            <if test="wjwcFJcjlyxsD != null and wjwcFJcjlyxsD != ''">
+                WJWC_F_JCJLYXS_D = #{wjwcFJcjlyxsD},
+            </if>
+            <if test="wjwcFJcjlyxs != null and wjwcFJcjlyxs != ''">
+                WJWC_F_JCJLYXS = #{wjwcFJcjlyxs},
+            </if>
+            <if test="wjwcFFcjlyxsD != null and wjwcFFcjlyxsD != ''">
+                WJWC_F_FCJLYXS_D = #{wjwcFFcjlyxsD},
+            </if>
+            <if test="wjwcFLql1yxsD != null and wjwcFLql1yxsD != ''">
+                WJWC_F_LQL1YXS_D = #{wjwcFLql1yxsD},
+            </if>
+            <if test="wjwcFLql1yxs != null and wjwcFLql1yxs != ''">
+                WJWC_F_LQL1YXS = #{wjwcFLql1yxs},
+            </if>
+            <if test="wjwcFCxyxsD != null and wjwcFCxyxsD != ''">
+                WJWC_F_CXYXS_D = #{wjwcFCxyxsD},
+            </if>
+            <if test="wjwcFCxyxs != null and wjwcFCxyxs != ''">
+                WJWC_F_CXYXS = #{wjwcFCxyxs},
+            </if>
+            <if test="wjwcCJjqdxsD != null and wjwcCJjqdxsD != ''">
+                WJWC_C_JJQDXS_D = #{wjwcCJjqdxsD},
+            </if>
+            <if test="wjwcCJcjlyxsD != null and wjwcCJcjlyxsD != ''">
+                WJWC_C_JCJLYXS_D = #{wjwcCJcjlyxsD},
+            </if>
+            <if test="wjwcCFcjlyxs != null and wjwcCFcjlyxs != ''">
+                WJWC_C_FCJLYXS = #{wjwcCFcjlyxs},
+            </if>
+            <if test="wjwcCLql1yxs != null and wjwcCLql1yxs != ''">
+                WJWC_C_LQL1YXS = #{wjwcCLql1yxs},
+            </if>
+            <if test="wjwcCCxyxsD != null and wjwcCCxyxsD != ''">
+                WJWC_C_CXYXS_D = #{wjwcCCxyxsD},
+            </if>
+            <if test="zjwcGdyxsJz != null and zjwcGdyxsJz != ''">
+                ZJWC_GDYXS_JZ = #{zjwcGdyxsJz},
+            </if>
+            <if test="zjwcGdyxsCz != null and zjwcGdyxsCz != ''">
+                ZJWC_GDYXS_CZ = #{zjwcGdyxsCz},
+            </if>
+            <if test="zjwcFcjlyxsJz != null and zjwcFcjlyxsJz != ''">
+                ZJWC_FCJLYXS_JZ = #{zjwcFcjlyxsJz},
+            </if>
+            <if test="zjwcFcjlyxsCz != null and zjwcFcjlyxsCz != ''">
+                ZJWC_FCJLYXS_CZ = #{zjwcFcjlyxsCz},
+            </if>
+            <if test="zjwcLql1yxsJz != null and zjwcLql1yxsJz != ''">
+                ZJWC_LQL1YXS_JZ = #{zjwcLql1yxsJz},
+            </if>
+            <if test="zjwcLql1yxsCz != null and zjwcLql1yxsCz != ''">
+                ZJWC_LQL1YXS_CZ = #{zjwcLql1yxsCz},
+            </if>
+            <if test="lkzx != null and lkzx != ''">
+                LKZX = #{lkzx},
+            </if>
+            <if test="operator != null and operator != ''">
+                OPERATOR = #{operator},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate},
+            </if>
+            <if test="charge != null and charge != ''">
+                CHARGE = #{charge},
+            </if>
+            <if test="wjwcFFcjlyxs != null and wjwcFFcjlyxs != ''">
+                WJWC_F_FCJLYXS = #{wjwcFFcjlyxs},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                STATIONNAME = #{stationname},
+            </if>
+            <if test="director != null and director != ''">
+                DIRECTOR = #{director}
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestLiansuoCheck" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_LIANSUO_CHECK
+            <set>
+                ID = #{item.id}, CODE = #{item.code}, NAME = #{item.name}, WJZC_JJQDYXS = #{item.wjzcJjqdyxs},
+                WJZC_JCJLYXS_D = #{item.wjzcJcjlyxsD}, WJZC_JCJLYXS = #{item.wjzcJcjlyxs}, WJZC_FCJLYXS_D =
+                #{item.wjzcFcjlyxsD}, WJZC_FCJLYXS = #{item.wjzcFcjlyxs}, WJZC_LQL1YXS_D = #{item.wjzcLql1yxsD},
+                WJZC_LQL1YXS = #{item.wjzcLql1yxs}, WJWC_F_JJQDYXS = #{item.wjwcFJjqdyxs}, WJWC_F_JCJLYXS_D =
+                #{item.wjwcFJcjlyxsD}, WJWC_F_JCJLYXS = #{item.wjwcFJcjlyxs}, WJWC_F_FCJLYXS_D = #{item.wjwcFFcjlyxsD},
+                WJWC_F_LQL1YXS_D = #{item.wjwcFLql1yxsD}, WJWC_F_LQL1YXS = #{item.wjwcFLql1yxs}, WJWC_F_CXYXS_D =
+                #{item.wjwcFCxyxsD}, WJWC_F_CXYXS = #{item.wjwcFCxyxs}, WJWC_C_JJQDXS_D = #{item.wjwcCJjqdxsD},
+                WJWC_C_JCJLYXS_D = #{item.wjwcCJcjlyxsD}, WJWC_C_FCJLYXS = #{item.wjwcCFcjlyxs}, WJWC_C_LQL1YXS =
+                #{item.wjwcCLql1yxs}, WJWC_C_CXYXS_D = #{item.wjwcCCxyxsD}, ZJWC_GDYXS_JZ = #{item.zjwcGdyxsJz},
+                ZJWC_GDYXS_CZ = #{item.zjwcGdyxsCz}, ZJWC_FCJLYXS_JZ = #{item.zjwcFcjlyxsJz}, ZJWC_FCJLYXS_CZ =
+                #{item.zjwcFcjlyxsCz}, ZJWC_LQL1YXS_JZ = #{item.zjwcLql1yxsJz}, ZJWC_LQL1YXS_CZ = #{item.zjwcLql1yxsCz},
+                LKZX = #{item.lkzx}, OPERATOR = #{item.operator}, CREATEDATE = #{item.createdate}, CHARGE =
+                #{item.charge}, WJWC_F_FCJLYXS = #{item.wjwcFFcjlyxs}, STATIONNAME = #{item.stationname}, DIRECTOR =
+                #{item.director}
+            </set>
+            where
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestLiansuoCheckById" parameterType="long">
+        delete from TEST_LIANSUO_CHECK
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestLiansuoCheck" parameterType="list">
+        delete from TEST_LIANSUO_CHECK
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

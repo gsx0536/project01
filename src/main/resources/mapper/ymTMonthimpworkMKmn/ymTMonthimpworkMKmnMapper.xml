@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTMonthimpworkMKmn.YmTMonthimpworkMKmnMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTMonthimpworkMKmn.YmTMonthimpworkMKmn">
+                <id column="N_ID" property="nId"/>
+            <result column="N_YEAR" property="nYear"/>
+<result column="N_MONTH" property="nMonth"/>
+<result column="VC_NOTE" property="vcNote"/>
+<result column="VC_STATE" property="vcState"/>
+<result column="VC_PERSON" property="vcPerson"/>
+<result column="DT_DATE" property="dtDate"/>
+<result column="VC_PERSON_NAME" property="vcPersonName"/>
+<result column="VC_SIGNLEADERID" property="vcSignleaderid"/>
+            <result column="VC_SIGNLEADER" property="vcSignleader"/>
+            <result column="VC_SIGNNOTE" property="vcSignnote"/>
+            <result column="VC_FILENAME" property="vcFilename"/>
+            <result column="VC_FILEPATH" property="vcFilepath"/>
+    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTMonthimpworkMKmnById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  N_YEAR,  N_MONTH,  VC_NOTE,  VC_STATE,  VC_PERSON,  DT_DATE,  VC_PERSON_NAME,  VC_SIGNLEADERID,  VC_SIGNLEADER,  VC_SIGNNOTE   ,VC_FILENAME,VC_FILEPATH      from YM_T_MONTHIMPWORK_M_KMN
+                        where N_ID = #{nId}
+        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTMonthimpworkMKmnList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, N_YEAR, N_MONTH, VC_NOTE, VC_STATE, VC_PERSON, DT_DATE, VC_PERSON_NAME, VC_SIGNLEADERID, VC_SIGNLEADER, VC_SIGNNOTE   ,VC_FILENAME,VC_FILEPATH      from YM_T_MONTHIMPWORK_M_KMN
+        <where>
+                            <if test="nId != null and nId != ''">
+                    and N_ID = #{nId}
+                </if>
+                            <if test="nYear != null and nYear != ''">
+                    and N_YEAR = #{nYear}
+                </if>
+                            <if test="nMonth != null and nMonth != ''">
+                    and N_MONTH = #{nMonth}
+                </if>
+                            <if test="vcNote != null and vcNote != ''">
+                    and VC_NOTE = #{vcNote}
+                </if>
+                            <if test="vcState != null and vcState != ''">
+                    and VC_STATE = #{vcState}
+                </if>
+                            <if test="vcPerson != null and vcPerson != ''">
+                    and VC_PERSON = #{vcPerson}
+                </if>
+                            <if test="dtDate != null and dtDate != ''">
+                    and DT_DATE = #{dtDate}
+                </if>
+                            <if test="vcPersonName != null and vcPersonName != ''">
+                    and VC_PERSON_NAME = #{vcPersonName}
+                </if>
+                            <if test="vcSignleaderid != null and vcSignleaderid != ''">
+                    and VC_SIGNLEADERID = #{vcSignleaderid}
+                </if>
+                            <if test="vcSignleader != null and vcSignleader != ''">
+                    and VC_SIGNLEADER = #{vcSignleader}
+                </if>
+                            <if test="vcSignnote != null and vcSignnote != ''">
+                    and VC_SIGNNOTE = #{vcSignnote}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTMonthimpworkMKmn" parameterType="com.tieda.alarm.entity.ymTMonthimpworkMKmn.YmTMonthimpworkMKmn">
+        insert into YM_T_MONTHIMPWORK_M_KMN (N_ID, N_YEAR, N_MONTH, VC_NOTE, VC_STATE, VC_PERSON, DT_DATE, VC_PERSON_NAME, VC_SIGNLEADERID, VC_SIGNLEADER, VC_SIGNNOTE ,VC_FILENAME,VC_FILEPATH)
+        values (                #{nId,jdbcType = VARCHAR},                    #{nYear,jdbcType = VARCHAR},                    #{nMonth,jdbcType = VARCHAR},                    #{vcNote,jdbcType = VARCHAR},                    #{vcState,jdbcType = VARCHAR},                    #{vcPerson,jdbcType = VARCHAR},                    #{dtDate,jdbcType = VARCHAR},                    #{vcPersonName,jdbcType = VARCHAR},                    #{vcSignleaderid,jdbcType = VARCHAR},                    #{vcSignleader,jdbcType = VARCHAR},                    #{vcSignnote,jdbcType = VARCHAR},   #{vcFilename,jdbcType = VARCHAR} ,   #{vcFilepath,jdbcType = VARCHAR}      )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTMonthimpworkMKmn" parameterType="list">
+        insert into YM_T_MONTHIMPWORK_M_KMN (N_ID, N_YEAR, N_MONTH, VC_NOTE, VC_STATE, VC_PERSON, DT_DATE, VC_PERSON_NAME, VC_SIGNLEADERID, VC_SIGNLEADER, VC_SIGNNOTE,VC_FILENAME,VC_FILEPATH    ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.nYear}, #{item.nMonth}, #{item.vcNote}, #{item.vcState}, #{item.vcPerson}, #{item.dtDate}, #{item.vcPersonName}, #{item.vcSignleaderid}, #{item.vcSignleader}, #{item.vcSignnote}      ,#{item.vcFilename},#{item.vcFilepath}       )
+        </foreach>
+    </insert>
+
+    <insert id="insertymTMonthFinishKmn" parameterType="String">
+        insert into Ym_t_Monthimpfinish_Kmn
+         (n_id,n_Did,n_Mid,Vc_Orgid,Vc_Orgname,Vc_Status,Vc_Singpersonid,Vc_Singperson,Vc_Finishinfo,Vc_Jobtype,Vc_Jobnumber)
+        select csmis_data_seq.nextval as n_id,
+        a.N_id as N_DID,
+        a.N_MID as n_mid,
+        a.orgid as vc_orgid,
+        b.vc_name as vc_orgname,
+        '0' as vc_status,
+        '' VC_SINGPERSONID,
+        '' VC_SINGPERSON,
+        '' vc_finishinfo,
+        '' vc_jobtype,
+        '' vc_jobnumber
+        from (select regexp_substr(vc_noticedepid, '[^,]+', 1, rownum) orgid,
+        n_id,
+        n_mid
+        from (select p.n_id,
+        p.n_mid,
+        replace(p.vc_noticedepid, ';', ',') as vc_noticedepid
+        from ym_t_monthimpwork_m_kmn t, ym_t_monthimp_d_kmn p
+        <![CDATA[where t.n_id = p.n_mid  and t.n_id=#{mId})
+        connect by rownum <= length(vc_noticedepid) -
+        length(replace(vc_noticedepid, ',')) + 1) a,
+        sys_t_org b
+        where a.orgid = b.vc_org$id]]>
+    </insert>
+    <!-- 更新 -->
+    <update id="updateYmTMonthimpworkMKmn" parameterType="com.tieda.alarm.entity.ymTMonthimpworkMKmn.YmTMonthimpworkMKmn">
+        update YM_T_MONTHIMPWORK_M_KMN
+        <set>
+            <if test="nYear != null and nYear != ''">
+                        N_YEAR = #{nYear},                    </if>
+<if test="nMonth != null and nMonth != ''">
+                        N_MONTH = #{nMonth},                    </if>
+<if test="vcNote != null and vcNote != ''">
+                        VC_NOTE = #{vcNote},                    </if>
+<if test="vcState != null and vcState != ''">
+                        VC_STATE = #{vcState},                    </if>
+<if test="vcPerson != null and vcPerson != ''">
+                        VC_PERSON = #{vcPerson},                    </if>
+<if test="dtDate != null and dtDate != ''">
+                        DT_DATE = #{dtDate},                    </if>
+<if test="vcPersonName != null and vcPersonName != ''">
+                        VC_PERSON_NAME = #{vcPersonName},                    </if>
+<if test="vcSignleaderid != null and vcSignleaderid != ''">
+                        VC_SIGNLEADERID = #{vcSignleaderid},                    </if>
+<if test="vcSignleader != null and vcSignleader != ''">
+                        VC_SIGNLEADER = #{vcSignleader},                    </if>
+            <if test="vcSignnote != null and vcSignnote != ''">
+                VC_SIGNNOTE = #{vcSignnote},
+            </if>
+            <if test="vcFilename != null">
+                VC_FILENAME = #{vcFilename} ,              </if>
+            <if test="vcFilepath != null">
+                VC_FILEPATH = #{vcFilepath}                    </if>
+    </set>
+    where N_ID = #{nId}
+</update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYmTMonthimpworkMKmn" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_MONTHIMPWORK_M_KMN
+            <set>
+N_YEAR = #{item.nYear},                N_MONTH = #{item.nMonth},                VC_NOTE = #{item.vcNote},                VC_STATE = #{item.vcState},                VC_PERSON = #{item.vcPerson},                DT_DATE = #{item.dtDate},                VC_PERSON_NAME = #{item.vcPersonName},                VC_SIGNLEADERID = #{item.vcSignleaderid},                VC_SIGNLEADER = #{item.vcSignleader},                VC_SIGNNOTE = #{item.vcSignnote}        ,VC_FILENAME=#{item.vcFilename},VC_FILEPATH=#{item.vcFilepath}        </set>
+            where N_ID = #{item.nId}
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTMonthimpworkMKmnById" parameterType="long">
+        delete from YM_T_MONTHIMPWORK_M_KMN
+
+        where
+
+        
+        
+            N_ID = #{nId}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTMonthimpworkMKmn" parameterType="list">
+        delete from YM_T_MONTHIMPWORK_M_KMN
+
+        
+            
+                where N_ID in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

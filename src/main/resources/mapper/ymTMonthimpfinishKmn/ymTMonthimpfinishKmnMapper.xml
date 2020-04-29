@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTMonthimpfinishKmn.YmTMonthimpfinishKmnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTMonthimpfinishKmn.YmTMonthimpfinishKmn">
+        <id column="N_ID" property="nId"/>
+        <result column="N_DID" property="nDid"/>
+        <result column="N_MID" property="nMid"/>
+        <result column="VC_ORGID" property="vcOrgid"/>
+        <result column="VC_ORGNAME" property="vcOrgname"/>
+        <result column="VC_SINGPERSONID" property="vcSingpersonid"/>
+        <result column="VC_SINGPERSON" property="vcSingperson"/>
+        <result column="VC_FINISHINFO" property="vcFinishinfo"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="VC_JOBTYPE" property="vcJobtype"/>
+        <result column="VC_JOBNUMBER" property="vcJobnumber"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTMonthimpfinishKmnById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  N_DID,  N_MID,  VC_ORGID,  VC_ORGNAME,  VC_SINGPERSONID,  VC_SINGPERSON,  VC_FINISHINFO,  VC_STATUS,  VC_JOBTYPE,  VC_JOBNUMBER         from YM_T_MONTHIMPFINISH_KMN
+                        where N_ID = #{nId}
+        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTMonthimpfinishKmnList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, N_DID, N_MID, VC_ORGID, VC_ORGNAME, VC_SINGPERSONID, VC_SINGPERSON, VC_FINISHINFO, VC_STATUS,
+        VC_JOBTYPE, VC_JOBNUMBER from YM_T_MONTHIMPFINISH_KMN
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="nDid != null and nDid != ''">
+                and N_DID = #{nDid}
+            </if>
+            <if test="nMid != null and nMid != ''">
+                and N_MID = #{nMid}
+            </if>
+            <if test="vcOrgid != null and vcOrgid != ''">
+                and VC_ORGID = #{vcOrgid}
+            </if>
+            <if test="vcOrgname != null and vcOrgname != ''">
+                and VC_ORGNAME = #{vcOrgname}
+            </if>
+            <if test="vcSingpersonid != null and vcSingpersonid != ''">
+                and VC_SINGPERSONID = #{vcSingpersonid}
+            </if>
+            <if test="vcSingperson != null and vcSingperson != ''">
+                and VC_SINGPERSON = #{vcSingperson}
+            </if>
+            <if test="vcFinishinfo != null and vcFinishinfo != ''">
+                and VC_FINISHINFO = #{vcFinishinfo}
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS = #{vcStatus}
+            </if>
+            <if test="vcJobtype != null and vcJobtype != ''">
+                and VC_JOBTYPE = #{vcJobtype}
+            </if>
+            <if test="vcJobnumber != null and vcJobnumber != ''">
+                and VC_JOBNUMBER = #{vcJobnumber}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTMonthimpfinishKmn"
+            parameterType="com.tieda.alarm.entity.ymTMonthimpfinishKmn.YmTMonthimpfinishKmn">
+        insert into YM_T_MONTHIMPFINISH_KMN (N_ID, N_DID, N_MID, VC_ORGID, VC_ORGNAME, VC_SINGPERSONID, VC_SINGPERSON, VC_FINISHINFO, VC_STATUS, VC_JOBTYPE, VC_JOBNUMBER )
+        values (                #{nId,jdbcType = VARCHAR},                    #{nDid,jdbcType = VARCHAR},                    #{nMid,jdbcType = VARCHAR},                    #{vcOrgid,jdbcType = VARCHAR},                    #{vcOrgname,jdbcType = VARCHAR},                    #{vcSingpersonid,jdbcType = VARCHAR},                    #{vcSingperson,jdbcType = VARCHAR},                    #{vcFinishinfo,jdbcType = VARCHAR},                    #{vcStatus,jdbcType = VARCHAR},                    #{vcJobtype,jdbcType = VARCHAR},                    #{vcJobnumber,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTMonthimpfinishKmn" parameterType="list">
+        insert into YM_T_MONTHIMPFINISH_KMN (N_ID, N_DID, N_MID, VC_ORGID, VC_ORGNAME, VC_SINGPERSONID, VC_SINGPERSON,
+        VC_FINISHINFO, VC_STATUS, VC_JOBTYPE, VC_JOBNUMBER ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.nDid}, #{item.nMid}, #{item.vcOrgid}, #{item.vcOrgname}, #{item.vcSingpersonid},
+            #{item.vcSingperson}, #{item.vcFinishinfo}, #{item.vcStatus}, #{item.vcJobtype}, #{item.vcJobnumber} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTMonthimpfinishKmn"
+            parameterType="com.tieda.alarm.entity.ymTMonthimpfinishKmn.YmTMonthimpfinishKmn">
+        update YM_T_MONTHIMPFINISH_KMN
+        <set>
+            <if test="nDid != null and nDid != ''">
+                N_DID = #{nDid},
+            </if>
+            <if test="nMid != null and nMid != ''">
+                N_MID = #{nMid},
+            </if>
+            <if test="vcOrgid != null and vcOrgid != ''">
+                VC_ORGID = #{vcOrgid},
+            </if>
+            <if test="vcOrgname != null and vcOrgname != ''">
+                VC_ORGNAME = #{vcOrgname},
+            </if>
+            <if test="vcSingpersonid != null and vcSingpersonid != ''">
+                VC_SINGPERSONID = #{vcSingpersonid},
+            </if>
+            <if test="vcSingperson != null and vcSingperson != ''">
+                VC_SINGPERSON = #{vcSingperson},
+            </if>
+            <if test="vcFinishinfo != null and vcFinishinfo != ''">
+                <choose>
+                    <when test="vcStatus == '7'.toString()">
+                        VC_FINISHINFO = concat(VC_FINISHINFO,#{vcFinishinfo}),
+                    </when>
+                    <otherwise>
+                        VC_FINISHINFO = #{vcFinishinfo},
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus},
+            </if>
+            <if test="vcJobtype != null and vcJobtype != ''">
+                VC_JOBTYPE = #{vcJobtype},
+            </if>
+            <if test="vcJobnumber != null and vcJobnumber != ''">
+                VC_JOBNUMBER = #{vcJobnumber}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYmTMonthimpfinishKmn" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_MONTHIMPFINISH_KMN
+            <set>
+                N_DID = #{item.nDid}, N_MID = #{item.nMid}, VC_ORGID = #{item.vcOrgid}, VC_ORGNAME = #{item.vcOrgname},
+                VC_SINGPERSONID = #{item.vcSingpersonid}, VC_SINGPERSON = #{item.vcSingperson}, VC_FINISHINFO =
+                #{item.vcFinishinfo}, VC_STATUS = #{item.vcStatus}, VC_JOBTYPE = #{item.vcJobtype}, VC_JOBNUMBER =
+                #{item.vcJobnumber}
+            </set>
+            where N_ID = #{item.nId}
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTMonthimpfinishKmnById" parameterType="long">
+        delete from YM_T_MONTHIMPFINISH_KMN
+
+        where
+
+        
+        
+            N_ID = #{nId}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTMonthimpfinishKmn" parameterType="list">
+        delete from YM_T_MONTHIMPFINISH_KMN
+
+
+        where N_ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

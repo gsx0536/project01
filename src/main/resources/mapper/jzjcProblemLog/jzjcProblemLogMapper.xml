@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.jzjcProblemLog.JzjcProblemLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.jzjcProblemLog.JzjcProblemLog">
+        <id column="ID" property="id"/>
+        <result column="PROBLEMID" property="problemid"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="INFOR" property="infor"/>
+        <result column="OPERORG" property="operorg"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getJzjcProblemLogById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  PROBLEMID,  CREATEDATE,  INFOR ,OPERORG        from JZJC_PROBLEM_LOG
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getJzjcProblemLogList" parameterType="map" resultMap="BaseResultMap">
+        select ID, PROBLEMID, CREATEDATE, INFOR,OPERORG from JZJC_PROBLEM_LOG
+        <if test="id != null and id != ''">
+            and ID = #{id}
+        </if>
+        <if test="problemid != null and problemid != ''">
+            and PROBLEMID = #{problemid}
+        </if>
+        <if test="createdate != null and createdate != ''">
+            and CREATEDATE = #{createdate}
+        </if>
+        <if test="infor != null and infor != ''">
+            and INFOR = #{infor}
+        </if>
+        <if test="operorg != null and operorg != ''">
+            and OPERORG = #{operorg}
+        </if>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addJzjcProblemLog" parameterType="com.tieda.alarm.entity.jzjcProblemLog.JzjcProblemLog">
+        insert into JZJC_PROBLEM_LOG (ID, PROBLEMID, CREATEDATE, INFOR,OPERORG)
+        values (#{id,jdbcType = VARCHAR},    #{problemid,jdbcType = VARCHAR},    #{createdate,jdbcType = VARCHAR},    #{infor,jdbcType = VARCHAR},#{operorg,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateJzjcProblemLog" parameterType="com.tieda.alarm.entity.jzjcProblemLog.JzjcProblemLog">
+        update JZJC_PROBLEM_LOG
+        <set>
+            <if test="problemid != null and problemid != ''">
+                PROBLEMID = #{problemid},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate},
+            </if>
+            <if test="infor != null and infor != ''">
+                INFOR = #{infor}
+            </if>
+            <if test="operorg != null and operorg != ''">
+                OPERORG = #{operorg}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+    <!-- 根据主键删除 -->
+    <delete id="deleteJzjcProblemLogById" parameterType="long">
+        delete from JZJC_PROBLEM_LOG
+        where
+            ID = #{id}
+    </delete>
+    <!-- 批量删除 -->
+    <delete id="deleteBatchJzjcProblemLog" parameterType="list">
+        delete from JZJC_PROBLEM_LOG
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

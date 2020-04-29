@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.yjTDuty.YjTDutyMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.yjTDuty.YjTDuty">
+                <id column="VC_SERVER" property="vcServer"/>
+                        <result column="VC_ORG$ID" property="vcOrgid"/>
+<result column="VC_PERSON$NUMBER" property="vcPersonnumber"/>
+<result column="DT_DATE" property="dtDate"/>
+<result column="VC_NOTE" property="vcNote"/>
+<result column="VC_USER" property="vcUser"/>
+            <result column="DT_SYSDATE" property="dtSysdate"/>
+            <result column="VC_PLACE" property="vcPlace"/>
+            <result column="VC_CONTENT" property="vcContent"/>
+            <result column="VC_CHECKED" property="vcChecked"/>
+    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getYjTDutyById" parameterType="long" resultMap="BaseResultMap">
+        select  VC_SERVER,  VC_ORG$ID,  VC_PERSON$NUMBER,  DT_DATE,  VC_NOTE,  VC_USER,  DT_SYSDATE,  VC_PLACE         from YJ_T_DUTY
+                        where VC_SERVER = #{vcServer}
+    </select>
+<select id="getAllYjTDutyListByCheck" parameterType="map" resultMap="BaseResultMap">
+    select
+       t.VC_SERVER,
+       p.vc_org$id VC_ORG$ID,
+       p.vc_number VC_PERSON$NUMBER,
+       t.DT_DATE,
+       t.VC_NOTE,
+       #{vcUser,jdbcType=VARCHAR} VC_USER,
+       t.DT_SYSDATE,
+       t.VC_PLACE,
+       p.vc_name VC_CONTENT,
+       decode(length(nvl(t.vc_person$number,'1')),1,0,1) VC_CHECKED
+  from Sys_t_Person p, (select * from YJ_T_DUTY q where trunc(q.dt_date) = to_Date(#{dtDate,jdbcType=VARCHAR},'YYYY-MM-DD')) t
+ where  p.vc_number=t.vc_person$number(+)
+   and p.vc_org$id = #{vcOrgid,jdbcType=VARCHAR}
+</select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYjTDutyList" parameterType="map" resultMap="BaseResultMap">
+        select t.VC_SERVER, t.VC_ORG$ID, t.VC_PERSON$NUMBER, t.DT_DATE, t.VC_NOTE, t.VC_USER, t.DT_SYSDATE, t.VC_PLACE,p.vc_name VC_CONTENT,'1' VC_CHECKED    from YJ_T_DUTY t,sys_T_person p
+        <where>
+            <if test="1==1">
+                t.VC_PERSON$NUMBER=p.vc_number
+            </if>
+            <if test="vcServer != null and vcServer != ''">
+                        and t.VC_SERVER = #{vcServer}
+                    </if>
+                            <if test="vcOrgid != null and vcOrgid != ''">
+                        and t.VC_ORG$ID = #{vcOrgid}
+                    </if>
+                            <if test="vcPersonnumber != null and vcPersonnumber != ''">
+                        and t.VC_PERSON$NUMBER = #{vcPersonnumber}
+                    </if>
+                        <if test="dtDate != null">
+                    and to_char(t.DT_DATE,'YYYY-MM') = to_char(to_Date(#{dtDate,jdbcType=VARCHAR},'YYYY-MM-DD'),'YYYY-MM')
+                </if>
+                            <if test="vcNote != null and vcNote != ''">
+                        and t.VC_NOTE = #{vcNote}
+                    </if>
+                            <if test="vcUser != null and vcUser != ''">
+                        and t.VC_USER = #{vcUser}
+                    </if>
+                        <if test="dtSysdate != null">
+                    and t.DT_SYSDATE = #{dtSysdate}
+                </if>
+                            <if test="vcPlace != null and vcPlace != ''">
+                        and t.VC_PLACE = #{vcPlace}
+                    </if>
+    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYjTDuty" parameterType="com.tieda.alarm.entity.yjTDuty.YjTDuty">
+        insert into YJ_T_DUTY (VC_SERVER, VC_ORG$ID, VC_PERSON$NUMBER, DT_DATE, VC_NOTE, VC_USER, DT_SYSDATE, VC_PLACE )
+        values (                #{vcServer,jdbcType = VARCHAR},                    #{vcOrgid,jdbcType = VARCHAR},                    #{vcPersonnumber,jdbcType = VARCHAR},                    #{dtDate,jdbcType = VARCHAR},                    #{vcNote,jdbcType = VARCHAR},                    #{vcUser,jdbcType = VARCHAR},                    #{dtSysdate,jdbcType = VARCHAR},                    #{vcPlace,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYjTDuty" parameterType="list">
+        insert into YJ_T_DUTY (VC_SERVER, VC_ORG$ID, VC_PERSON$NUMBER, DT_DATE, VC_USER, DT_SYSDATE         )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select #{item.vcServer,jdbcType=VARCHAR}, #{item.vcOrgid,jdbcType=VARCHAR},
+            #{item.vcPersonnumber,jdbcType=VARCHAR}, to_date(#{item.dtDate,jdbcType=VARCHAR},'YYYY-MM-DD'),
+            #{item.vcUser,jdbcType=VARCHAR}, sysdate
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYjTDuty" parameterType="com.tieda.alarm.entity.yjTDuty.YjTDuty">
+        update YJ_T_DUTY
+        <set>
+    <if test="vcOrgid != null and vcOrgid != ''">
+                            and VC_ORG$ID = #{vcOrgid}
+                        </if>
+            <if test="vcPersonnumber != null and vcPersonnumber != ''">
+                            and VC_PERSON$NUMBER = #{vcPerson$number}
+                        </if>
+            <if test="dtDate != null">
+                            and DT_DATE = #{dtDate}
+                        </if>
+            <if test="vcNote != null and vcNote != ''">
+                            and VC_NOTE = #{vcNote}
+                        </if>
+            <if test="vcUser != null and vcUser != ''">
+                            and VC_USER = #{vcUser}
+                        </if>
+            <if test="dtSysdate != null">
+                            and DT_SYSDATE = #{dtSysdate}
+                        </if>
+            <if test="vcPlace != null and vcPlace != ''">
+                            and VC_PLACE = #{vcPlace}
+                        </if>
+                        </set>
+    where VC_SERVER = #{vcServer}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYjTDuty" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YJ_T_DUTY
+            <set>
+VC_ORG$ID = #{item.vcOrgid},                VC_PERSON$NUMBER = #{item.vcPersonnumber},                DT_DATE = #{item.dtDate},                VC_NOTE = #{item.vcNote},                VC_USER = #{item.vcUser},                DT_SYSDATE = #{item.dtSysdate},                VC_PLACE = #{item.vcPlace}                </set>
+            where VC_SERVER = #{item.vcServer}
+
+
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <delete id="deleteYjTDutyByOrgDate" parameterType="map">
+        delete from YJ_T_DUTY where VC_ORG$ID=#{vcOrgid,jdbcType=VARCHAR} and trunc(dt_date) = to_Date(#{dtDate,jdbcType=VARCHAR},'YYYY-MM-DD')
+    </delete>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYjTDutyById" parameterType="long">
+        delete from YJ_T_DUTY
+
+        where
+
+        
+        
+            VC_SERVER = #{vcServer}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYjTDuty" parameterType="list">
+        delete from YJ_T_DUTY
+
+        
+            
+                where VC_SERVER in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

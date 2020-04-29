@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTWaweekplanm.YmTWa$weekplan$mMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTWaweekplanm.YmTWa$weekplan$m">
+        <id column="VC_SERVER" property="vcServer"/>
+        <result column="N_ID" property="nId"/>
+        <result column="VC_ORG$ID" property="vcOrg$id"/>
+        <result column="VC_WEEKNUM" property="vcWeeknum"/>
+        <result column="DT_WSDATE" property="dtWsdate"/>
+        <result column="DT_WEDATE" property="dtWedate"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="VC_WS$APP$PER" property="vcWs$app$per"/>
+        <result column="DT_WS$APP$DATE" property="dtWs$app$date"/>
+        <result column="VC_SEG$APP$PER" property="vcSeg$app$per"/>
+        <result column="DT_SEG$APP$DATE" property="dtSeg$app$date"/>
+        <result column="VC_USER$ID" property="vcUser$id"/>
+        <result column="DT_SYSDATE" property="dtSysdate"/>
+        <result column="VC_YEAR" property="vcYear"/>
+        <result column="VC_MONTH" property="vcMonth"/>
+        <result column="ORG_TYPE" property="orgType"/>
+        <result column="VC_ORG_NAME" property="vcOrgName"/>
+        <result column="CONTENT" property="content"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTWa$weekplan$mById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  VC_SERVER,CONTENT,  N_ID,  VC_ORG$ID,  VC_WEEKNUM,  DT_WSDATE,  DT_WEDATE,  VC_STATUS,  VC_WS$APP$PER,  DT_WS$APP$DATE,  VC_SEG$APP$PER,  DT_SEG$APP$DATE,  VC_USER$ID,  DT_SYSDATE,  VC_YEAR,  VC_MONTH,  ORG_TYPE, VC_ORG_NAME        from YM_T_WA$WEEKPLAN$M
+                        where N_ID = #{nId}
+  </select>
+
+    <select id="getByYearMWOrg" parameterType="map" resultMap="BaseResultMap">
+        select  VC_SERVER,CONTENT,  N_ID,  VC_ORG$ID,  VC_WEEKNUM,  DT_WSDATE,  DT_WEDATE,  VC_STATUS,  VC_WS$APP$PER,  DT_WS$APP$DATE,  VC_SEG$APP$PER,  DT_SEG$APP$DATE,
+        VC_USER$ID,  DT_SYSDATE,  VC_YEAR,  VC_MONTH,  ORG_TYPE, VC_ORG_NAME        from YM_T_WA$WEEKPLAN$M
+        where VC_YEAR = #{year} and VC_MONTH = #{month} and VC_WEEKNUM = #{weekNum} and VC_ORG$ID=#{orgId}
+  </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTWa$weekplan$mList" parameterType="map" resultMap="BaseResultMap">
+        select VC_SERVER, N_ID,CONTENT, VC_ORG$ID, VC_WEEKNUM, DT_WSDATE, DT_WEDATE, VC_STATUS, VC_WS$APP$PER, DT_WS$APP$DATE,
+        VC_SEG$APP$PER, DT_SEG$APP$DATE, VC_USER$ID, DT_SYSDATE, VC_YEAR, VC_MONTH, ORG_TYPE,VC_ORG_NAME from YM_T_WA$WEEKPLAN$M
+        where 1=1
+            <if test="vcServer != null and vcServer != ''">
+                and VC_SERVER = #{vcServer}
+            </if>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcOrg$id != null and vcOrg$id != ''">
+                and VC_ORG$ID= #{vcOrg$id}
+            </if>
+            <if test="orgId != null and orgId != ''">
+                and VC_ORG$ID in (select VC_ORG$ID from sys_t_org where VC_PAR$ORG$ID= #{orgId})
+            </if>
+
+            <if test="vcWeeknum != null and vcWeeknum != ''">
+                and VC_WEEKNUM = #{vcWeeknum}
+            </if>
+            <if test="dtWsdate != null and dtWsdate != ''">
+                and DT_WSDATE = #{dtWsdate}
+            </if>
+            <if test="dtWedate != null and dtWedate != ''">
+                and DT_WEDATE = #{dtWedate}
+            </if>
+            <if test="kz == 1">
+                and (VC_STATUS = '1' or VC_STATUS='5')
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS = #{vcStatus}
+            </if>
+            <if test="vcWs$app$per != null and vcWs$app$per != ''">
+                and VC_WS$APP$PER = #{vcWs$app$per}
+            </if>
+            <if test="dtWs$app$date != null and dtWs$app$date != ''">
+                and DT_WS$APP$DATE = #{dtWs$app$date}
+            </if>
+            <if test="vcSeg$app$per != null and vcSeg$app$per != ''">
+                and VC_SEG$APP$PER = #{vcSeg$app$per}
+            </if>
+            <if test="dtSeg$app$date != null and dtSeg$app$date != ''">
+                and DT_SEG$APP$DATE = #{dtSeg$app$date}
+            </if>
+            <if test="vcUser$id != null and vcUser$id != ''">
+                and VC_USER$ID = #{vcUser$id}
+            </if>
+            <if test="dtSysdate != null and dtSysdate != ''">
+                and DT_SYSDATE = #{dtSysdate}
+            </if>
+            <if test="vcYear != null and vcYear != ''">
+                and VC_YEAR = #{vcYear}
+            </if>
+            <if test="vcMonth != null and vcMonth != ''">
+                and VC_MONTH = #{vcMonth}
+            </if>
+            <if test="orgType != null and orgType != ''">
+                and ORG_TYPE = #{orgType}
+            </if>
+        <if test="content != null and content != ''">
+            and CONTENT = #{content}
+        </if>
+            order by vc_month desc,vc_weeknum desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTWa$weekplan$m" parameterType="com.tieda.alarm.entity.ymTWaweekplanm.YmTWa$weekplan$m">
+        insert into YM_T_WA$WEEKPLAN$M (VC_SERVER,CONTENT, N_ID, VC_ORG$ID, VC_WEEKNUM, DT_WSDATE, DT_WEDATE, VC_STATUS, VC_WS$APP$PER,
+        DT_WS$APP$DATE, VC_SEG$APP$PER, DT_SEG$APP$DATE, VC_USER$ID, DT_SYSDATE, VC_YEAR, VC_MONTH, ORG_TYPE,VC_ORG_NAME )
+        values (#{vcServer,jdbcType = VARCHAR},#{content,jdbcType = VARCHAR},#{nId,jdbcType = VARCHAR},
+         #{vcOrg$id,jdbcType = VARCHAR}, #{vcWeeknum,jdbcType = VARCHAR}, #{dtWsdate,jdbcType = VARCHAR},#{dtWedate,jdbcType = VARCHAR}, #{vcStatus,jdbcType = VARCHAR},
+         #{vcWs$app$per,jdbcType = VARCHAR}, #{dtWs$app$date,jdbcType = VARCHAR}, #{vcSeg$app$per,jdbcType = VARCHAR},  #{dtSeg$app$date,jdbcType = VARCHAR},
+         #{vcUser$id,jdbcType = VARCHAR}, #{dtSysdate,jdbcType = VARCHAR},#{vcYear,jdbcType = VARCHAR}, #{vcMonth,jdbcType = VARCHAR}, #{orgType,jdbcType = VARCHAR} ,
+         #{vcOrgName,jdbcType = VARCHAR}
+         )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTWa$weekplan$m" parameterType="list">
+        insert into YM_T_WA$WEEKPLAN$M (VC_SERVER, N_ID, VC_ORG$ID, VC_WEEKNUM, DT_WSDATE, DT_WEDATE, VC_STATUS,
+        VC_WS$APP$PER, DT_WS$APP$DATE, VC_SEG$APP$PER, DT_SEG$APP$DATE, VC_USER$ID, DT_SYSDATE, VC_YEAR, VC_MONTH,
+        ORG_TYPE ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.vcServer}, #{item.nId}, #{item.vcOrg$id}, #{item.vcWeeknum}, #{item.dtWsdate}, #{item.dtWedate},
+            #{item.vcStatus}, #{item.vcWs$app$per}, #{item.dtWs$app$date}, #{item.vcSeg$app$per},
+            #{item.dtSeg$app$date}, #{item.vcUser$id}, #{item.dtSysdate}, #{item.vcYear}, #{item.vcMonth},
+            #{item.orgType} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTWa$weekplan$m" parameterType="com.tieda.alarm.entity.ymTWaweekplanm.YmTWa$weekplan$m">
+        update YM_T_WA$WEEKPLAN$M
+        <set>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus},
+            </if>
+            <if test="vcWs$app$per != null and vcWs$app$per != ''">
+                VC_WS$APP$PER = #{vcWs$app$per},
+            </if>
+            <if test="dtWs$app$date != null ">
+                DT_WS$APP$DATE = #{dtWs$app$date},
+            </if>
+            <if test="content != null ">
+                content = #{content}
+            </if>
+        </set>
+        where n_id = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYmTWa$weekplan$m" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_WA$WEEKPLAN$M
+            <set>
+                N_ID = #{item.nId}, VC_ORG$ID = #{item.vcOrg$id}, VC_WEEKNUM = #{item.vcWeeknum}, DT_WSDATE =
+                #{item.dtWsdate}, DT_WEDATE = #{item.dtWedate}, VC_STATUS = #{item.vcStatus}, VC_WS$APP$PER =
+                #{item.vcWs$app$per}, DT_WS$APP$DATE = #{item.dtWs$app$date}, VC_SEG$APP$PER = #{item.vcSeg$app$per},
+                DT_SEG$APP$DATE = #{item.dtSeg$app$date}, VC_USER$ID = #{item.vcUser$id}, DT_SYSDATE =
+                #{item.dtSysdate}, VC_YEAR = #{item.vcYear}, VC_MONTH = #{item.vcMonth}, ORG_TYPE = #{item.orgType}
+            </set>
+            where
+
+            VC_SERVER = #{item.vcServer}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTWa$weekplan$mById" parameterType="java.lang.String">
+        delete from YM_T_WA$WEEKPLAN$M
+        where
+            N_ID = #{nId}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTWa$weekplan$m" parameterType="list">
+        delete from YM_T_WA$WEEKPLAN$M
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <select id="reset" parameterType="Map" statementType="CALLABLE" >
+ 		{call YM_T_WEEK_PLAN_AUTO(
+ 			#{year,jdbcType=VARCHAR,mode=IN},#{month,jdbcType=VARCHAR,mode=IN},#{weekIdx,jdbcType=VARCHAR,mode=IN},#{orgid,jdbcType=VARCHAR,mode=IN}
+ 		)}
+  </select>
+
+
+</mapper>

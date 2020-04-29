@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.checkRack.CheckRackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.checkRack.CheckRack">
+        <id column="ID" property="id"/>
+        <result column="WORKSHOP" property="workshop"/>
+        <result column="WORKAREA" property="workarea"/>
+        <result column="WORKER" property="worker"/>
+        <result column="WORKTYPE" property="worktype"/>
+        <result column="RACKID" property="rackid"/>
+        <result column="CONTENT" property="content"/>
+        <result column="STATUS" property="status"/>
+        <result column="BEGINDATE" property="begindate"/>
+        <result column="FINISHDATE" property="finishdate"/>
+        <result column="RACKNAME" property="rackname"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getCheckRackById" parameterType="long" resultMap="BaseResultMap">
+        select ID,
+               WORKSHOP,
+               WORKAREA,
+               WORKER,
+               WORKTYPE,
+               RACKID,
+               CONTENT,
+               STATUS,
+               BEGINDATE,
+               FINISHDATE,
+               RACKNAME
+        from CHECK_RACK
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getCheckRackList" parameterType="map" resultMap="BaseResultMap">
+        select ID, WORKSHOP, WORKAREA, WORKER, WORKTYPE, RACKID, CONTENT, STATUS, BEGINDATE, FINISHDATE, RACKNAME from
+        CHECK_RACK
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="workshop != null and workshop != ''">
+                and WORKSHOP = #{workshop}
+            </if>
+            <if test="workarea != null and workarea != ''">
+                and WORKAREA = #{workarea}
+            </if>
+            <if test="worker != null and worker != ''">
+                and WORKER = #{worker}
+            </if>
+            <if test="worktype != null and worktype != ''">
+                and WORKTYPE = #{worktype}
+            </if>
+            <if test="rackid != null and rackid != ''">
+                and RACKID = #{rackid}
+            </if>
+            <if test="content != null and content != ''">
+                and CONTENT = #{content}
+            </if>
+            <if test="status != null and status != ''">
+                and STATUS = #{status}
+            </if>
+            <if test="begindate != null and begindate != ''">
+                and BEGINDATE = #{begindate}
+            </if>
+            <if test="finishdate != null and finishdate != ''">
+                and FINISHDATE = #{finishdate}
+            </if>
+            <if test="rackname != null and rackname != ''">
+                and RACKNAME = #{rackname}
+            </if>
+        </where>
+        order by FINISHDATE desc,id desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addCheckRack" parameterType="com.tieda.alarm.entity.checkRack.CheckRack">
+        insert into CHECK_RACK (ID, WORKSHOP, WORKAREA, WORKER, WORKTYPE, RACKID, CONTENT, STATUS, BEGINDATE,
+FINISHDATE, RACKNAME)
+        values (#{id,jdbcType = VARCHAR}, #{workshop,jdbcType = VARCHAR}, #{workarea,jdbcType = VARCHAR},
+                #{worker,jdbcType = VARCHAR}, #{worktype,jdbcType = VARCHAR}, #{rackid,jdbcType = VARCHAR},
+                #{content,jdbcType = VARCHAR}, #{status,jdbcType = VARCHAR}, #{begindate,jdbcType = VARCHAR},
+                #{finishdate,jdbcType = VARCHAR}, #{rackname,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchCheckRack" parameterType="list">
+        insert into CHECK_RACK (ID, WORKSHOP, WORKAREA, WORKER, WORKTYPE, RACKID, CONTENT, STATUS, BEGINDATE,
+        FINISHDATE, RACKNAME ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.workshop}, #{item.workarea}, #{item.worker}, #{item.worktype}, #{item.rackid},
+            #{item.content}, #{item.status}, #{item.begindate}, #{item.finishdate}, #{item.rackname} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateCheckRack" parameterType="com.tieda.alarm.entity.checkRack.CheckRack">
+        update CHECK_RACK
+        <set>
+            <if test="workshop != null and workshop != ''">
+                WORKSHOP = #{workshop},
+            </if>
+            <if test="workarea != null and workarea != ''">
+                WORKAREA = #{workarea},
+            </if>
+            <if test="worker != null and worker != ''">
+                WORKER = #{worker},
+            </if>
+            <if test="worktype != null and worktype != ''">
+                WORKTYPE = #{worktype},
+            </if>
+            <if test="rackid != null and rackid != ''">
+                RACKID = #{rackid},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="begindate != null">
+                BEGINDATE = #{begindate},
+            </if>
+            <if test="finishdate != null">
+                FINISHDATE = #{finishdate},
+            </if>
+            <if test="rackname != null and rackname != ''">
+                RACKNAME = #{rackname}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathCheckRack" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update CHECK_RACK
+            <set>
+                WORKSHOP = #{item.workshop}, WORKAREA = #{item.workarea}, WORKER = #{item.worker}, WORKTYPE =
+                #{item.worktype}, RACKID = #{item.rackid}, CONTENT = #{item.content}, STATUS = #{item.status}, BEGINDATE
+                = #{item.begindate}, FINISHDATE = #{item.finishdate}, RACKNAME = #{item.rackname}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteCheckRackById" parameterType="long">
+        delete
+        from CHECK_RACK
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchCheckRack" parameterType="list">
+        delete from CHECK_RACK
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

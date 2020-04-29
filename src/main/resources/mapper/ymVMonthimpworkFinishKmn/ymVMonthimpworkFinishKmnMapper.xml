@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymVMonthimpworkFinishKmn.YmVMonthimpworkFinishKmnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymVMonthimpworkFinishKmn.YmVMonthimpworkFinishKmn">
+        <result column="N_ID" property="nId"/>
+        <result column="MID" property="mid"/>
+        <result column="N_YEAR" property="nYear"/>
+        <result column="N_MONTH" property="nMonth"/>
+        <result column="VC_NOTE" property="vcNote"/>
+        <result column="DID" property="did"/>
+        <result column="VC_WORKTYPE" property="vcWorktype"/>
+        <result column="VC_PROJECT" property="vcProject"/>
+        <result column="VC_WORKDETAIL" property="vcWorkdetail"/>
+        <result column="VC_SINGPERSON" property="vcSingperson"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="VC_FINISHINFO" property="vcFinishinfo"/>
+        <result column="VC_FILENAME" property="vcFilename"/>
+        <result column="VC_FILEPATH" property="vcFilepath"/>
+        <result column="VCORGID" property="vcOrgId"/>
+        <result column="DT_DEADLINE" property="dtDeadLine"/>
+        <result column="VC_CHARGER" property="vcCharger"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmVMonthimpworkFinishKmnById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  MID,  N_YEAR,  N_MONTH,  VC_NOTE,  DID,  VC_WORKTYPE,  VC_PROJECT,  VC_WORKDETAIL,  VC_SINGPERSON,  VC_STATUS,  VC_FINISHINFO,  VC_FILENAME,  VC_FILEPATH,VCORGID  ,DT_DEADLINE,VC_CHARGER      from YM_V_MONTHIMPWORK_FINISH_KMN
+                    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmVMonthimpworkFinishKmnList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, MID, N_YEAR, N_MONTH, VC_NOTE, DID, VC_WORKTYPE, VC_PROJECT, VC_WORKDETAIL, VC_SINGPERSON,
+        VC_STATUS, VC_FINISHINFO, VC_FILENAME, VC_FILEPATH,VCORGID ,DT_DEADLINE , VC_CHARGER from
+        YM_V_MONTHIMPWORK_FINISH_KMN
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="mid != null and mid != ''">
+                and MID = #{mid}
+            </if>
+            <if test="nYear != null and nYear != ''">
+                and N_YEAR = #{nYear}
+            </if>
+            <if test="nMonth != null and nMonth != ''">
+                and N_MONTH = #{nMonth}
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                and VC_NOTE = #{vcNote}
+            </if>
+            <if test="did != null and did != ''">
+                and DID = #{did}
+            </if>
+            <if test="vcWorktype != null and vcWorktype != ''">
+                and VC_WORKTYPE = #{vcWorktype}
+            </if>
+            <if test="vcProject != null and vcProject != ''">
+                and VC_PROJECT = #{vcProject}
+            </if>
+            <if test="vcWorkdetail != null and vcWorkdetail != ''">
+                and VC_WORKDETAIL = #{vcWorkdetail}
+            </if>
+            <if test="vcSingperson != null and vcSingperson != ''">
+                and VC_SINGPERSON = #{vcSingperson}
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS = #{vcStatus}
+            </if>
+            <if test="vcFinishinfo != null and vcFinishinfo != ''">
+                and VC_FINISHINFO = #{vcFinishinfo}
+            </if>
+            <if test="vcFilename != null and vcFilename != ''">
+                and VC_FILENAME = #{vcFilename}
+            </if>
+            <if test="vcFilepath != null and vcFilepath != ''">
+                and VC_FILEPATH = #{vcFilepath}
+            </if>
+            <if test="vcOrgId != null and vcOrgId != ''">
+                and vcOrgId = #{vcOrgId}
+            </if>
+            <if test="1==1">
+                order by VC_STATUS,N_YEAR,N_MONTH
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmVMonthimpworkFinishKmn"
+            parameterType="com.tieda.alarm.entity.ymVMonthimpworkFinishKmn.YmVMonthimpworkFinishKmn">
+        insert into YM_V_MONTHIMPWORK_FINISH_KMN (N_ID, MID, N_YEAR, N_MONTH, VC_NOTE, DID, VC_WORKTYPE, VC_PROJECT, VC_WORKDETAIL, VC_SINGPERSON, VC_STATUS, VC_FINISHINFO, VC_FILENAME, VC_FILEPATH )
+        values (                #{nId,jdbcType = VARCHAR},                    #{mid,jdbcType = VARCHAR},                    #{nYear,jdbcType = VARCHAR},                    #{nMonth,jdbcType = VARCHAR},                    #{vcNote,jdbcType = VARCHAR},                    #{did,jdbcType = VARCHAR},                    #{vcWorktype,jdbcType = VARCHAR},                    #{vcProject,jdbcType = VARCHAR},                    #{vcWorkdetail,jdbcType = VARCHAR},                    #{vcSingperson,jdbcType = VARCHAR},                    #{vcStatus,jdbcType = VARCHAR},                    #{vcFinishinfo,jdbcType = VARCHAR},                    #{vcFilename,jdbcType = VARCHAR},                    #{vcFilepath,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmVMonthimpworkFinishKmn" parameterType="list">
+        insert into YM_V_MONTHIMPWORK_FINISH_KMN (N_ID, MID, N_YEAR, N_MONTH, VC_NOTE, DID, VC_WORKTYPE, VC_PROJECT,
+        VC_WORKDETAIL, VC_SINGPERSON, VC_STATUS, VC_FINISHINFO, VC_FILENAME, VC_FILEPATH ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.mid}, #{item.nYear}, #{item.nMonth}, #{item.vcNote}, #{item.did}, #{item.vcWorktype},
+            #{item.vcProject}, #{item.vcWorkdetail}, #{item.vcSingperson}, #{item.vcStatus}, #{item.vcFinishinfo},
+            #{item.vcFilename}, #{item.vcFilepath} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmVMonthimpworkFinishKmn"
+            parameterType="com.tieda.alarm.entity.ymVMonthimpworkFinishKmn.YmVMonthimpworkFinishKmn">
+        update YM_V_MONTHIMPWORK_FINISH_KMN
+        <set>
+            <if test="nId != null and nId != ''">
+                N_ID = #{nId},
+            </if>
+            <if test="mid != null and mid != ''">
+                MID = #{mid},
+            </if>
+            <if test="nYear != null and nYear != ''">
+                N_YEAR = #{nYear},
+            </if>
+            <if test="nMonth != null and nMonth != ''">
+                N_MONTH = #{nMonth},
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                VC_NOTE = #{vcNote},
+            </if>
+            <if test="did != null and did != ''">
+                DID = #{did},
+            </if>
+            <if test="vcWorktype != null and vcWorktype != ''">
+                VC_WORKTYPE = #{vcWorktype},
+            </if>
+            <if test="vcProject != null and vcProject != ''">
+                VC_PROJECT = #{vcProject},
+            </if>
+            <if test="vcWorkdetail != null and vcWorkdetail != ''">
+                VC_WORKDETAIL = #{vcWorkdetail},
+            </if>
+            <if test="vcSingperson != null and vcSingperson != ''">
+                VC_SINGPERSON = #{vcSingperson},
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus},
+            </if>
+            <if test="vcFinishinfo != null and vcFinishinfo != ''">
+                VC_FINISHINFO = #{vcFinishinfo},
+            </if>
+            <if test="vcFilename != null and vcFilename != ''">
+                VC_FILENAME = #{vcFilename},
+            </if>
+            <if test="vcFilepath != null and vcFilepath != ''">
+                VC_FILEPATH = #{vcFilepath}
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYmVMonthimpworkFinishKmn" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_V_MONTHIMPWORK_FINISH_KMN
+            <set>
+                N_ID = #{item.nId}, MID = #{item.mid}, N_YEAR = #{item.nYear}, N_MONTH = #{item.nMonth}, VC_NOTE =
+                #{item.vcNote}, DID = #{item.did}, VC_WORKTYPE = #{item.vcWorktype}, VC_PROJECT = #{item.vcProject},
+                VC_WORKDETAIL = #{item.vcWorkdetail}, VC_SINGPERSON = #{item.vcSingperson}, VC_STATUS =
+                #{item.vcStatus}, VC_FINISHINFO = #{item.vcFinishinfo}, VC_FILENAME = #{item.vcFilename}, VC_FILEPATH =
+                #{item.vcFilepath}
+            </set>
+            where
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmVMonthimpworkFinishKmnById" parameterType="long">
+        delete from YM_V_MONTHIMPWORK_FINISH_KMN
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmVMonthimpworkFinishKmn" parameterType="list">
+        delete from YM_V_MONTHIMPWORK_FINISH_KMN
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

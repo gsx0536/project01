@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.checkRackItem.CheckRackItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.checkRackItem.CheckRackItem">
+        <id column="ID" property="id"/>
+        <result column="CHECKRACKID" property="checkrackid"/>
+        <result column="ITEM" property="item"/>
+        <result column="STATUS" property="status"/>
+        <result column="WORKDATE" property="workdate"/>
+        <result column="rackname" property="rackname"/>
+        <result column="ITEMID" property="itemid"/>
+        <result column="finishdate" property="finishdate"/>
+        <result column="content" property="content"/>
+        <result column="driId" property="driId"/>
+        <result column="driRackId" property="driRackId"/>
+        <result column="driName" property="driName"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getCheckRackItemById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select ID, CHECKRACKID, ITEM, STATUS, WORKDATE, rackname, ITEMID
+        from CHECK_RACK_ITEM
+        where ID = #{id}
+    </select>
+
+    <select id="getCheckRackItemListByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select ID, CHECKRACKID, ITEM, STATUS, WORKDATE, rackname, ITEMID
+        from CHECK_RACK_ITEM
+        where ITEMID = #{itemid}
+    </select>
+
+
+    <!-- 多条件参数查询 -->
+    <select id="getCheckRackItemList" parameterType="map" resultMap="BaseResultMap">
+        select t.*,dri.id driId,dri.rackid driRackId,dri.item driName from dic_RACK_item  dri left join
+         (select cri.ID, cri.CHECKRACKID, cri.ITEM, cri.STATUS, cri.WORKDATE, cri.rackname, cri.ITEMID,
+          cr.content,cr.finishdate from CHECK_RACK cr
+          left join CHECK_RACK_Item cri  on cr.id=cri.checkrackid
+          where cr.worker=#{worker} and cri.checkrackid=#{checkrackid} ) t
+         on dri.id=t.itemid where rackid=#{rackid} order by dri.rackid asc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addCheckRackItem" parameterType="com.tieda.alarm.entity.checkRackItem.CheckRackItem">
+        insert into CHECK_RACK_ITEM (ID, CHECKRACKID, ITEM, STATUS, WORKDATE, rackname, ITEMID)
+        values (#{id,jdbcType = VARCHAR}, #{checkrackid,jdbcType = VARCHAR}, #{item,jdbcType = VARCHAR},
+                #{status,jdbcType = VARCHAR}, #{workdate,jdbcType = VARCHAR}, #{rackname,jdbcType = VARCHAR},
+                #{itemid,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchCheckRackItem" parameterType="list">
+        insert into CHECK_RACK_ITEM (ID, CHECKRACKID, ITEM, STATUS, WORKDATE, rackname, ITEMID ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.checkrackid}, #{item.item}, #{item.status}, #{item.workdate}, #{item.rackname},
+            #{item.itemid} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateCheckRackItem" parameterType="com.tieda.alarm.entity.checkRackItem.CheckRackItem">
+        update CHECK_RACK_ITEM
+        <set>
+            <if test="checkrackid != null and checkrackid != ''">
+                CHECKRACKID = #{checkrackid},
+            </if>
+            <if test="item != null and item != ''">
+                ITEM = #{item},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="workdate != null and workdate != ''">
+                WORKDATE = #{workdate},
+            </if>
+            <if test="rackname != null and rackname != ''">
+                rackname = #{rackname},
+            </if>
+            <if test="itemid != null and itemid != ''">
+                ITEMID = #{itemid}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathCheckRackItem" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update CHECK_RACK_ITEM
+            <set>
+                CHECKRACKID = #{item.checkrackid}, ITEM = #{item.item}, STATUS = #{item.status}, WORKDATE =
+                #{item.workdate}, rackname = #{item.rackname}, ITEMID = #{item.itemid}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteCheckRackItemById" parameterType="java.lang.String">
+        delete
+        from CHECK_RACK_ITEM
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchCheckRackItem" parameterType="list">
+        delete from CHECK_RACK_ITEM
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+    <delete id="deleteCheckRackItemByNotItemId" parameterType="java.lang.String">
+        delete from CHECK_RACK_ITEM
+        where ID not in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteCheckRackItemByCheckId" parameterType="java.lang.String">
+        delete from CHECK_RACK_ITEM  where checkrackid = #{id}
+    </delete>
+
+</mapper>

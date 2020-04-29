@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTTempworkinfo.YmTTempworkinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTTempworkinfo.YmTTempworkinfo">
+        <id column="N_ID" property="nId"/>
+        <result column="VC_CODENUM" property="vcCodenum"/>
+        <result column="DT_CODEDATE" property="dtCodedate"/>
+        <result column="DT_CODETIME" property="dtCodetime"/>
+        <result column="VC_REQDEP" property="vcReqdep"/>
+        <result column="VC_REQDEPNAME" property="vcReqdepname"/>
+        <result column="VC_REQPERSONID" property="vcReqpersonid"/>
+        <result column="VC_REQPERSONNAME" property="vcReqpersonname"/>
+        <result column="VC_CODEINFO" property="vcCodeinfo"/>
+        <result column="VC_CODEREQU" property="vcCoderequ"/>
+        <result column="VC_APPERSONID" property="vcAppersonid"/>
+        <result column="VC_APPERSONNAME" property="vcAppersonname"/>
+        <result column="VC_APPDATE" property="vcAppdate"/>
+        <result column="VC_REQTYPE" property="vcReqtype"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="VC_BACKUP" property="vcBackup"/>
+        <result column="VC_TYPE" property="vcType"/>
+        <result column="VC_SIGNER" property="vcSigner"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTTempworkinfoById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  VC_CODENUM,  DT_CODEDATE,  DT_CODETIME,  VC_REQDEP,  VC_REQDEPNAME,  VC_REQPERSONID,  VC_REQPERSONNAME,  VC_CODEINFO,  VC_CODEREQU,  VC_APPERSONID,  VC_APPERSONNAME,  VC_APPDATE,  VC_REQTYPE,  VC_STATUS,  VC_BACKUP,VC_TYPE,VC_SIGHER         from YM_T_TEMPWORKINFO
+                
+                                            where N_ID = #{nId}
+                                                                                                                                                                                                    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTTempworkinfoList" parameterType="map" resultMap="BaseResultMap">
+        select A.N_ID, A.VC_CODENUM, A.DT_CODEDATE, A.DT_CODETIME, A.VC_REQDEP, A.VC_REQDEPNAME, A.VC_REQPERSONID,
+        A.VC_REQPERSONNAME,
+        A.VC_CODEINFO, A.VC_CODEREQU, A.VC_APPERSONID, A.VC_APPERSONNAME, A.VC_APPDATE, A.VC_REQTYPE, A.VC_STATUS,
+        A.VC_BACKUP,A.VC_TYPE,A.VC_SIGNER from
+        YM_T_TEMPWORKINFO A,sys_v_org_query B
+        <where>
+            A.VC_REQDEP = B.VC_ORG$ID
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcCodenum != null and vcCodenum != ''">
+                and VC_CODENUM = #{vcCodenum}
+            </if>
+            <if test="sDate != null">
+                and DT_CODEDATE &gt;= to_date(#{sDate},'yyyy-MM-dd')
+            </if>
+            <if test="eDate != null">
+                and DT_CODEDATE &lt;= to_date(#{eDate},'yyyy-MM-dd')
+            </if>
+            <if test="dtCodetime != null">
+                and DT_CODETIME = #{dtCodetime}
+            </if>
+            <if test="vcReqdep != null and vcReqdep != ''">
+                and VC_REQDEP = #{vcReqdep}
+            </if>
+            <if test="vcReqdepname != null and vcReqdepname != ''">
+                and VC_REQDEPNAME = #{vcReqdepname}
+            </if>
+            <if test="vcReqpersonid != null and vcReqpersonid != ''">
+                and VC_REQPERSONID = #{vcReqpersonid}
+            </if>
+            <if test="vcReqpersonname != null and vcReqpersonname != ''">
+                and VC_REQPERSONNAME = #{vcReqpersonname}
+            </if>
+            <if test="vcCodeinfo != null and vcCodeinfo != ''">
+                and VC_CODEINFO = #{vcCodeinfo}
+            </if>
+            <if test="vcCoderequ != null and vcCoderequ != ''">
+                and VC_CODEREQU = #{vcCoderequ}
+            </if>
+            <if test="vcAppersonid != null and vcAppersonid != ''">
+                and VC_APPERSONID = #{vcAppersonid}
+            </if>
+            <if test="vcAppersonname != null and vcAppersonname != ''">
+                and VC_APPERSONNAME = #{vcAppersonname}
+            </if>
+            <if test="vcAppdate != null and vcAppdate != ''">
+                and VC_APPDATE = #{vcAppdate}
+            </if>
+            <if test="vcReqtype != null and vcReqtype != ''">
+                and VC_REQTYPE = #{vcReqtype}
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS = #{vcStatus}
+            </if>
+            <if test="vcBackup != null and vcBackup != ''">
+                and VC_BACKUP = #{vcBackup}
+            </if>
+            <if test="nlevel != null and nlevel == '10'">
+                and VC_REQDEP = #{orgId}
+            </if>
+            <if test="nlevel != null and nlevel == '30'">
+                and B.VC_PAR$ORG$ID = #{orgId}
+            </if>
+            <if test="nlevel != null and nlevel == '50'">
+                and A.VC_STATUS != '0'
+            </if>
+        </where>
+        order by A.DT_CODEDATE desc,to_number(regexp_replace(A.VC_CODENUM,'[^0-9]',''))
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTTempworkinfo" parameterType="com.tieda.alarm.entity.ymTTempworkinfo.YmTTempworkinfo">
+        insert into YM_T_TEMPWORKINFO (N_ID, VC_CODENUM, DT_CODEDATE, DT_CODETIME, VC_REQDEP, VC_REQDEPNAME, VC_REQPERSONID, VC_REQPERSONNAME, VC_CODEINFO, VC_CODEREQU, VC_APPERSONID, VC_APPERSONNAME, VC_APPDATE, VC_REQTYPE, VC_STATUS, VC_BACKUP,VC_TYPE,VC_SIGNER)
+        values (
+                                        #{nId,jdbcType = VARCHAR},    
+                                        #{vcCodenum,jdbcType = VARCHAR},    
+                                        #{dtCodedate,jdbcType = VARCHAR},    
+                                        #{dtCodetime,jdbcType = VARCHAR},    
+                                        #{vcReqdep,jdbcType = VARCHAR},    
+                                        #{vcReqdepname,jdbcType = VARCHAR},    
+                                        #{vcReqpersonid,jdbcType = VARCHAR},    
+                                        #{vcReqpersonname,jdbcType = VARCHAR},    
+                                        #{vcCodeinfo,jdbcType = VARCHAR},    
+                                        #{vcCoderequ,jdbcType = VARCHAR},    
+                                        #{vcAppersonid,jdbcType = VARCHAR},    
+                                        #{vcAppersonname,jdbcType = VARCHAR},    
+                                        #{vcAppdate,jdbcType = VARCHAR},    
+                                        #{vcReqtype,jdbcType = VARCHAR},    
+                                        #{vcStatus,jdbcType = VARCHAR},    
+                                        #{vcBackup,jdbcType = VARCHAR},
+                                        #{vcType,jdbcType = VARCHAR},
+                                        #{vcSigner,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTTempworkinfo" parameterType="list">
+        insert into YM_T_TEMPWORKINFO (N_ID, VC_CODENUM, DT_CODEDATE, DT_CODETIME, VC_REQDEP, VC_REQDEPNAME,
+        VC_REQPERSONID, VC_REQPERSONNAME, VC_CODEINFO, VC_CODEREQU, VC_APPERSONID, VC_APPERSONNAME, VC_APPDATE,
+        VC_REQTYPE, VC_STATUS, VC_BACKUP )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+            #{item.nId},
+            #{item.vcCodenum},
+            #{item.dtCodedate},
+            #{item.dtCodetime},
+            #{item.vcReqdep},
+            #{item.vcReqdepname},
+            #{item.vcReqpersonid},
+            #{item.vcReqpersonname},
+            #{item.vcCodeinfo},
+            #{item.vcCoderequ},
+            #{item.vcAppersonid},
+            #{item.vcAppersonname},
+            #{item.vcAppdate},
+            #{item.vcReqtype},
+            #{item.vcStatus},
+            #{item.vcBackup} from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTTempworkinfo" parameterType="com.tieda.alarm.entity.ymTTempworkinfo.YmTTempworkinfo">
+        update YM_T_TEMPWORKINFO
+        <set>
+            <if test="vcCodenum != null and vcCodenum != ''">
+                VC_CODENUM = #{vcCodenum},
+            </if>
+            <if test="dtCodedate != null">
+                DT_CODEDATE = #{dtCodedate},
+            </if>
+            <if test="dtCodetime != null">
+                DT_CODETIME = #{dtCodetime},
+            </if>
+            <if test="vcReqdep != null and vcReqdep != ''">
+                VC_REQDEP = #{vcReqdep},
+            </if>
+            <if test="vcReqdepname != null and vcReqdepname != ''">
+                VC_REQDEPNAME = #{vcReqdepname},
+            </if>
+            <if test="vcReqpersonid != null and vcReqpersonid != ''">
+                VC_REQPERSONID = #{vcReqpersonid},
+            </if>
+            <if test="vcReqpersonname != null and vcReqpersonname != ''">
+                VC_REQPERSONNAME = #{vcReqpersonname},
+            </if>
+            <if test="vcCodeinfo != null and vcCodeinfo != ''">
+                VC_CODEINFO = #{vcCodeinfo},
+            </if>
+            <if test="vcCoderequ != null and vcCoderequ != ''">
+                VC_CODEREQU = #{vcCoderequ},
+            </if>
+            <if test="vcAppersonid != null and vcAppersonid != ''">
+                VC_APPERSONID = #{vcAppersonid},
+            </if>
+            <if test="vcAppersonname != null and vcAppersonname != ''">
+                VC_APPERSONNAME = #{vcAppersonname},
+            </if>
+            <if test="vcAppdate != null ">
+                VC_APPDATE = #{vcAppdate},
+            </if>
+            <if test="vcReqtype != null and vcReqtype != ''">
+                VC_REQTYPE = #{vcReqtype},
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus},
+            </if>
+            <if test="vcBackup != null and vcBackup != ''">
+                VC_BACKUP = #{vcBackup},
+            </if>
+            <if test="vcType != null and vcType != ''">
+                VC_TYPE = #{vcType},
+            </if>
+            <if test="vcSigner != null and vcSigner != ''">
+                VC_SIGNER = #{vcSigner}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <update id="setcodenum" parameterType="Map">
+        update YM_T_TEMPWORKINFO p set VC_CODENUM=vcCodenum  where p.n_id=nId
+    </update>
+
+    <select id="getonNoadcodenum" parameterType="java.lang.String" resultType="java.lang.String">
+        select '第' || to_char(h.dt_codedate, 'yyyyMMdd') || '(' ||
+       decode(mod(h.maxcode, 2), 0, h.maxcode + 1, h.maxcode + 2) || ')号' onnoadcode
+        from (select t.dt_codedate,
+               max(nvl(to_number(substr(t.vc_codenum,
+                                    instr(t.vc_codenum, '(') + 1,
+                                    instr(t.vc_codenum, ')') -
+                                    instr(t.vc_codenum, '(') - 1)),0)) maxcode
+          from Ym_t_Tempworkinfo t, Ym_t_Tempworkinfo p
+         where t.dt_codedate = p.dt_codedate
+           and p.n_id = ${_parameter}
+         group by t.dt_codedate) h
+    </select>
+
+    <select id="getoutNoadcodenum" parameterType="java.lang.String" resultType="java.lang.String">
+        select '第'||to_char(t.dt_codedate,'yyyyMMdd')||'('||
+       to_char(to_number(substr(t.vc_codenum,
+                            instr(t.vc_codenum, '(') + 1,
+                            instr(t.vc_codenum, ')') -
+                            instr(t.vc_codenum, '(') - 1))+1)||')号' outnoadcode
+    from Ym_t_Tempworkinfo t
+    where t.n_id = ${_parameter}
+    </select>
+
+
+    <!-- 批量更新 -->
+    <update id="updateBatchYmTTempworkinfo" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update YM_T_TEMPWORKINFO
+            <set>
+                <if test="item.vcCodenum != null and item.vcCodenum != ''">
+                    VC_CODENUM = #{item.vcCodenum},
+                </if>
+                <if test="item.dtCodedate != null">
+                    DT_CODEDATE = #{item.dtCodedate},
+                </if>
+                <if test="item.dtCodetime != null">
+                    DT_CODETIME = #{item.dtCodetime},
+                </if>
+                <if test="item.vcReqdep != null and item.vcReqdep != ''">
+                    VC_REQDEP = #{item.vcReqdep},
+                </if>
+                <if test="item.vcReqdepname != null and item.vcReqdepname != ''">
+                    VC_REQDEPNAME = #{item.vcReqdepname},
+                </if>
+                <if test="item.vcReqpersonid != null and item.vcReqpersonid != ''">
+                    VC_REQPERSONID = #{item.vcReqpersonid},
+                </if>
+                <if test="item.vcReqpersonname != null and item.vcReqpersonname != ''">
+                    VC_REQPERSONNAME = #{item.vcReqpersonname},
+                </if>
+                <if test="item.vcCodeinfo != null and item.vcCodeinfo != ''">
+                    VC_CODEINFO = #{item.vcCodeinfo},
+                </if>
+                <if test="item.vcCoderequ != null and item.vcCoderequ != ''">
+                    VC_CODEREQU = #{item.vcCoderequ},
+                </if>
+                <if test="item.vcAppersonid != null and item.vcAppersonid != ''">
+                    VC_APPERSONID = #{item.vcAppersonid},
+                </if>
+                <if test="item.vcAppersonname != null and item.vcAppersonname != ''">
+                    VC_APPERSONNAME = #{item.vcAppersonname},
+                </if>
+                <if test="item.vcAppdate != null ">
+                    VC_APPDATE =#{item.vcAppdate},
+                </if>
+                <if test="item.vcReqtype != null and item.vcReqtype != ''">
+                    VC_REQTYPE = #{item.vcReqtype},
+                </if>
+                <if test="item.vcStatus != null and item.vcStatus != ''">
+                    VC_STATUS = #{item.vcStatus},
+                </if>
+                <if test="item.vcBackup != null and item.vcBackup != ''">
+                    VC_BACKUP = #{item.vcBackup},
+                </if>
+                <if test="item.vcType != null and item.vcType != ''">
+                    VC_TYPE = #{item.vcType}
+                </if>
+                <if test="item.vcSigner != null and item.vcSigner != ''">
+                    VC_SIGNER = #{item.vcSigner}
+                </if>
+            </set>
+            where
+            N_ID = #{item.nId}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTTempworkinfoById" parameterType="long">
+        delete from YM_T_TEMPWORKINFO
+        where
+            N_ID = #{nId=}
+    </delete>
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTTempworkinfo" parameterType="list">
+        delete from YM_T_TEMPWORKINFO
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="getCenterLeader" parameterType="java.lang.String" resultType="java.lang.String">
+      select vc_name
+      from sys_t_person
+      where vc_org$id = 'KMBUR_KMNSEG_ORG_40'
+      and vc_work$pos = 'KMBUR_KMNSEG_DIC_8' and rownum =1
+    </select>
+    <!-- 驳回申请状态的临时计划（上道申请或者是下单申请）-->
+    <update id="rejectAplly" parameterType="java.lang.String">
+      update YM_T_TEMPWORKINFO set vc_status = '3' where vc_status = '1' and n_id=  #{nId}
+    </update>
+</mapper>

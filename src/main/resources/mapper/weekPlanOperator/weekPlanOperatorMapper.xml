@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.weekPlanOperator.WeekPlanOperatorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.weekPlanOperator.WeekPlanOperator">
+        <id column="ID" property="id"/>
+        <result column="MID" property="mid"/>
+        <result column="CONTENT" property="content"/>
+        <result column="OPERATE" property="operate"/>
+        <result column="CREATEDATE" property="createdate"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getWeekPlanOperatorById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  MID,  CONTENT,  OPERATE,  CREATEDATE         from WEEK_PLAN_OPERATOR
+                        where ID = #{id}
+                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getWeekPlanOperatorList" parameterType="map" resultMap="BaseResultMap">
+        select ID, MID, CONTENT, OPERATE, CREATEDATE from WEEK_PLAN_OPERATOR
+        where 1=1
+        <if test="id != null and id != ''">
+            and ID = #{id}
+        </if>
+        <if test="mid != null and mid != ''">
+            and MID = #{mid}
+        </if>
+        <if test="content != null and content != ''">
+            and CONTENT = #{content}
+        </if>
+        <if test="operate != null and operate != ''">
+            and OPERATE = #{operate}
+        </if>
+        <if test="createdate != null and createdate != ''">
+            and CREATEDATE = #{createdate}
+        </if>
+        order by CREATEDATE desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addWeekPlanOperator" parameterType="com.tieda.alarm.entity.weekPlanOperator.WeekPlanOperator">
+        insert into WEEK_PLAN_OPERATOR (ID, MID, CONTENT, OPERATE, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{mid,jdbcType = VARCHAR},                    #{content,jdbcType = VARCHAR},                    #{operate,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchWeekPlanOperator" parameterType="list">
+        insert into WEEK_PLAN_OPERATOR (ID, MID, CONTENT, OPERATE, CREATEDATE ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.mid}, #{item.content}, #{item.operate}, #{item.createdate} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateWeekPlanOperator" parameterType="com.tieda.alarm.entity.weekPlanOperator.WeekPlanOperator">
+        update WEEK_PLAN_OPERATOR
+        <set>
+            <if test="mid != null and mid != ''">
+                MID = #{mid},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="operate != null and operate != ''">
+                OPERATE = #{operate},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathWeekPlanOperator" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update WEEK_PLAN_OPERATOR
+            <set>
+                MID = #{item.mid}, CONTENT = #{item.content}, OPERATE = #{item.operate}, CREATEDATE = #{item.createdate}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteWeekPlanOperatorById" parameterType="long">
+        delete from WEEK_PLAN_OPERATOR
+
+        where
+
+        
+        
+            ID = #{id}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchWeekPlanOperator" parameterType="list">
+        delete from WEEK_PLAN_OPERATOR
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

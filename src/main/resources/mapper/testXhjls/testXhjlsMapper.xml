@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testXhjls.TestXhjlsMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testXhjls.TestXhjls">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <result column="ID" property="id"/>
+                                                                <result column="NAME" property="name"/>
+                                                                <result column="AZWZ" property="azwz"/>
+                                                                <result column="DWXSHD_H" property="dwxshdH"/>
+                                                                <result column="DWXSHD_U" property="dwxshdU"/>
+                                                                <result column="DWXSHD_UU" property="dwxshdUu"/>
+                                                                <result column="DWXSHD_USU" property="dwxshdUsu"/>
+                                                                <result column="DWXSHD_LU" property="dwxshdLu"/>
+                                                                <result column="DWXSHD_LL" property="dwxshdLl"/>
+                                                                <result column="DWXSHD_HB" property="dwxshdHb"/>
+                                                                <result column="DWXSHD_A" property="dwxshdA"/>
+                                                                <result column="DWXSHD_B" property="dwxshdB"/>
+                                                                <result column="ZFS_1U" property="zfs1u"/>
+                                                                <result column="ZFS_L" property="zfsL"/>
+                                                                <result column="ZFS_H" property="zfsH"/>
+                                                                <result column="ZFS_2U" property="zfs2u"/>
+                                                                <result column="ZFS_B" property="zfsB"/>
+                                                                <result column="ZFS_A" property="zfsA"/>
+                                                                <result column="JLBSQHD" property="jlbsqhd"/>
+                                                                <result column="DGZY" property="dgzy"/>
+                                                                <result column="HDDS" property="hdds"/>
+                                                                <result column="CXCZ" property="cxcz"/>
+                                                                <result column="DLQ" property="dlq"/>
+                                                                <result column="TMDHD" property="tmdhd"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                                                <result column="DS_1U" property="ds1u"/>
+                                                                <result column="DS_L" property="dsL"/>
+                                                                <result column="DS_H" property="dsH"/>
+                                                                <result column="DS_2U" property="ds2u"/>
+                                                                <result column="DS_B" property="dsB"/>
+                                                                <result column="DS_A" property="dsA"/>
+                                                                <result column="DWXSHD_L" property="dwxshdL"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestXhjlsById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  AZWZ,  DWXSHD_H,  DWXSHD_U,  DWXSHD_UU,  DWXSHD_USU,  DWXSHD_LU,  DWXSHD_LL,  DWXSHD_HB,  DWXSHD_A,  DWXSHD_B,  ZFS_1U,  ZFS_L,  ZFS_H,  ZFS_2U,  ZFS_B,  ZFS_A,  JLBSQHD,  DGZY,  HDDS,  CXCZ,  DLQ,  TMDHD,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE,  DS_1U,  DS_L,  DS_H,  DS_2U,  DS_B,  DS_A,  DWXSHD_L         from TEST_XHJLS
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestXhjlsList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, AZWZ, DWXSHD_H, DWXSHD_U, DWXSHD_UU, DWXSHD_USU, DWXSHD_LU, DWXSHD_LL, DWXSHD_HB, DWXSHD_A, DWXSHD_B, ZFS_1U, ZFS_L, ZFS_H, ZFS_2U, ZFS_B, ZFS_A, JLBSQHD, DGZY, HDDS, CXCZ, DLQ, TMDHD, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DS_1U, DS_L, DS_H, DS_2U, DS_B, DS_A, DWXSHD_L         from TEST_XHJLS
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="azwz != null and azwz != ''">
+                    and AZWZ = #{azwz}
+                </if>
+                            <if test="dwxshdH != null and dwxshdH != ''">
+                    and DWXSHD_H = #{dwxshdH}
+                </if>
+                            <if test="dwxshdU != null and dwxshdU != ''">
+                    and DWXSHD_U = #{dwxshdU}
+                </if>
+                            <if test="dwxshdUu != null and dwxshdUu != ''">
+                    and DWXSHD_UU = #{dwxshdUu}
+                </if>
+                            <if test="dwxshdUsu != null and dwxshdUsu != ''">
+                    and DWXSHD_USU = #{dwxshdUsu}
+                </if>
+                            <if test="dwxshdLu != null and dwxshdLu != ''">
+                    and DWXSHD_LU = #{dwxshdLu}
+                </if>
+                            <if test="dwxshdLl != null and dwxshdLl != ''">
+                    and DWXSHD_LL = #{dwxshdLl}
+                </if>
+                            <if test="dwxshdHb != null and dwxshdHb != ''">
+                    and DWXSHD_HB = #{dwxshdHb}
+                </if>
+                            <if test="dwxshdA != null and dwxshdA != ''">
+                    and DWXSHD_A = #{dwxshdA}
+                </if>
+                            <if test="dwxshdB != null and dwxshdB != ''">
+                    and DWXSHD_B = #{dwxshdB}
+                </if>
+                            <if test="zfs1u != null and zfs1u != ''">
+                    and ZFS_1U = #{zfs1u}
+                </if>
+                            <if test="zfsL != null and zfsL != ''">
+                    and ZFS_L = #{zfsL}
+                </if>
+                            <if test="zfsH != null and zfsH != ''">
+                    and ZFS_H = #{zfsH}
+                </if>
+                            <if test="zfs2u != null and zfs2u != ''">
+                    and ZFS_2U = #{zfs2u}
+                </if>
+                            <if test="zfsB != null and zfsB != ''">
+                    and ZFS_B = #{zfsB}
+                </if>
+                            <if test="zfsA != null and zfsA != ''">
+                    and ZFS_A = #{zfsA}
+                </if>
+                            <if test="jlbsqhd != null and jlbsqhd != ''">
+                    and JLBSQHD = #{jlbsqhd}
+                </if>
+                            <if test="dgzy != null and dgzy != ''">
+                    and DGZY = #{dgzy}
+                </if>
+                            <if test="hdds != null and hdds != ''">
+                    and HDDS = #{hdds}
+                </if>
+                            <if test="cxcz != null and cxcz != ''">
+                    and CXCZ = #{cxcz}
+                </if>
+                            <if test="dlq != null and dlq != ''">
+                    and DLQ = #{dlq}
+                </if>
+                            <if test="tmdhd != null and tmdhd != ''">
+                    and TMDHD = #{tmdhd}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                            <if test="ds1u != null and ds1u != ''">
+                    and DS_1U = #{ds1u}
+                </if>
+                            <if test="dsL != null and dsL != ''">
+                    and DS_L = #{dsL}
+                </if>
+                            <if test="dsH != null and dsH != ''">
+                    and DS_H = #{dsH}
+                </if>
+                            <if test="ds2u != null and ds2u != ''">
+                    and DS_2U = #{ds2u}
+                </if>
+                            <if test="dsB != null and dsB != ''">
+                    and DS_B = #{dsB}
+                </if>
+                            <if test="dsA != null and dsA != ''">
+                    and DS_A = #{dsA}
+                </if>
+                            <if test="dwxshdL != null and dwxshdL != ''">
+                    and DWXSHD_L = #{dwxshdL}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestXhjls" parameterType="com.tieda.alarm.entity.testXhjls.TestXhjls">
+        insert into TEST_XHJLS (ID, NAME, AZWZ, DWXSHD_H, DWXSHD_U, DWXSHD_UU, DWXSHD_USU, DWXSHD_LU, DWXSHD_LL, DWXSHD_HB, DWXSHD_A, DWXSHD_B, ZFS_1U, ZFS_L, ZFS_H, ZFS_2U, ZFS_B, ZFS_A, JLBSQHD, DGZY, HDDS, CXCZ, DLQ, TMDHD, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DS_1U, DS_L, DS_H, DS_2U, DS_B, DS_A, DWXSHD_L )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{azwz,jdbcType = VARCHAR},                    #{dwxshdH,jdbcType = VARCHAR},                    #{dwxshdU,jdbcType = VARCHAR},                    #{dwxshdUu,jdbcType = VARCHAR},                    #{dwxshdUsu,jdbcType = VARCHAR},                    #{dwxshdLu,jdbcType = VARCHAR},                    #{dwxshdLl,jdbcType = VARCHAR},                    #{dwxshdHb,jdbcType = VARCHAR},                    #{dwxshdA,jdbcType = VARCHAR},                    #{dwxshdB,jdbcType = VARCHAR},                    #{zfs1u,jdbcType = VARCHAR},                    #{zfsL,jdbcType = VARCHAR},                    #{zfsH,jdbcType = VARCHAR},                    #{zfs2u,jdbcType = VARCHAR},                    #{zfsB,jdbcType = VARCHAR},                    #{zfsA,jdbcType = VARCHAR},                    #{jlbsqhd,jdbcType = VARCHAR},                    #{dgzy,jdbcType = VARCHAR},                    #{hdds,jdbcType = VARCHAR},                    #{cxcz,jdbcType = VARCHAR},                    #{dlq,jdbcType = VARCHAR},                    #{tmdhd,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{ds1u,jdbcType = VARCHAR},                    #{dsL,jdbcType = VARCHAR},                    #{dsH,jdbcType = VARCHAR},                    #{ds2u,jdbcType = VARCHAR},                    #{dsB,jdbcType = VARCHAR},                    #{dsA,jdbcType = VARCHAR},                    #{dwxshdL,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestXhjls" parameterType="list">
+        insert into TEST_XHJLS (ID, NAME, AZWZ, DWXSHD_H, DWXSHD_U, DWXSHD_UU, DWXSHD_USU, DWXSHD_LU, DWXSHD_LL, DWXSHD_HB, DWXSHD_A, DWXSHD_B, ZFS_1U, ZFS_L, ZFS_H, ZFS_2U, ZFS_B, ZFS_A, JLBSQHD, DGZY, HDDS, CXCZ, DLQ, TMDHD, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DS_1U, DS_L, DS_H, DS_2U, DS_B, DS_A, DWXSHD_L         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.azwz}, #{item.dwxshdH}, #{item.dwxshdU}, #{item.dwxshdUu}, #{item.dwxshdUsu}, #{item.dwxshdLu}, #{item.dwxshdLl}, #{item.dwxshdHb}, #{item.dwxshdA}, #{item.dwxshdB}, #{item.zfs1u}, #{item.zfsL}, #{item.zfsH}, #{item.zfs2u}, #{item.zfsB}, #{item.zfsA}, #{item.jlbsqhd}, #{item.dgzy}, #{item.hdds}, #{item.cxcz}, #{item.dlq}, #{item.tmdhd}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}, #{item.ds1u}, #{item.dsL}, #{item.dsH}, #{item.ds2u}, #{item.dsB}, #{item.dsA}, #{item.dwxshdL}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestXhjls" parameterType="com.tieda.alarm.entity.testXhjls.TestXhjls">
+        update TEST_XHJLS
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="azwz != null and azwz != ''">
+                        AZWZ = #{azwz},                    </if>
+                                                                <if test="dwxshdH != null and dwxshdH != ''">
+                        DWXSHD_H = #{dwxshdH},                    </if>
+                                                                <if test="dwxshdU != null and dwxshdU != ''">
+                        DWXSHD_U = #{dwxshdU},                    </if>
+                                                                <if test="dwxshdUu != null and dwxshdUu != ''">
+                        DWXSHD_UU = #{dwxshdUu},                    </if>
+                                                                <if test="dwxshdUsu != null and dwxshdUsu != ''">
+                        DWXSHD_USU = #{dwxshdUsu},                    </if>
+                                                                <if test="dwxshdLu != null and dwxshdLu != ''">
+                        DWXSHD_LU = #{dwxshdLu},                    </if>
+                                                                <if test="dwxshdLl != null and dwxshdLl != ''">
+                        DWXSHD_LL = #{dwxshdLl},                    </if>
+                                                                <if test="dwxshdHb != null and dwxshdHb != ''">
+                        DWXSHD_HB = #{dwxshdHb},                    </if>
+                                                                <if test="dwxshdA != null and dwxshdA != ''">
+                        DWXSHD_A = #{dwxshdA},                    </if>
+                                                                <if test="dwxshdB != null and dwxshdB != ''">
+                        DWXSHD_B = #{dwxshdB},                    </if>
+                                                                <if test="zfs1u != null and zfs1u != ''">
+                        ZFS_1U = #{zfs1u},                    </if>
+                                                                <if test="zfsL != null and zfsL != ''">
+                        ZFS_L = #{zfsL},                    </if>
+                                                                <if test="zfsH != null and zfsH != ''">
+                        ZFS_H = #{zfsH},                    </if>
+                                                                <if test="zfs2u != null and zfs2u != ''">
+                        ZFS_2U = #{zfs2u},                    </if>
+                                                                <if test="zfsB != null and zfsB != ''">
+                        ZFS_B = #{zfsB},                    </if>
+                                                                <if test="zfsA != null and zfsA != ''">
+                        ZFS_A = #{zfsA},                    </if>
+                                                                <if test="jlbsqhd != null and jlbsqhd != ''">
+                        JLBSQHD = #{jlbsqhd},                    </if>
+                                                                <if test="dgzy != null and dgzy != ''">
+                        DGZY = #{dgzy},                    </if>
+                                                                <if test="hdds != null and hdds != ''">
+                        HDDS = #{hdds},                    </if>
+                                                                <if test="cxcz != null and cxcz != ''">
+                        CXCZ = #{cxcz},                    </if>
+                                                                <if test="dlq != null and dlq != ''">
+                        DLQ = #{dlq},                    </if>
+                                                                <if test="tmdhd != null and tmdhd != ''">
+                        TMDHD = #{tmdhd},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate},                    </if>
+                                                                <if test="ds1u != null and ds1u != ''">
+                        DS_1U = #{ds1u},                    </if>
+                                                                <if test="dsL != null and dsL != ''">
+                        DS_L = #{dsL},                    </if>
+                                                                <if test="dsH != null and dsH != ''">
+                        DS_H = #{dsH},                    </if>
+                                                                <if test="ds2u != null and ds2u != ''">
+                        DS_2U = #{ds2u},                    </if>
+                                                                <if test="dsB != null and dsB != ''">
+                        DS_B = #{dsB},                    </if>
+                                                                <if test="dsA != null and dsA != ''">
+                        DS_A = #{dsA},                    </if>
+                                                                <if test="dwxshdL != null and dwxshdL != ''">
+                        DWXSHD_L = #{dwxshdL}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestXhjls" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_XHJLS
+            <set>
+                                                            ID = #{item.id},                                                                                NAME = #{item.name},                                                                                AZWZ = #{item.azwz},                                                                                DWXSHD_H = #{item.dwxshdH},                                                                                DWXSHD_U = #{item.dwxshdU},                                                                                DWXSHD_UU = #{item.dwxshdUu},                                                                                DWXSHD_USU = #{item.dwxshdUsu},                                                                                DWXSHD_LU = #{item.dwxshdLu},                                                                                DWXSHD_LL = #{item.dwxshdLl},                                                                                DWXSHD_HB = #{item.dwxshdHb},                                                                                DWXSHD_A = #{item.dwxshdA},                                                                                DWXSHD_B = #{item.dwxshdB},                                                                                ZFS_1U = #{item.zfs1u},                                                                                ZFS_L = #{item.zfsL},                                                                                ZFS_H = #{item.zfsH},                                                                                ZFS_2U = #{item.zfs2u},                                                                                ZFS_B = #{item.zfsB},                                                                                ZFS_A = #{item.zfsA},                                                                                JLBSQHD = #{item.jlbsqhd},                                                                                DGZY = #{item.dgzy},                                                                                HDDS = #{item.hdds},                                                                                CXCZ = #{item.cxcz},                                                                                DLQ = #{item.dlq},                                                                                TMDHD = #{item.tmdhd},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate},                                                                                DS_1U = #{item.ds1u},                                                                                DS_L = #{item.dsL},                                                                                DS_H = #{item.dsH},                                                                                DS_2U = #{item.ds2u},                                                                                DS_B = #{item.dsB},                                                                                DS_A = #{item.dsA},                                                                                DWXSHD_L = #{item.dwxshdL}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestXhjlsById" parameterType="long">
+        delete from TEST_XHJLS
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestXhjls" parameterType="list">
+        delete from TEST_XHJLS
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

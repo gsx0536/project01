@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.emPersoninfo.EmPersoninfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.emPersoninfo.EmPersoninfo">
+        <result column="N_ID" property="nId"/>
+        <result column="VC_PERSONNAME" property="vcPersonname"/>
+        <result column="VC_DEVID" property="vcDevid"/>
+        <result column="VC_DEVNAME" property="vcDevname"/>
+        <result column="VC_TLEPHONE" property="vcTlephone"/>
+        <result column="VC_NOTE" property="vcNote"/>
+        <result column="VC_HANDPHONE" property="vcHandphone"/>
+        <result column="VC_JOB" property="vcJob"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getEmPersoninfoById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  N_ID,  VC_PERSONNAME,  VC_DEVID,  VC_DEVNAME,  VC_TLEPHONE,  VC_NOTE,  VC_HANDPHONE,  VC_JOB         from EM_PERSONINFO
+            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getEmPersoninfoList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, VC_PERSONNAME, VC_DEVID, VC_DEVNAME, VC_TLEPHONE, VC_NOTE, VC_HANDPHONE, VC_JOB from EM_PERSONINFO
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcPersonname != null and vcPersonname != ''">
+                and VC_PERSONNAME like concat(concat('%',#{vcPersonname}),'%')
+            </if>
+            <if test="vcDevid != null and vcDevid != ''">
+                and VC_DEVID = #{vcDevid}
+            </if>
+            <if test="vcDevname != null and vcDevname != ''">
+                and VC_DEVNAME = #{vcDevname}
+            </if>
+            <if test="vcTlephone != null and vcTlephone != ''">
+                and VC_TLEPHONE = #{vcTlephone}
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                and VC_NOTE = #{vcNote}
+            </if>
+            <if test="vcHandphone != null and vcHandphone != ''">
+                and VC_HANDPHONE = #{vcHandphone}
+            </if>
+            <if test="vcJob != null and vcJob != ''">
+                and VC_JOB = #{vcJob}
+            </if>
+        </where>
+        order by case when VC_JOB like '段长%' then 0
+        when VC_JOB like '%书记%' then 2
+        when (VC_JOB like '%主席%' or VC_JOB like '副段长%') then 1
+        when (VC_JOB like '科长%' or VC_JOB like '主任%') then 3
+        when (VC_JOB like '%科长%' or VC_JOB like '%主任%') then 4 end
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addEmPersoninfo" parameterType="com.tieda.alarm.entity.emPersoninfo.EmPersoninfo">
+        insert into EM_PERSONINFO (N_ID, VC_PERSONNAME, VC_DEVID, VC_DEVNAME, VC_TLEPHONE, VC_NOTE, VC_HANDPHONE, VC_JOB )
+        values (                #{nId,jdbcType = VARCHAR},                        #{vcPersonname,jdbcType = VARCHAR},                        #{vcDevid,jdbcType = VARCHAR},                        #{vcDevname,jdbcType = VARCHAR},                        #{vcTlephone,jdbcType = VARCHAR},                        #{vcNote,jdbcType = VARCHAR},                        #{vcHandphone,jdbcType = VARCHAR},                        #{vcJob,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchEmPersoninfo" parameterType="list">
+        insert into EM_PERSONINFO (N_ID, VC_PERSONNAME, VC_DEVID, VC_DEVNAME, VC_TLEPHONE, VC_NOTE, VC_HANDPHONE, VC_JOB
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.vcPersonname}, #{item.vcDevid}, #{item.vcDevname}, #{item.vcTlephone}, #{item.vcNote},
+            #{item.vcHandphone}, #{item.vcJob} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateEmPersoninfo" parameterType="com.tieda.alarm.entity.emPersoninfo.EmPersoninfo">
+        update EM_PERSONINFO
+        <set>
+            <if test="nId != null and nId != ''">
+                N_ID = #{nId},
+            </if>
+            <if test="vcPersonname != null and vcPersonname != ''">
+                VC_PERSONNAME = #{vcPersonname},
+            </if>
+            <if test="vcDevid != null and vcDevid != ''">
+                VC_DEVID = #{vcDevid},
+            </if>
+            <if test="vcDevname != null and vcDevname != ''">
+                VC_DEVNAME = #{vcDevname},
+            </if>
+            <if test="vcTlephone != null and vcTlephone != ''">
+                VC_TLEPHONE = #{vcTlephone},
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                VC_NOTE = #{vcNote},
+            </if>
+            <if test="vcHandphone != null and vcHandphone != ''">
+                VC_HANDPHONE = #{vcHandphone},
+            </if>
+            <if test="vcJob != null and vcJob != ''">
+                VC_JOB = #{vcJob}
+            </if>
+        </set>
+        where
+        N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathEmPersoninfo" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update EM_PERSONINFO
+            <set>
+                N_ID = #{item.nId}, VC_PERSONNAME = #{item.vcPersonname}, VC_DEVID = #{item.vcDevid}, VC_DEVNAME =
+                #{item.vcDevname}, VC_TLEPHONE = #{item.vcTlephone}, VC_NOTE = #{item.vcNote}, VC_HANDPHONE =
+                #{item.vcHandphone}, VC_JOB = #{item.vcJob}
+            </set>
+            where
+            N_ID = #{item.nId}
+
+        </foreach>
+
+    </update>
+
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchEmPersoninfo" parameterType="list">
+        delete from EM_PERSONINFO
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteEmPersoninfoById" parameterType="java.lang.String">
+        delete from EM_PERSONINFO where
+        N_ID = #{nId}
+        
+    </delete>
+
+
+</mapper>

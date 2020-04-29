@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.tcdwPlan.TcdwPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.tcdwPlan.TcdwPlan">
+        <id column="ID" property="id"/>
+        <result column="CODE" property="code"/>
+        <result column="WORKSHOP" property="workshop"/>
+        <result column="WORKAREA" property="workarea"/>
+        <result column="BEGINDATE" property="begindate"/>
+        <result column="ENDDATE" property="enddate"/>
+        <result column="PLACE" property="place"/>
+        <result column="PLACEID" property="placeid"/>
+        <result column="INWORKER" property="inworker"/>
+        <result column="INWORKERID" property="inworkerid"/>
+        <result column="OUTWORKER" property="outworker"/>
+        <result column="OUTWORKERID" property="outworkerid"/>
+        <result column="ONWORKER" property="onworker"/>
+        <result column="ONWORKERID" property="onworkerid"/>
+        <result column="AUDITOR" property="auditor"/>
+        <result column="DISPATCH" property="dispatch"/>
+        <result column="CONTENT" property="content"/>
+        <result column="REQUIRE" property="require"/>
+        <result column="ADVISE" property="advise"/>
+        <result column="DIS_ADVISE" property="disAdvise"/>
+        <result column="NO" property="no"/>
+        <result column="WORKSHOPID" property="workshopid"/>
+        <result column="WORKAREAID" property="workareaid"/>
+        <result column="STATUS" property="status"/>
+        <result column="VC_FINISHINFO" property="finishInfo"/>
+        <result column="DOWNOUTWORKER" property="downoutworker"/>
+        <result column="DOWNOUTWORKERID" property="downoutworkerid"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getTcdwPlanById" parameterType="long" resultMap="BaseResultMap">
+        select ID,
+               CODE,
+               WORKSHOP,
+               WORKAREA,
+               BEGINDATE,
+               ENDDATE,
+               PLACE,PLACEID,
+               INWORKER,INWORKERID,
+               OUTWORKER,OUTWORKERID,
+               ONWORKER,ONWORKERID,
+               AUDITOR,
+               DISPATCH,
+               CONTENT,
+               REQUIRE,
+               ADVISE,
+               DIS_ADVISE,
+               NO,
+               WORKSHOPID,
+               WORKAREAID,STATUS,
+               VC_FINISHINFO,DOWNOUTWORKER,DOWNOUTWORKERID
+        from TCDW_PLAN
+        where ID = #{id}
+    </select>
+
+    <select id="getWorkarea" parameterType="java.lang.String" resultType="java.lang.String">
+        select vc_org$id from sys_t_org where vc_par$org$id=#{workshopid}
+    </select>
+
+    <select id="getWorkshopByWorkarea" parameterType="java.lang.String" resultType="java.util.Map">
+        select * from sys_t_org where vc_org$id=#{workshopid}
+    </select>
+
+    <select id="getShortOrg" parameterType="java.lang.String" resultType="java.lang.String">
+        select vc_short$name from sys_t_org where vc_org$id=#{org}
+    </select>
+
+    <select id="getByMaxNo" parameterType="java.lang.String" resultType="java.lang.String">
+        select max(to_number(no)) no
+          from TCDW_PLAN t
+         where code like concat(concat('', #{code}), '%')
+         and to_char(CREATEDATE,'MM') = to_char(sysdate,'MM')
+    </select>
+
+
+    <!-- 多条件参数查询 -->
+    <select id="getTcdwPlanList" parameterType="map" resultMap="BaseResultMap">
+        select ID, CODE, WORKSHOP, WORKAREA, BEGINDATE,ENDDATE, PLACE,PLACEID, INWORKER,INWORKERID, OUTWORKER,OUTWORKERID,
+               ONWORKER,ONWORKERID, AUDITOR, DISPATCH, CONTENT,
+        REQUIRE, ADVISE, DIS_ADVISE, NO, WORKSHOPID, WORKAREAID,STATUS,
+        VC_FINISHINFO,DOWNOUTWORKER,DOWNOUTWORKERID from TCDW_PLAN
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="code != null and code != ''">
+                and CODE = #{code}
+            </if>
+
+            <if test="begindate != null">
+                and to_char(BEGINDATE,'yyyy-MM-dd') = #{begindate}
+            </if>
+            <if test="enddate != null">
+                and to_char(ENDDATE,'yyyy-MM-dd') = #{enddate}
+            </if>
+            <if test="placeid != null and placeid != ''">
+                and PLACEID = #{placeid}
+            </if>
+            <if test="inworker != null and inworker != ''">
+                and INWORKER = #{inworker}
+            </if>
+            <if test="outworker != null and outworker != ''">
+                and OUTWORKER = #{outworker}
+            </if>
+            <if test="onworker != null and onworker != ''">
+                and ONWORKER = #{onworker}
+            </if>
+            <if test="auditor != null and auditor != ''">
+                and AUDITOR = #{auditor}
+            </if>
+            <if test="dispatch != null and dispatch != ''">
+                and DISPATCH = #{dispatch}
+            </if>
+            <if test="content != null and content != ''">
+                and CONTENT = #{content}
+            </if>
+            <if test="require != null and require != ''">
+                and REQUIRE = #{require}
+            </if>
+            <if test="advise != null and advise != ''">
+                and ADVISE = #{advise}
+            </if>
+            <if test="disAdvise != null and disAdvise != ''">
+                and DIS_ADVISE = #{disAdvise}
+            </if>
+
+            <if test="workshopid != null and workshopid != ''">
+                and ( WORKSHOPID = #{workshopid}
+               <if test="workareaids != null and workareaids != ''">
+                  or WORKAREAID in
+                  <foreach collection="workareaids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                  </foreach>
+                </if>
+                )
+            </if>
+            <if test="workareaid != null and workareaid != ''">
+                and WORKAREAID = #{workareaid}
+            </if>
+
+            <if test="status != null and status != ''">
+                and status in
+                <foreach collection="status" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by createdate desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTcdwPlan" parameterType="com.tieda.alarm.entity.tcdwPlan.TcdwPlan">
+        insert into TCDW_PLAN (ID, CODE, WORKSHOP, WORKAREA, BEGINDATE,ENDDATE, PLACE,PLACEID, INWORKER,INWORKERID,
+                               OUTWORKER,OUTWORKERID, ONWORKER,ONWORKERID, AUDITOR,
+                               DISPATCH, CONTENT, REQUIRE, ADVISE, DIS_ADVISE, NO, WORKSHOPID, WORKAREAID,STATUS,DOWNOUTWORKER,DOWNOUTWORKERID)
+        values (#{id,jdbcType = VARCHAR}, #{code,jdbcType = VARCHAR}, #{workshop,jdbcType = VARCHAR},
+                #{workarea,jdbcType = VARCHAR}, #{begindate,jdbcType = VARCHAR},#{enddate,jdbcType = VARCHAR},
+                #{place,jdbcType = VARCHAR},#{placeid,jdbcType = VARCHAR},
+                #{inworker,jdbcType = VARCHAR},#{inworkerid,jdbcType = VARCHAR}, #{outworker,jdbcType = VARCHAR},#{outworkerid,jdbcType = VARCHAR},
+                #{onworker,jdbcType = VARCHAR},#{onworkerid,jdbcType = VARCHAR},
+                #{auditor,jdbcType = VARCHAR}, #{dispatch,jdbcType = VARCHAR}, #{content,jdbcType = VARCHAR},
+                #{require,jdbcType = VARCHAR}, #{advise,jdbcType = VARCHAR}, #{disAdvise,jdbcType = VARCHAR},
+                #{no,jdbcType = VARCHAR}, #{workshopid,jdbcType = VARCHAR}, #{workareaid,jdbcType = VARCHAR},#{status,jdbcType = VARCHAR},#{downoutworker,jdbcType = VARCHAR},#{downoutworkerid,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTcdwPlan" parameterType="list">
+        insert into TCDW_PLAN (ID, CODE, WORKSHOP, WORKAREA, BEGINDATE, PLACE, INWORKER, OUTWORKER, ONWORKER, AUDITOR,
+        DISPATCH, CONTENT, REQUIRE, ADVISE, DIS_ADVISE, NO, WORKSHOPID, WORKAREAID,STATUS,DOWNOUTWORKER,DOWNOUTWORKERID) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.code}, #{item.workshop}, #{item.workarea}, #{item.BEGINDATE}, #{item.place},
+            #{item.inworker}, #{item.outworker}, #{item.onworker}, #{item.auditor}, #{item.dispatch}, #{item.content},
+            #{item.require}, #{item.advise}, #{item.disAdvise}, #{item.no}, #{item.workshopid}, #{item.workareaid} ,#{item.status},#{item.downoutworker},#{item.downoutworkerid})
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTcdwPlan" parameterType="com.tieda.alarm.entity.tcdwPlan.TcdwPlan">
+        update TCDW_PLAN
+        <set>
+            <if test="code != null and code != ''">
+                CODE = #{code},
+            </if>
+            <if test="no != null and no != ''">
+                NO = #{no},
+            </if>
+
+            <if test="workshop != null and workshop != ''">
+                WORKSHOP = #{workshop},
+            </if>
+            <if test="workarea != null and workarea != ''">
+                WORKAREA = #{workarea},
+            </if>
+            <if test="begindate != null">
+                BEGINDATE = #{begindate},
+            </if>
+            <if test="enddate != null">
+                ENDDATE = #{enddate},
+            </if>
+            <if test="place != null and place != ''">
+                PLACE = #{place},
+            </if>
+            <if test="placeid != null and placeid != ''">
+                PLACEID = #{placeid},
+            </if>
+            <if test="inworker != null and inworker != ''">
+                INWORKER = #{inworker},
+            </if>
+            <if test="inworkerid != null and inworkerid != ''">
+                INWORKERID = #{inworkerid},
+            </if>
+            <if test="outworker != null and outworker != ''">
+                OUTWORKER = #{outworker},
+            </if>
+            <if test="outworkerid != null and outworkerid != ''">
+                OUTWORKERID = #{outworkerid},
+            </if>
+            <if test="onworker != null and onworker != ''">
+                ONWORKER = #{onworker},
+            </if>
+            <if test="onworkerid != null and onworkerid != ''">
+                ONWORKERID = #{onworkerid},
+            </if>
+            <if test="auditor != null and auditor != ''">
+                AUDITOR = #{auditor},
+            </if>
+            <if test="dispatch != null and dispatch != ''">
+                DISPATCH = #{dispatch},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="require != null and require != ''">
+                REQUIRE = #{require},
+            </if>
+            <if test="advise != null and advise != ''">
+                ADVISE = #{advise},
+            </if>
+            <if test="disAdvise != null and disAdvise != ''">
+                DIS_ADVISE = #{disAdvise},
+            </if>
+
+            <if test="workshopid != null and workshopid != ''">
+                WORKSHOPID = #{workshopid},
+            </if>
+            <if test="workareaid != null and workareaid != ''">
+                WORKAREAID = #{workareaid},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="finishInfo != null and finishInfo != ''">
+                VC_FINISHINFO = #{finishInfo},
+            </if>
+            <if test="downoutworker != null and downoutworker != ''">
+                DOWNOUTWORKER = #{downoutworker},
+            </if>
+            <if test="downoutworkerid != null and downoutworkerid != ''">
+                DOWNOUTWORKERID = #{downoutworkerid}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchTcdwPlan" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update TCDW_PLAN
+            <set>
+                <if test="item.workshop != null and item.workshop != ''">
+                    WORKSHOP = #{item.workshop},
+                </if>
+                <if test="item.workarea != null and item.workarea != ''">
+                    WORKAREA = #{item.workarea},
+                </if>
+                <if test="item.begindate != null">
+                    BEGINDATE = #{item.begindate},
+                </if>
+                <if test="item.enddate != null">
+                    ENDDATE = #{item.enddate},
+                </if>
+                <if test="item.place != null and item.place != ''">
+                    PLACE = #{item.place},
+                </if>
+                <if test="item.placeid != null and item.placeid != ''">
+                    PLACEID = #{item.placeid},
+                </if>
+                <if test="item.inworker != null and item.inworker != ''">
+                    INWORKER = #{item.inworker},
+                </if>
+                <if test="item.inworkerid != null and item.inworkerid != ''">
+                    INWORKERID = #{item.inworkerid},
+                </if>
+                <if test="item.outworker != null and item.outworker != ''">
+                    OUTWORKER = #{item.outworker},
+                </if>
+                <if test="item.outworkerid != null and item.outworkerid != ''">
+                    OUTWORKERID = #{item.outworkerid},
+                </if>
+                <if test="item.onworker != null and item.onworker != ''">
+                    ONWORKER = #{item.onworker},
+                </if>
+                <if test="item.onworkerid != null and item.onworkerid != ''">
+                    ONWORKERID = #{item.onworkerid},
+                </if>
+                <if test="item.auditor != null and item.auditor != ''">
+                    AUDITOR = #{item.auditor},
+                </if>
+                <if test="item.dispatch != null and item.dispatch != ''">
+                    DISPATCH = #{item.dispatch},
+                </if>
+                <if test="item.content != null and item.content != ''">
+                    CONTENT = #{item.content},
+                </if>
+                <if test="item.require != null and item.require != ''">
+                    REQUIRE = #{item.require},
+                </if>
+                <if test="item.advise != null and item.advise != ''">
+                    ADVISE = #{item.advise},
+                </if>
+                <if test="item.disAdvise != null and item.disAdvise != ''">
+                    DIS_ADVISE = #{item.disAdvise},
+                </if>
+
+                <if test="item.workshopid != null and item.workshopid != ''">
+                    WORKSHOPID = #{item.workshopid},
+                </if>
+                <if test="item.workareaid != null and item.workareaid != ''">
+                    WORKAREAID = #{item.workareaid},
+                </if>
+                <if test="item.status != null and item.status != ''">
+                    STATUS = #{item.status},
+                </if>
+                <if test="item.finishInfo != null and item.finishInfo != ''">
+                    VC_FINISHINFO = #{item.finishInfo},
+                </if>
+                <if test="item.downoutworker != null and item.downoutworker != ''">
+                    DOWNOUTWORKER = #{item.downoutworker},
+                </if>
+                <if test="item.downoutworkerid != null and item.downoutworkerid != ''">
+                    DOWNOUTWORKERID = #{item.downoutworkerid}
+                </if>
+            </set>
+            where
+
+            ID = #{item.id,jdbcType=VARCHAR}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTcdwPlanById" parameterType="long">
+        delete
+        from TCDW_PLAN
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTcdwPlan" parameterType="list">
+        delete from TCDW_PLAN
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

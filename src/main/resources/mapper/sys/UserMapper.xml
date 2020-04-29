@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.sys.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.user.User">
+        <result column="VC_ORG$ID" property="vcOrgId"/>
+        <result column="VC_NUMBER" property="vcNumber"/>
+        <result column="VC_NAME" property="vcName"/>
+        <result column="VC_GKEID" property="vcGkeId"/>
+        <result column="VC_IS$ADMIN" property="admin"/>
+        <result column="N_LEVEL" property="orgLevel"/>
+        <result column="VC_ORG$NAME" property="vcOrgName"/>
+        <result column="VC_PAR$ORG$ID" property="vcParOrgId"/>
+        <result column="VC_SERVER" property="vcServer"/>
+        <result column="VC_PWD" property="pwd"/>
+        <result column="VC_WORK$POS" property="vcWorkPos"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="login" parameterType="map" resultMap="BaseResultMap">
+        SELECT A.VC_ORG$ID, A.VC_NUMBER,A.VC_NAME,A.VC_GKEID, A.VC_IS$ADMIN ,A.VC_PWD,A.VC_WORK$POS,
+          B.N_LEVEL,B.VC_NAME AS VC_ORG$NAME,B.VC_PAR$ORG$ID
+           FROM SYS_T_PERSON A, SYS_T_ORG B WHERE A.VC_SERVER = B.VC_SERVER
+          AND A.VC_ORG$ID = B.VC_ORG$ID
+          AND A.VC_SERVER =#{vcServer} AND A.VC_NUMBER = #{vcNumber} AND A.VC_DEL = '0'
+    </select>
+
+
+</mapper>

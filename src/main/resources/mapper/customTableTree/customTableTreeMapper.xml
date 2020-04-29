@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.customTableTree.CustomTableTreeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.customTableTree.CustomTableTree">
+        <result column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="PID" property="pid"/>
+        <result column="TABLENAME" property="tablename"/>
+        <result column="CODE" property="code"/>
+        <result column="LVL" property="lvl"/>
+        <result column="NUM" property="num"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getCustomTableTreeById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  PID,  TABLENAME,  CODE         from CUSTOM_TABLE_TREE
+                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getCustomTableTreeList" parameterType="map" resultMap="BaseResultMap">
+        select * from custom_table_tree
+        start with tablename = #{tablename} and pid is null
+        connect by prior id = pid order by lvl,num
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addCustomTableTree" parameterType="com.tieda.alarm.entity.customTableTree.CustomTableTree">
+        insert into CUSTOM_TABLE_TREE (ID, NAME, PID, TABLENAME, CODE )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{pid,jdbcType = VARCHAR},                    #{tablename,jdbcType = VARCHAR},                    #{code,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchCustomTableTree" parameterType="list">
+        insert into CUSTOM_TABLE_TREE (ID, NAME, PID, TABLENAME, CODE ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.pid}, #{item.tablename}, #{item.code} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateCustomTableTree" parameterType="com.tieda.alarm.entity.customTableTree.CustomTableTree">
+        update CUSTOM_TABLE_TREE
+        <set>
+            <if test="id != null and id != ''">
+                ID = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="pid != null and pid != ''">
+                PID = #{pid},
+            </if>
+            <if test="tablename != null and tablename != ''">
+                TABLENAME = #{tablename},
+            </if>
+            <if test="code != null and code != ''">
+                CODE = #{code}
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathCustomTableTree" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update CUSTOM_TABLE_TREE
+            <set>
+                ID = #{item.id}, NAME = #{item.name}, PID = #{item.pid}, TABLENAME = #{item.tablename}, CODE =
+                #{item.code}
+            </set>
+            where
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteCustomTableTreeById" parameterType="long">
+        delete from CUSTOM_TABLE_TREE
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchCustomTableTree" parameterType="list">
+        delete from CUSTOM_TABLE_TREE
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

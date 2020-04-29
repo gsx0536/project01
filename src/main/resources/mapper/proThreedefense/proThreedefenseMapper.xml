@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.proThreedefense.ProThreedefenseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.proThreedefense.ProThreedefense">
+        <result column="PRO_ID" property="proId"/>
+        <result column="RISKWARN" property="riskwarn"/>
+        <result column="PREVENTION" property="prevention"/>
+        <result column="PRO_NAME" property="proName"/>
+        <result column="TECHNICAL" property="technical"/>
+        <result column="WORKDOOR" property="workdoor"/>
+        <result column="TOOLS" property="tools"/>
+    </resultMap>
+    <!-- 根据主键查询对象 -->
+    <select id="getProThreedefenseById" parameterType="long" resultMap="BaseResultMap">
+        select  PRO_ID,  RISKWARN,  PREVENTION,  PRO_NAME,  TECHNICAL,  WORKDOOR,  TOOLS         from PRO_THREEDEFENSE
+        WHERE PRO_ID = #{id}
+                                                                                                </select>
+    <!-- 多条件参数查询 -->
+    <select id="getProThreedefenseList" parameterType="map" resultMap="BaseResultMap">
+        select PRO_ID, RISKWARN, PREVENTION, PRO_NAME, TECHNICAL, WORKDOOR, TOOLS from PRO_THREEDEFENSE
+        <where>
+            <if test="proId != null and proId != ''">
+                and PRO_ID = #{proId}
+            </if>
+            <if test="riskwarn != null and riskwarn != ''">
+                and RISKWARN = #{riskwarn}
+            </if>
+            <if test="prevention != null and prevention != ''">
+                and PREVENTION = #{prevention}
+            </if>
+            <if test="proName != null and proName != ''">
+                and PRO_NAME = #{proName}
+            </if>
+            <if test="technical != null and technical != ''">
+                and TECHNICAL = #{technical}
+            </if>
+            <if test="workdoor != null and workdoor != ''">
+                and WORKDOOR = #{workdoor}
+            </if>
+            <if test="tools != null and tools != ''">
+                and TOOLS = #{tools}
+            </if>
+        </where>
+    </select>
+    <!-- 添加 -->
+    <insert id="addProThreedefense" parameterType="com.tieda.alarm.entity.proThreedefense.ProThreedefense">
+        insert into PRO_THREEDEFENSE (PRO_ID, RISKWARN, PREVENTION, PRO_NAME, TECHNICAL, WORKDOOR, TOOLS )
+        values (
+                                        #{proId,jdbcType = VARCHAR},    
+                                        #{riskwarn,jdbcType = VARCHAR},    
+                                        #{prevention,jdbcType = VARCHAR},    
+                                        #{proName,jdbcType = VARCHAR},    
+                                        #{technical,jdbcType = VARCHAR},    
+                                        #{workdoor,jdbcType = VARCHAR},    
+                                        #{tools,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchProThreedefense" parameterType="list">
+        insert into PRO_THREEDEFENSE (PRO_ID, RISKWARN, PREVENTION, PRO_NAME, TECHNICAL, WORKDOOR, TOOLS )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+            #{item.proId},
+            #{item.riskwarn},
+            #{item.prevention},
+            #{item.proName},
+            #{item.technical},
+            #{item.workdoor},
+            #{item.tools} from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateProThreedefense" parameterType="com.tieda.alarm.entity.proThreedefense.ProThreedefense">
+        update PRO_THREEDEFENSE
+        <set>
+
+            <if test="proId != null and proId != ''">
+                PRO_ID = #{proId},
+            </if>
+
+            <if test="riskwarn != null and riskwarn != ''">
+                RISKWARN = #{riskwarn},
+            </if>
+
+            <if test="prevention != null and prevention != ''">
+                PREVENTION = #{prevention},
+            </if>
+
+            <if test="proName != null and proName != ''">
+                PRO_NAME = #{proName},
+            </if>
+
+            <if test="technical != null and technical != ''">
+                TECHNICAL = #{technical},
+            </if>
+
+            <if test="workdoor != null and workdoor != ''">
+                WORKDOOR = #{workdoor},
+            </if>
+
+            <if test="tools != null and tools != ''">
+                TOOLS = #{tools},
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchProThreedefense" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update PRO_THREEDEFENSE
+            <set>
+                <if test="proId != null and proId != ''">
+                    PRO_ID = #{proId},
+                </if>
+                <if test="riskwarn != null and riskwarn != ''">
+                    RISKWARN = #{riskwarn},
+                </if>
+                <if test="prevention != null and prevention != ''">
+                    PREVENTION = #{prevention},
+                </if>
+                <if test="proName != null and proName != ''">
+                    PRO_NAME = #{proName},
+                </if>
+                <if test="technical != null and technical != ''">
+                    TECHNICAL = #{technical},
+                </if>
+                <if test="workdoor != null and workdoor != ''">
+                    WORKDOOR = #{workdoor},
+                </if>
+                <if test="tools != null and tools != ''">
+                    TOOLS = #{tools},
+                </if>
+            </set>
+            where
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteProThreedefenseById" parameterType="long">
+        delete from PRO_THREEDEFENSE
+        where PRO_ID = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchProThreedefense" parameterType="list">
+        delete from PRO_THREEDEFENSE
+    </delete>
+</mapper>

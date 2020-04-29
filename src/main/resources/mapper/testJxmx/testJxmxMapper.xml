@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testJxmx.TestJxmxMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testJxmx.TestJxmx">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <result column="ID" property="id"/>
+                                                                <result column="NAME" property="name"/>
+                                                                <result column="U_HU" property="uHu"/>
+                                                                <result column="U2_HU" property="u2Hu"/>
+                                                                <result column="UUS_HU" property="uusHu"/>
+                                                                <result column="U2S_HU" property="u2sHu"/>
+                                                                <result column="LU_HU" property="luHu"/>
+                                                                <result column="L1_HU" property="l1Hu"/>
+                                                                <result column="L2_HU" property="l2Hu"/>
+                                                                <result column="L3_HU" property="l3Hu"/>
+                                                                <result column="L4_HU" property="l4Hu"/>
+                                                                <result column="L5_HU" property="l5Hu"/>
+                                                                <result column="LU_U" property="luU"/>
+                                                                <result column="U2_U" property="u2U"/>
+                                                                <result column="U2S_U2" property="u2sU2"/>
+                                                                <result column="L1_LU" property="l1Lu"/>
+                                                                <result column="L2_L1" property="l2L1"/>
+                                                                <result column="L3_L2" property="l3L2"/>
+                                                                <result column="L4_L3" property="l4L3"/>
+                                                                <result column="L5_L4" property="l5L4"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestJxmxById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  U_HU,  U2_HU,  UUS_HU,  U2S_HU,  LU_HU,  L1_HU,  L2_HU,  L3_HU,  L4_HU,  L5_HU,  LU_U,  U2_U,  U2S_U2,  L1_LU,  L2_L1,  L3_L2,  L4_L3,  L5_L4,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_JXMX
+                                                                                                                                                                                                                                                                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestJxmxList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, U_HU, U2_HU, UUS_HU, U2S_HU, LU_HU, L1_HU, L2_HU, L3_HU, L4_HU, L5_HU, LU_U, U2_U, U2S_U2, L1_LU, L2_L1, L3_L2, L4_L3, L5_L4, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         from TEST_JXMX
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="uHu != null and uHu != ''">
+                    and U_HU = #{uHu}
+                </if>
+                            <if test="u2Hu != null and u2Hu != ''">
+                    and U2_HU = #{u2Hu}
+                </if>
+                            <if test="uusHu != null and uusHu != ''">
+                    and UUS_HU = #{uusHu}
+                </if>
+                            <if test="u2sHu != null and u2sHu != ''">
+                    and U2S_HU = #{u2sHu}
+                </if>
+                            <if test="luHu != null and luHu != ''">
+                    and LU_HU = #{luHu}
+                </if>
+                            <if test="l1Hu != null and l1Hu != ''">
+                    and L1_HU = #{l1Hu}
+                </if>
+                            <if test="l2Hu != null and l2Hu != ''">
+                    and L2_HU = #{l2Hu}
+                </if>
+                            <if test="l3Hu != null and l3Hu != ''">
+                    and L3_HU = #{l3Hu}
+                </if>
+                            <if test="l4Hu != null and l4Hu != ''">
+                    and L4_HU = #{l4Hu}
+                </if>
+                            <if test="l5Hu != null and l5Hu != ''">
+                    and L5_HU = #{l5Hu}
+                </if>
+                            <if test="luU != null and luU != ''">
+                    and LU_U = #{luU}
+                </if>
+                            <if test="u2U != null and u2U != ''">
+                    and U2_U = #{u2U}
+                </if>
+                            <if test="u2sU2 != null and u2sU2 != ''">
+                    and U2S_U2 = #{u2sU2}
+                </if>
+                            <if test="l1Lu != null and l1Lu != ''">
+                    and L1_LU = #{l1Lu}
+                </if>
+                            <if test="l2L1 != null and l2L1 != ''">
+                    and L2_L1 = #{l2L1}
+                </if>
+                            <if test="l3L2 != null and l3L2 != ''">
+                    and L3_L2 = #{l3L2}
+                </if>
+                            <if test="l4L3 != null and l4L3 != ''">
+                    and L4_L3 = #{l4L3}
+                </if>
+                            <if test="l5L4 != null and l5L4 != ''">
+                    and L5_L4 = #{l5L4}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestJxmx" parameterType="com.tieda.alarm.entity.testJxmx.TestJxmx">
+        insert into TEST_JXMX (ID, NAME, U_HU, U2_HU, UUS_HU, U2S_HU, LU_HU, L1_HU, L2_HU, L3_HU, L4_HU, L5_HU, LU_U, U2_U, U2S_U2, L1_LU, L2_L1, L3_L2, L4_L3, L5_L4, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{uHu,jdbcType = VARCHAR},                    #{u2Hu,jdbcType = VARCHAR},                    #{uusHu,jdbcType = VARCHAR},                    #{u2sHu,jdbcType = VARCHAR},                    #{luHu,jdbcType = VARCHAR},                    #{l1Hu,jdbcType = VARCHAR},                    #{l2Hu,jdbcType = VARCHAR},                    #{l3Hu,jdbcType = VARCHAR},                    #{l4Hu,jdbcType = VARCHAR},                    #{l5Hu,jdbcType = VARCHAR},                    #{luU,jdbcType = VARCHAR},                    #{u2U,jdbcType = VARCHAR},                    #{u2sU2,jdbcType = VARCHAR},                    #{l1Lu,jdbcType = VARCHAR},                    #{l2L1,jdbcType = VARCHAR},                    #{l3L2,jdbcType = VARCHAR},                    #{l4L3,jdbcType = VARCHAR},                    #{l5L4,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestJxmx" parameterType="list">
+        insert into TEST_JXMX (ID, NAME, U_HU, U2_HU, UUS_HU, U2S_HU, LU_HU, L1_HU, L2_HU, L3_HU, L4_HU, L5_HU, LU_U, U2_U, U2S_U2, L1_LU, L2_L1, L3_L2, L4_L3, L5_L4, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.uHu}, #{item.u2Hu}, #{item.uusHu}, #{item.u2sHu}, #{item.luHu}, #{item.l1Hu}, #{item.l2Hu}, #{item.l3Hu}, #{item.l4Hu}, #{item.l5Hu}, #{item.luU}, #{item.u2U}, #{item.u2sU2}, #{item.l1Lu}, #{item.l2L1}, #{item.l3L2}, #{item.l4L3}, #{item.l5L4}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestJxmx" parameterType="com.tieda.alarm.entity.testJxmx.TestJxmx">
+        update TEST_JXMX
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="uHu != null and uHu != ''">
+                        U_HU = #{uHu},                    </if>
+                                                                <if test="u2Hu != null and u2Hu != ''">
+                        U2_HU = #{u2Hu},                    </if>
+                                                                <if test="uusHu != null and uusHu != ''">
+                        UUS_HU = #{uusHu},                    </if>
+                                                                <if test="u2sHu != null and u2sHu != ''">
+                        U2S_HU = #{u2sHu},                    </if>
+                                                                <if test="luHu != null and luHu != ''">
+                        LU_HU = #{luHu},                    </if>
+                                                                <if test="l1Hu != null and l1Hu != ''">
+                        L1_HU = #{l1Hu},                    </if>
+                                                                <if test="l2Hu != null and l2Hu != ''">
+                        L2_HU = #{l2Hu},                    </if>
+                                                                <if test="l3Hu != null and l3Hu != ''">
+                        L3_HU = #{l3Hu},                    </if>
+                                                                <if test="l4Hu != null and l4Hu != ''">
+                        L4_HU = #{l4Hu},                    </if>
+                                                                <if test="l5Hu != null and l5Hu != ''">
+                        L5_HU = #{l5Hu},                    </if>
+                                                                <if test="luU != null and luU != ''">
+                        LU_U = #{luU},                    </if>
+                                                                <if test="u2U != null and u2U != ''">
+                        U2_U = #{u2U},                    </if>
+                                                                <if test="u2sU2 != null and u2sU2 != ''">
+                        U2S_U2 = #{u2sU2},                    </if>
+                                                                <if test="l1Lu != null and l1Lu != ''">
+                        L1_LU = #{l1Lu},                    </if>
+                                                                <if test="l2L1 != null and l2L1 != ''">
+                        L2_L1 = #{l2L1},                    </if>
+                                                                <if test="l3L2 != null and l3L2 != ''">
+                        L3_L2 = #{l3L2},                    </if>
+                                                                <if test="l4L3 != null and l4L3 != ''">
+                        L4_L3 = #{l4L3},                    </if>
+                                                                <if test="l5L4 != null and l5L4 != ''">
+                        L5_L4 = #{l5L4},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestJxmx" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_JXMX
+            <set>
+                                                            ID = #{item.id},                                                                                NAME = #{item.name},                                                                                U_HU = #{item.uHu},                                                                                U2_HU = #{item.u2Hu},                                                                                UUS_HU = #{item.uusHu},                                                                                U2S_HU = #{item.u2sHu},                                                                                LU_HU = #{item.luHu},                                                                                L1_HU = #{item.l1Hu},                                                                                L2_HU = #{item.l2Hu},                                                                                L3_HU = #{item.l3Hu},                                                                                L4_HU = #{item.l4Hu},                                                                                L5_HU = #{item.l5Hu},                                                                                LU_U = #{item.luU},                                                                                U2_U = #{item.u2U},                                                                                U2S_U2 = #{item.u2sU2},                                                                                L1_LU = #{item.l1Lu},                                                                                L2_L1 = #{item.l2L1},                                                                                L3_L2 = #{item.l3L2},                                                                                L4_L3 = #{item.l4L3},                                                                                L5_L4 = #{item.l5L4},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestJxmxById" parameterType="long">
+        delete from TEST_JXMX
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestJxmx" parameterType="list">
+        delete from TEST_JXMX
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

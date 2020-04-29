@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.sparepartsStatistics.SparepartsStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.sparepartsStatistics.SparepartsStatistics">
+        <id column="ID" property="id"/>
+        <result column="DEPTID" property="deptid"/>
+        <result column="STATION" property="station"/>
+        <result column="PLACE" property="place"/>
+        <result column="INDATE" property="indate"/>
+        <result column="VAILDDATE" property="vailddate"/>
+        <result column="NAME" property="name"/>
+        <result column="CODE" property="code"/>
+        <result column="NUM" property="num"/>
+        <result column="FACTORY" property="factory"/>
+        <result column="REMARK" property="remark"/>
+        <result column="deptname" property="deptname"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getSparepartsStatisticsById" parameterType="long" resultMap="BaseResultMap">
+        select ID,deptid,a.vc_name deptname , PLACE, INDATE, VAILDDATE, NAME, CODE, NUM, FACTORY, REMARK
+          from SPAREPARTS_STATISTICS d,sys_t_org a  where a.vc_org$id(+)=d.deptid and id=#{id}
+          </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getSparepartsStatisticsList" parameterType="map" resultMap="BaseResultMap">
+        select ID,deptid,a.vc_name deptname , PLACE, INDATE, VAILDDATE, NAME, CODE, NUM,
+        FACTORY, REMARK
+        from SPAREPARTS_STATISTICS d,sys_t_org a where a.vc_org$id(+)=d.deptid
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="lvl == 10">
+                and d.deptid = #{org}
+            </if>
+            <if test="lvl == 30">
+                and (d.deptid = #{org} or d.deptid in (select vc_org$id from sys_t_org where vc_par$org$id=#{org}))
+            </if>
+
+            <if test="deptid != null and deptid != ''">
+                and d.deptid = #{deptid}
+            </if>
+            <if test="place != null and place != ''">
+                and PLACE like concat(concat('%',#{place}),'%')
+            </if>
+            <if test="indate != null and indate != ''">
+                and INDATE = #{indate}
+            </if>
+            <if test="vailddate != null and vailddate != ''">
+                and VAILDDATE = #{vailddate}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="code != null and code != ''">
+                and CODE like concat(concat('%',#{code}),'%')
+            </if>
+            <if test="num != null and num != ''">
+                and NUM = #{num}
+            </if>
+            <if test="factory != null and factory != ''">
+                and FACTORY like concat(concat('%',#{factory}),'%')
+            </if>
+            <if test="remark != null and remark != ''">
+                and REMARK = #{remark}
+            </if>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addSparepartsStatistics"
+            parameterType="com.tieda.alarm.entity.sparepartsStatistics.SparepartsStatistics">
+        insert into SPAREPARTS_STATISTICS (ID,deptid , PLACE, INDATE, VAILDDATE, NAME, CODE, NUM, FACTORY, REMARK )
+        values ( #{id,jdbcType = VARCHAR},  #{deptid,jdbcType = VARCHAR},    #{place,jdbcType = VARCHAR},                        #{indate,jdbcType = VARCHAR},                        #{vailddate,jdbcType = VARCHAR},                        #{name,jdbcType = VARCHAR},                        #{code,jdbcType = VARCHAR},                        #{num,jdbcType = VARCHAR},                        #{factory,jdbcType = VARCHAR},                        #{remark,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchSparepartsStatistics" parameterType="list">
+        insert into SPAREPARTS_STATISTICS (ID,deptid, PLACE, INDATE, VAILDDATE, NAME, CODE, NUM,
+        FACTORY, REMARK ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.deptid}, #{item.place}, #{item.indate},
+            #{item.vailddate}, #{item.name}, #{item.code}, #{item.num}, #{item.factory}, #{item.remark} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateSparepartsStatistics"
+            parameterType="com.tieda.alarm.entity.sparepartsStatistics.SparepartsStatistics">
+        update SPAREPARTS_STATISTICS
+        <set>
+            <if test="deptid != null">
+                deptid = #{deptid},
+            </if>
+            <if test="place != null">
+                PLACE = #{place},
+            </if>
+            <if test="indate != null">
+                INDATE = #{indate},
+            </if>
+            <if test="vailddate != null">
+                VAILDDATE = #{vailddate},
+            </if>
+            <if test="name != null ">
+                NAME = #{name},
+            </if>
+            <if test="code != null">
+                CODE = #{code},
+            </if>
+            <if test="num != null">
+                NUM = #{num},
+            </if>
+            <if test="factory != null">
+                FACTORY = #{factory},
+            </if>
+            <if test="remark != null ">
+                REMARK = #{remark}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathSparepartsStatistics" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update SPAREPARTS_STATISTICS
+            <set>
+                ID = #{item.id}, PLACE = #{item.place}, INDATE = #{item.indate}, VAILDDATE = #{item.vailddate}, NAME =
+                #{item.name}, CODE
+                = #{item.code}, NUM = #{item.num}, FACTORY = #{item.factory}, REMARK = #{item.remark}
+            </set>
+            where ID = #{id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteSparepartsStatisticsById" parameterType="long">
+        delete from SPAREPARTS_STATISTICS
+        where ID = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchSparepartsStatistics" parameterType="list">
+        delete from SPAREPARTS_STATISTICS
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

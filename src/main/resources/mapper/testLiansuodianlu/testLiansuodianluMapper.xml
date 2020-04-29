@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testLiansuodianlu.TestLiansuodianluMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testLiansuodianlu.TestLiansuodianlu">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <result column="ID" property="id"/>
+                                                                <result column="JLHM" property="jlhm"/>
+                                                                <result column="JLSD" property="jlsd"/>
+                                                                <result column="JLBT" property="jlbt"/>
+                                                                <result column="JLZD" property="jlzd"/>
+                                                                <result column="ZCKFXH" property="zckfxh"/>
+                                                                <result column="DCCWZBD" property="dccwzbd"/>
+                                                                <result column="DCWBS" property="dcwbs"/>
+                                                                <result column="QDZY" property="qdzy"/>
+                                                                <result column="DDDC" property="dddc"/>
+                                                                <result column="FHDC" property="fhdc"/>
+                                                                <result column="HXKFHSBDC" property="hxkfhsbdc"/>
+                                                                <result column="DDXH" property="ddxh"/>
+                                                                <result column="DDZC" property="ddzc"/>
+                                                                <result column="SSGBXH" property="ssgbxh"/>
+                                                                <result column="JJSBQDHD" property="jjsbqdhd"/>
+                                                                <result column="QXJLJS" property="qxjljs"/>
+                                                                <result column="RGYSJS" property="rgysjs"/>
+                                                                <result column="QDRKJS" property="qdrkjs"/>
+                                                                <result column="FZZDCFKFXH" property="fzzdcfkfxh"/>
+                                                                <result column="JLZCJS" property="jlzcjs"/>
+                                                                <result column="JBKZ" property="jbkz"/>
+                                                                <result column="JLBSQ" property="jlbsq"/>
+                                                                <result column="DCZDFHJS" property="dczdfhjs"/>
+                                                                <result column="ZBLQQDZYHQJKXJC" property="zblqqdzyhqjkxjc"/>
+                                                                <result column="BZDSB" property="bzdsb"/>
+                                                                <result column="YDXH" property="ydxh"/>
+                                                                <result column="JWDTY" property="jwdty"/>
+                                                                <result column="CXJYTJ" property="cxjytj"/>
+                                                                <result column="XPD6" property="xpd6"/>
+                                                                <result column="DFXCC" property="dfxcc"/>
+                                                                <result column="FJLDC" property="fjldc"/>
+                                                                <result column="QTLXDH" property="qtlxdh"/>
+                                                                <result column="FZYMJS" property="fzymjs"/>
+                                                                <result column="QZGDTDHF" property="qzgdtdhf"/>
+                                                                <result column="XHFZCGBBJ" property="xhfzcgbbj"/>
+                                                                <result column="DKTZJZDSY" property="dktzjzdsy"/>
+                                                                <result column="DCBTBLJC" property="dcbtbljc"/>
+                                                                <result column="GBYXFX" property="gbyxfx"/>
+                                                                <result column="PLCDCJL" property="plcdcjl"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="STATIONNAME" property="stationname"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestLiansuodianluById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  JLHM,  JLSD,  JLBT,  JLZD,  ZCKFXH,  DCCWZBD,  DCWBS,  QDZY,  DDDC,  FHDC,  HXKFHSBDC,  DDXH,  DDZC,  SSGBXH,  JJSBQDHD,  QXJLJS,  RGYSJS,  QDRKJS,  FZZDCFKFXH,  JLZCJS,  JBKZ,  JLBSQ,  DCZDFHJS,  ZBLQQDZYHQJKXJC,  BZDSB,  YDXH,  JWDTY,  CXJYTJ,  XPD6,  DFXCC,  FJLDC,  QTLXDH,  FZYMJS,  QZGDTDHF,  XHFZCGBBJ,  DKTZJZDSY,  DCBTBLJC,  GBYXFX,  PLCDCJL,  NOTE,  STATIONNAME,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_LIANSUODIANLU
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestLiansuodianluList" parameterType="map" resultMap="BaseResultMap">
+        select ID, JLHM, JLSD, JLBT, JLZD, ZCKFXH, DCCWZBD, DCWBS, QDZY, DDDC, FHDC, HXKFHSBDC, DDXH, DDZC, SSGBXH, JJSBQDHD, QXJLJS, RGYSJS, QDRKJS, FZZDCFKFXH, JLZCJS, JBKZ, JLBSQ, DCZDFHJS, ZBLQQDZYHQJKXJC, BZDSB, YDXH, JWDTY, CXJYTJ, XPD6, DFXCC, FJLDC, QTLXDH, FZYMJS, QZGDTDHF, XHFZCGBBJ, DKTZJZDSY, DCBTBLJC, GBYXFX, PLCDCJL, NOTE, STATIONNAME, DIRECTOR, DESIGNID, CREATEDATE         from TEST_LIANSUODIANLU
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="jlhm != null and jlhm != ''">
+                    and JLHM = #{jlhm}
+                </if>
+                            <if test="jlsd != null and jlsd != ''">
+                    and JLSD = #{jlsd}
+                </if>
+                            <if test="jlbt != null and jlbt != ''">
+                    and JLBT = #{jlbt}
+                </if>
+                            <if test="jlzd != null and jlzd != ''">
+                    and JLZD = #{jlzd}
+                </if>
+                            <if test="zckfxh != null and zckfxh != ''">
+                    and ZCKFXH = #{zckfxh}
+                </if>
+                            <if test="dccwzbd != null and dccwzbd != ''">
+                    and DCCWZBD = #{dccwzbd}
+                </if>
+                            <if test="dcwbs != null and dcwbs != ''">
+                    and DCWBS = #{dcwbs}
+                </if>
+                            <if test="qdzy != null and qdzy != ''">
+                    and QDZY = #{qdzy}
+                </if>
+                            <if test="dddc != null and dddc != ''">
+                    and DDDC = #{dddc}
+                </if>
+                            <if test="fhdc != null and fhdc != ''">
+                    and FHDC = #{fhdc}
+                </if>
+                            <if test="hxkfhsbdc != null and hxkfhsbdc != ''">
+                    and HXKFHSBDC = #{hxkfhsbdc}
+                </if>
+                            <if test="ddxh != null and ddxh != ''">
+                    and DDXH = #{ddxh}
+                </if>
+                            <if test="ddzc != null and ddzc != ''">
+                    and DDZC = #{ddzc}
+                </if>
+                            <if test="ssgbxh != null and ssgbxh != ''">
+                    and SSGBXH = #{ssgbxh}
+                </if>
+                            <if test="jjsbqdhd != null and jjsbqdhd != ''">
+                    and JJSBQDHD = #{jjsbqdhd}
+                </if>
+                            <if test="qxjljs != null and qxjljs != ''">
+                    and QXJLJS = #{qxjljs}
+                </if>
+                            <if test="rgysjs != null and rgysjs != ''">
+                    and RGYSJS = #{rgysjs}
+                </if>
+                            <if test="qdrkjs != null and qdrkjs != ''">
+                    and QDRKJS = #{qdrkjs}
+                </if>
+                            <if test="fzzdcfkfxh != null and fzzdcfkfxh != ''">
+                    and FZZDCFKFXH = #{fzzdcfkfxh}
+                </if>
+                            <if test="jlzcjs != null and jlzcjs != ''">
+                    and JLZCJS = #{jlzcjs}
+                </if>
+                            <if test="jbkz != null and jbkz != ''">
+                    and JBKZ = #{jbkz}
+                </if>
+                            <if test="jlbsq != null and jlbsq != ''">
+                    and JLBSQ = #{jlbsq}
+                </if>
+                            <if test="dczdfhjs != null and dczdfhjs != ''">
+                    and DCZDFHJS = #{dczdfhjs}
+                </if>
+                            <if test="zblqqdzyhqjkxjc != null and zblqqdzyhqjkxjc != ''">
+                    and ZBLQQDZYHQJKXJC = #{zblqqdzyhqjkxjc}
+                </if>
+                            <if test="bzdsb != null and bzdsb != ''">
+                    and BZDSB = #{bzdsb}
+                </if>
+                            <if test="ydxh != null and ydxh != ''">
+                    and YDXH = #{ydxh}
+                </if>
+                            <if test="jwdty != null and jwdty != ''">
+                    and JWDTY = #{jwdty}
+                </if>
+                            <if test="cxjytj != null and cxjytj != ''">
+                    and CXJYTJ = #{cxjytj}
+                </if>
+                            <if test="xpd6 != null and xpd6 != ''">
+                    and XPD6 = #{xpd6}
+                </if>
+                            <if test="dfxcc != null and dfxcc != ''">
+                    and DFXCC = #{dfxcc}
+                </if>
+                            <if test="fjldc != null and fjldc != ''">
+                    and FJLDC = #{fjldc}
+                </if>
+                            <if test="qtlxdh != null and qtlxdh != ''">
+                    and QTLXDH = #{qtlxdh}
+                </if>
+                            <if test="fzymjs != null and fzymjs != ''">
+                    and FZYMJS = #{fzymjs}
+                </if>
+                            <if test="qzgdtdhf != null and qzgdtdhf != ''">
+                    and QZGDTDHF = #{qzgdtdhf}
+                </if>
+                            <if test="xhfzcgbbj != null and xhfzcgbbj != ''">
+                    and XHFZCGBBJ = #{xhfzcgbbj}
+                </if>
+                            <if test="dktzjzdsy != null and dktzjzdsy != ''">
+                    and DKTZJZDSY = #{dktzjzdsy}
+                </if>
+                            <if test="dcbtbljc != null and dcbtbljc != ''">
+                    and DCBTBLJC = #{dcbtbljc}
+                </if>
+                            <if test="gbyxfx != null and gbyxfx != ''">
+                    and GBYXFX = #{gbyxfx}
+                </if>
+                            <if test="plcdcjl != null and plcdcjl != ''">
+                    and PLCDCJL = #{plcdcjl}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="stationname != null and stationname != ''">
+                    and STATIONNAME = #{stationname}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestLiansuodianlu" parameterType="com.tieda.alarm.entity.testLiansuodianlu.TestLiansuodianlu">
+        insert into TEST_LIANSUODIANLU (ID, JLHM, JLSD, JLBT, JLZD, ZCKFXH, DCCWZBD, DCWBS, QDZY, DDDC, FHDC, HXKFHSBDC, DDXH, DDZC, SSGBXH, JJSBQDHD, QXJLJS, RGYSJS, QDRKJS, FZZDCFKFXH, JLZCJS, JBKZ, JLBSQ, DCZDFHJS, ZBLQQDZYHQJKXJC, BZDSB, YDXH, JWDTY, CXJYTJ, XPD6, DFXCC, FJLDC, QTLXDH, FZYMJS, QZGDTDHF, XHFZCGBBJ, DKTZJZDSY, DCBTBLJC, GBYXFX, PLCDCJL, NOTE, STATIONNAME, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{jlhm,jdbcType = VARCHAR},                    #{jlsd,jdbcType = VARCHAR},                    #{jlbt,jdbcType = VARCHAR},                    #{jlzd,jdbcType = VARCHAR},                    #{zckfxh,jdbcType = VARCHAR},                    #{dccwzbd,jdbcType = VARCHAR},                    #{dcwbs,jdbcType = VARCHAR},                    #{qdzy,jdbcType = VARCHAR},                    #{dddc,jdbcType = VARCHAR},                    #{fhdc,jdbcType = VARCHAR},                    #{hxkfhsbdc,jdbcType = VARCHAR},                    #{ddxh,jdbcType = VARCHAR},                    #{ddzc,jdbcType = VARCHAR},                    #{ssgbxh,jdbcType = VARCHAR},                    #{jjsbqdhd,jdbcType = VARCHAR},                    #{qxjljs,jdbcType = VARCHAR},                    #{rgysjs,jdbcType = VARCHAR},                    #{qdrkjs,jdbcType = VARCHAR},                    #{fzzdcfkfxh,jdbcType = VARCHAR},                    #{jlzcjs,jdbcType = VARCHAR},                    #{jbkz,jdbcType = VARCHAR},                    #{jlbsq,jdbcType = VARCHAR},                    #{dczdfhjs,jdbcType = VARCHAR},                    #{zblqqdzyhqjkxjc,jdbcType = VARCHAR},                    #{bzdsb,jdbcType = VARCHAR},                    #{ydxh,jdbcType = VARCHAR},                    #{jwdty,jdbcType = VARCHAR},                    #{cxjytj,jdbcType = VARCHAR},                    #{xpd6,jdbcType = VARCHAR},                    #{dfxcc,jdbcType = VARCHAR},                    #{fjldc,jdbcType = VARCHAR},                    #{qtlxdh,jdbcType = VARCHAR},                    #{fzymjs,jdbcType = VARCHAR},                    #{qzgdtdhf,jdbcType = VARCHAR},                    #{xhfzcgbbj,jdbcType = VARCHAR},                    #{dktzjzdsy,jdbcType = VARCHAR},                    #{dcbtbljc,jdbcType = VARCHAR},                    #{gbyxfx,jdbcType = VARCHAR},                    #{plcdcjl,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{stationname,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestLiansuodianlu" parameterType="list">
+        insert into TEST_LIANSUODIANLU (ID, JLHM, JLSD, JLBT, JLZD, ZCKFXH, DCCWZBD, DCWBS, QDZY, DDDC, FHDC, HXKFHSBDC, DDXH, DDZC, SSGBXH, JJSBQDHD, QXJLJS, RGYSJS, QDRKJS, FZZDCFKFXH, JLZCJS, JBKZ, JLBSQ, DCZDFHJS, ZBLQQDZYHQJKXJC, BZDSB, YDXH, JWDTY, CXJYTJ, XPD6, DFXCC, FJLDC, QTLXDH, FZYMJS, QZGDTDHF, XHFZCGBBJ, DKTZJZDSY, DCBTBLJC, GBYXFX, PLCDCJL, NOTE, STATIONNAME, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.jlhm}, #{item.jlsd}, #{item.jlbt}, #{item.jlzd}, #{item.zckfxh}, #{item.dccwzbd}, #{item.dcwbs}, #{item.qdzy}, #{item.dddc}, #{item.fhdc}, #{item.hxkfhsbdc}, #{item.ddxh}, #{item.ddzc}, #{item.ssgbxh}, #{item.jjsbqdhd}, #{item.qxjljs}, #{item.rgysjs}, #{item.qdrkjs}, #{item.fzzdcfkfxh}, #{item.jlzcjs}, #{item.jbkz}, #{item.jlbsq}, #{item.dczdfhjs}, #{item.zblqqdzyhqjkxjc}, #{item.bzdsb}, #{item.ydxh}, #{item.jwdty}, #{item.cxjytj}, #{item.xpd6}, #{item.dfxcc}, #{item.fjldc}, #{item.qtlxdh}, #{item.fzymjs}, #{item.qzgdtdhf}, #{item.xhfzcgbbj}, #{item.dktzjzdsy}, #{item.dcbtbljc}, #{item.gbyxfx}, #{item.plcdcjl}, #{item.note}, #{item.stationname}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestLiansuodianlu" parameterType="com.tieda.alarm.entity.testLiansuodianlu.TestLiansuodianlu">
+        update TEST_LIANSUODIANLU
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="jlhm != null and jlhm != ''">
+                        JLHM = #{jlhm},                    </if>
+                                                                <if test="jlsd != null and jlsd != ''">
+                        JLSD = #{jlsd},                    </if>
+                                                                <if test="jlbt != null and jlbt != ''">
+                        JLBT = #{jlbt},                    </if>
+                                                                <if test="jlzd != null and jlzd != ''">
+                        JLZD = #{jlzd},                    </if>
+                                                                <if test="zckfxh != null and zckfxh != ''">
+                        ZCKFXH = #{zckfxh},                    </if>
+                                                                <if test="dccwzbd != null and dccwzbd != ''">
+                        DCCWZBD = #{dccwzbd},                    </if>
+                                                                <if test="dcwbs != null and dcwbs != ''">
+                        DCWBS = #{dcwbs},                    </if>
+                                                                <if test="qdzy != null and qdzy != ''">
+                        QDZY = #{qdzy},                    </if>
+                                                                <if test="dddc != null and dddc != ''">
+                        DDDC = #{dddc},                    </if>
+                                                                <if test="fhdc != null and fhdc != ''">
+                        FHDC = #{fhdc},                    </if>
+                                                                <if test="hxkfhsbdc != null and hxkfhsbdc != ''">
+                        HXKFHSBDC = #{hxkfhsbdc},                    </if>
+                                                                <if test="ddxh != null and ddxh != ''">
+                        DDXH = #{ddxh},                    </if>
+                                                                <if test="ddzc != null and ddzc != ''">
+                        DDZC = #{ddzc},                    </if>
+                                                                <if test="ssgbxh != null and ssgbxh != ''">
+                        SSGBXH = #{ssgbxh},                    </if>
+                                                                <if test="jjsbqdhd != null and jjsbqdhd != ''">
+                        JJSBQDHD = #{jjsbqdhd},                    </if>
+                                                                <if test="qxjljs != null and qxjljs != ''">
+                        QXJLJS = #{qxjljs},                    </if>
+                                                                <if test="rgysjs != null and rgysjs != ''">
+                        RGYSJS = #{rgysjs},                    </if>
+                                                                <if test="qdrkjs != null and qdrkjs != ''">
+                        QDRKJS = #{qdrkjs},                    </if>
+                                                                <if test="fzzdcfkfxh != null and fzzdcfkfxh != ''">
+                        FZZDCFKFXH = #{fzzdcfkfxh},                    </if>
+                                                                <if test="jlzcjs != null and jlzcjs != ''">
+                        JLZCJS = #{jlzcjs},                    </if>
+                                                                <if test="jbkz != null and jbkz != ''">
+                        JBKZ = #{jbkz},                    </if>
+                                                                <if test="jlbsq != null and jlbsq != ''">
+                        JLBSQ = #{jlbsq},                    </if>
+                                                                <if test="dczdfhjs != null and dczdfhjs != ''">
+                        DCZDFHJS = #{dczdfhjs},                    </if>
+                                                                <if test="zblqqdzyhqjkxjc != null and zblqqdzyhqjkxjc != ''">
+                        ZBLQQDZYHQJKXJC = #{zblqqdzyhqjkxjc},                    </if>
+                                                                <if test="bzdsb != null and bzdsb != ''">
+                        BZDSB = #{bzdsb},                    </if>
+                                                                <if test="ydxh != null and ydxh != ''">
+                        YDXH = #{ydxh},                    </if>
+                                                                <if test="jwdty != null and jwdty != ''">
+                        JWDTY = #{jwdty},                    </if>
+                                                                <if test="cxjytj != null and cxjytj != ''">
+                        CXJYTJ = #{cxjytj},                    </if>
+                                                                <if test="xpd6 != null and xpd6 != ''">
+                        XPD6 = #{xpd6},                    </if>
+                                                                <if test="dfxcc != null and dfxcc != ''">
+                        DFXCC = #{dfxcc},                    </if>
+                                                                <if test="fjldc != null and fjldc != ''">
+                        FJLDC = #{fjldc},                    </if>
+                                                                <if test="qtlxdh != null and qtlxdh != ''">
+                        QTLXDH = #{qtlxdh},                    </if>
+                                                                <if test="fzymjs != null and fzymjs != ''">
+                        FZYMJS = #{fzymjs},                    </if>
+                                                                <if test="qzgdtdhf != null and qzgdtdhf != ''">
+                        QZGDTDHF = #{qzgdtdhf},                    </if>
+                                                                <if test="xhfzcgbbj != null and xhfzcgbbj != ''">
+                        XHFZCGBBJ = #{xhfzcgbbj},                    </if>
+                                                                <if test="dktzjzdsy != null and dktzjzdsy != ''">
+                        DKTZJZDSY = #{dktzjzdsy},                    </if>
+                                                                <if test="dcbtbljc != null and dcbtbljc != ''">
+                        DCBTBLJC = #{dcbtbljc},                    </if>
+                                                                <if test="gbyxfx != null and gbyxfx != ''">
+                        GBYXFX = #{gbyxfx},                    </if>
+                                                                <if test="plcdcjl != null and plcdcjl != ''">
+                        PLCDCJL = #{plcdcjl},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="stationname != null and stationname != ''">
+                        STATIONNAME = #{stationname},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestLiansuodianlu" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_LIANSUODIANLU
+            <set>
+                                                            ID = #{item.id},                                                                                JLHM = #{item.jlhm},                                                                                JLSD = #{item.jlsd},                                                                                JLBT = #{item.jlbt},                                                                                JLZD = #{item.jlzd},                                                                                ZCKFXH = #{item.zckfxh},                                                                                DCCWZBD = #{item.dccwzbd},                                                                                DCWBS = #{item.dcwbs},                                                                                QDZY = #{item.qdzy},                                                                                DDDC = #{item.dddc},                                                                                FHDC = #{item.fhdc},                                                                                HXKFHSBDC = #{item.hxkfhsbdc},                                                                                DDXH = #{item.ddxh},                                                                                DDZC = #{item.ddzc},                                                                                SSGBXH = #{item.ssgbxh},                                                                                JJSBQDHD = #{item.jjsbqdhd},                                                                                QXJLJS = #{item.qxjljs},                                                                                RGYSJS = #{item.rgysjs},                                                                                QDRKJS = #{item.qdrkjs},                                                                                FZZDCFKFXH = #{item.fzzdcfkfxh},                                                                                JLZCJS = #{item.jlzcjs},                                                                                JBKZ = #{item.jbkz},                                                                                JLBSQ = #{item.jlbsq},                                                                                DCZDFHJS = #{item.dczdfhjs},                                                                                ZBLQQDZYHQJKXJC = #{item.zblqqdzyhqjkxjc},                                                                                BZDSB = #{item.bzdsb},                                                                                YDXH = #{item.ydxh},                                                                                JWDTY = #{item.jwdty},                                                                                CXJYTJ = #{item.cxjytj},                                                                                XPD6 = #{item.xpd6},                                                                                DFXCC = #{item.dfxcc},                                                                                FJLDC = #{item.fjldc},                                                                                QTLXDH = #{item.qtlxdh},                                                                                FZYMJS = #{item.fzymjs},                                                                                QZGDTDHF = #{item.qzgdtdhf},                                                                                XHFZCGBBJ = #{item.xhfzcgbbj},                                                                                DKTZJZDSY = #{item.dktzjzdsy},                                                                                DCBTBLJC = #{item.dcbtbljc},                                                                                GBYXFX = #{item.gbyxfx},                                                                                PLCDCJL = #{item.plcdcjl},                                                                                NOTE = #{item.note},                                                                                STATIONNAME = #{item.stationname},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestLiansuodianluById" parameterType="long">
+        delete from TEST_LIANSUODIANLU
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestLiansuodianlu" parameterType="list">
+        delete from TEST_LIANSUODIANLU
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

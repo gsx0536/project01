@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testZdzjbs.TestZdzjbsMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testZdzjbs.TestZdzjbs">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <result column="ID" property="id"/>
+                                                                <result column="JLSD" property="jlsd"/>
+                                                                <result column="JLZD" property="jlzd"/>
+                                                                <result column="ZDBS" property="zdbs"/>
+                                                                <result column="ZC_BLFC" property="zcBlfc"/>
+                                                                <result column="ZC_TYFC" property="zcTyfc"/>
+                                                                <result column="ZC_LCCF" property="zcLccf"/>
+                                                                <result column="ZC_LCYX" property="zcLcyx"/>
+                                                                <result column="ZC_LCDD" property="zcLcdd"/>
+                                                                <result column="QXFY" property="qxfy"/>
+                                                                <result column="BZD_BLFC" property="bzdBlfc"/>
+                                                                <result column="BZD_TYFC" property="bzdTyfc"/>
+                                                                <result column="BZD_LCFC" property="bzdLcfc"/>
+                                                                <result column="BZD_LCYX" property="bzdLcyx"/>
+                                                                <result column="BZD_LCDD" property="bzdLcdd"/>
+                                                                <result column="GZ_FCQ" property="gzFcq"/>
+                                                                <result column="GZ_QJKXYZ" property="gzQjkxyz"/>
+                                                                <result column="GZ_QJKXLZ" property="gzQjkxlz"/>
+                                                                <result column="GZ_BNFC" property="gzBnfc"/>
+                                                                <result column="GZ_BZD" property="gzBzd"/>
+                                                                <result column="SBZBZD" property="sbzbzd"/>
+                                                                <result column="LZBBL" property="lzbbl"/>
+                                                                <result column="LZBTQ" property="lzbtq"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestZdzjbsById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  JLSD,  JLZD,  ZDBS,  ZC_BLFC,  ZC_TYFC,  ZC_LCCF,  ZC_LCYX,  ZC_LCDD,  QXFY,  BZD_BLFC,  BZD_TYFC,  BZD_LCFC,  BZD_LCYX,  BZD_LCDD,  GZ_FCQ,  GZ_QJKXYZ,  GZ_QJKXLZ,  GZ_BNFC,  GZ_BZD,  SBZBZD,  LZBBL,  LZBTQ,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_ZDZJBS
+                                                                                                                                                                                                                                                                                                                                                            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestZdzjbsList" parameterType="map" resultMap="BaseResultMap">
+        select ID, JLSD, JLZD, ZDBS, ZC_BLFC, ZC_TYFC, ZC_LCCF, ZC_LCYX, ZC_LCDD, QXFY, BZD_BLFC, BZD_TYFC, BZD_LCFC, BZD_LCYX, BZD_LCDD, GZ_FCQ, GZ_QJKXYZ, GZ_QJKXLZ, GZ_BNFC, GZ_BZD, SBZBZD, LZBBL, LZBTQ, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         from TEST_ZDZJBS
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="jlsd != null and jlsd != ''">
+                    and JLSD = #{jlsd}
+                </if>
+                            <if test="jlzd != null and jlzd != ''">
+                    and JLZD = #{jlzd}
+                </if>
+                            <if test="zdbs != null and zdbs != ''">
+                    and ZDBS = #{zdbs}
+                </if>
+                            <if test="zcBlfc != null and zcBlfc != ''">
+                    and ZC_BLFC = #{zcBlfc}
+                </if>
+                            <if test="zcTyfc != null and zcTyfc != ''">
+                    and ZC_TYFC = #{zcTyfc}
+                </if>
+                            <if test="zcLccf != null and zcLccf != ''">
+                    and ZC_LCCF = #{zcLccf}
+                </if>
+                            <if test="zcLcyx != null and zcLcyx != ''">
+                    and ZC_LCYX = #{zcLcyx}
+                </if>
+                            <if test="zcLcdd != null and zcLcdd != ''">
+                    and ZC_LCDD = #{zcLcdd}
+                </if>
+                            <if test="qxfy != null and qxfy != ''">
+                    and QXFY = #{qxfy}
+                </if>
+                            <if test="bzdBlfc != null and bzdBlfc != ''">
+                    and BZD_BLFC = #{bzdBlfc}
+                </if>
+                            <if test="bzdTyfc != null and bzdTyfc != ''">
+                    and BZD_TYFC = #{bzdTyfc}
+                </if>
+                            <if test="bzdLcfc != null and bzdLcfc != ''">
+                    and BZD_LCFC = #{bzdLcfc}
+                </if>
+                            <if test="bzdLcyx != null and bzdLcyx != ''">
+                    and BZD_LCYX = #{bzdLcyx}
+                </if>
+                            <if test="bzdLcdd != null and bzdLcdd != ''">
+                    and BZD_LCDD = #{bzdLcdd}
+                </if>
+                            <if test="gzFcq != null and gzFcq != ''">
+                    and GZ_FCQ = #{gzFcq}
+                </if>
+                            <if test="gzQjkxyz != null and gzQjkxyz != ''">
+                    and GZ_QJKXYZ = #{gzQjkxyz}
+                </if>
+                            <if test="gzQjkxlz != null and gzQjkxlz != ''">
+                    and GZ_QJKXLZ = #{gzQjkxlz}
+                </if>
+                            <if test="gzBnfc != null and gzBnfc != ''">
+                    and GZ_BNFC = #{gzBnfc}
+                </if>
+                            <if test="gzBzd != null and gzBzd != ''">
+                    and GZ_BZD = #{gzBzd}
+                </if>
+                            <if test="sbzbzd != null and sbzbzd != ''">
+                    and SBZBZD = #{sbzbzd}
+                </if>
+                            <if test="lzbbl != null and lzbbl != ''">
+                    and LZBBL = #{lzbbl}
+                </if>
+                            <if test="lzbtq != null and lzbtq != ''">
+                    and LZBTQ = #{lzbtq}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestZdzjbs" parameterType="com.tieda.alarm.entity.testZdzjbs.TestZdzjbs">
+        insert into TEST_ZDZJBS (ID, JLSD, JLZD, ZDBS, ZC_BLFC, ZC_TYFC, ZC_LCCF, ZC_LCYX, ZC_LCDD, QXFY, BZD_BLFC, BZD_TYFC, BZD_LCFC, BZD_LCYX, BZD_LCDD, GZ_FCQ, GZ_QJKXYZ, GZ_QJKXLZ, GZ_BNFC, GZ_BZD, SBZBZD, LZBBL, LZBTQ, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{jlsd,jdbcType = VARCHAR},                    #{jlzd,jdbcType = VARCHAR},                    #{zdbs,jdbcType = VARCHAR},                    #{zcBlfc,jdbcType = VARCHAR},                    #{zcTyfc,jdbcType = VARCHAR},                    #{zcLccf,jdbcType = VARCHAR},                    #{zcLcyx,jdbcType = VARCHAR},                    #{zcLcdd,jdbcType = VARCHAR},                    #{qxfy,jdbcType = VARCHAR},                    #{bzdBlfc,jdbcType = VARCHAR},                    #{bzdTyfc,jdbcType = VARCHAR},                    #{bzdLcfc,jdbcType = VARCHAR},                    #{bzdLcyx,jdbcType = VARCHAR},                    #{bzdLcdd,jdbcType = VARCHAR},                    #{gzFcq,jdbcType = VARCHAR},                    #{gzQjkxyz,jdbcType = VARCHAR},                    #{gzQjkxlz,jdbcType = VARCHAR},                    #{gzBnfc,jdbcType = VARCHAR},                    #{gzBzd,jdbcType = VARCHAR},                    #{sbzbzd,jdbcType = VARCHAR},                    #{lzbbl,jdbcType = VARCHAR},                    #{lzbtq,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestZdzjbs" parameterType="list">
+        insert into TEST_ZDZJBS (ID, JLSD, JLZD, ZDBS, ZC_BLFC, ZC_TYFC, ZC_LCCF, ZC_LCYX, ZC_LCDD, QXFY, BZD_BLFC, BZD_TYFC, BZD_LCFC, BZD_LCYX, BZD_LCDD, GZ_FCQ, GZ_QJKXYZ, GZ_QJKXLZ, GZ_BNFC, GZ_BZD, SBZBZD, LZBBL, LZBTQ, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.jlsd}, #{item.jlzd}, #{item.zdbs}, #{item.zcBlfc}, #{item.zcTyfc}, #{item.zcLccf}, #{item.zcLcyx}, #{item.zcLcdd}, #{item.qxfy}, #{item.bzdBlfc}, #{item.bzdTyfc}, #{item.bzdLcfc}, #{item.bzdLcyx}, #{item.bzdLcdd}, #{item.gzFcq}, #{item.gzQjkxyz}, #{item.gzQjkxlz}, #{item.gzBnfc}, #{item.gzBzd}, #{item.sbzbzd}, #{item.lzbbl}, #{item.lzbtq}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestZdzjbs" parameterType="com.tieda.alarm.entity.testZdzjbs.TestZdzjbs">
+        update TEST_ZDZJBS
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="jlsd != null and jlsd != ''">
+                        JLSD = #{jlsd},                    </if>
+                                                                <if test="jlzd != null and jlzd != ''">
+                        JLZD = #{jlzd},                    </if>
+                                                                <if test="zdbs != null and zdbs != ''">
+                        ZDBS = #{zdbs},                    </if>
+                                                                <if test="zcBlfc != null and zcBlfc != ''">
+                        ZC_BLFC = #{zcBlfc},                    </if>
+                                                                <if test="zcTyfc != null and zcTyfc != ''">
+                        ZC_TYFC = #{zcTyfc},                    </if>
+                                                                <if test="zcLccf != null and zcLccf != ''">
+                        ZC_LCCF = #{zcLccf},                    </if>
+                                                                <if test="zcLcyx != null and zcLcyx != ''">
+                        ZC_LCYX = #{zcLcyx},                    </if>
+                                                                <if test="zcLcdd != null and zcLcdd != ''">
+                        ZC_LCDD = #{zcLcdd},                    </if>
+                                                                <if test="qxfy != null and qxfy != ''">
+                        QXFY = #{qxfy},                    </if>
+                                                                <if test="bzdBlfc != null and bzdBlfc != ''">
+                        BZD_BLFC = #{bzdBlfc},                    </if>
+                                                                <if test="bzdTyfc != null and bzdTyfc != ''">
+                        BZD_TYFC = #{bzdTyfc},                    </if>
+                                                                <if test="bzdLcfc != null and bzdLcfc != ''">
+                        BZD_LCFC = #{bzdLcfc},                    </if>
+                                                                <if test="bzdLcyx != null and bzdLcyx != ''">
+                        BZD_LCYX = #{bzdLcyx},                    </if>
+                                                                <if test="bzdLcdd != null and bzdLcdd != ''">
+                        BZD_LCDD = #{bzdLcdd},                    </if>
+                                                                <if test="gzFcq != null and gzFcq != ''">
+                        GZ_FCQ = #{gzFcq},                    </if>
+                                                                <if test="gzQjkxyz != null and gzQjkxyz != ''">
+                        GZ_QJKXYZ = #{gzQjkxyz},                    </if>
+                                                                <if test="gzQjkxlz != null and gzQjkxlz != ''">
+                        GZ_QJKXLZ = #{gzQjkxlz},                    </if>
+                                                                <if test="gzBnfc != null and gzBnfc != ''">
+                        GZ_BNFC = #{gzBnfc},                    </if>
+                                                                <if test="gzBzd != null and gzBzd != ''">
+                        GZ_BZD = #{gzBzd},                    </if>
+                                                                <if test="sbzbzd != null and sbzbzd != ''">
+                        SBZBZD = #{sbzbzd},                    </if>
+                                                                <if test="lzbbl != null and lzbbl != ''">
+                        LZBBL = #{lzbbl},                    </if>
+                                                                <if test="lzbtq != null and lzbtq != ''">
+                        LZBTQ = #{lzbtq},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestZdzjbs" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_ZDZJBS
+            <set>
+                                                            ID = #{item.id},                                                                                JLSD = #{item.jlsd},                                                                                JLZD = #{item.jlzd},                                                                                ZDBS = #{item.zdbs},                                                                                ZC_BLFC = #{item.zcBlfc},                                                                                ZC_TYFC = #{item.zcTyfc},                                                                                ZC_LCCF = #{item.zcLccf},                                                                                ZC_LCYX = #{item.zcLcyx},                                                                                ZC_LCDD = #{item.zcLcdd},                                                                                QXFY = #{item.qxfy},                                                                                BZD_BLFC = #{item.bzdBlfc},                                                                                BZD_TYFC = #{item.bzdTyfc},                                                                                BZD_LCFC = #{item.bzdLcfc},                                                                                BZD_LCYX = #{item.bzdLcyx},                                                                                BZD_LCDD = #{item.bzdLcdd},                                                                                GZ_FCQ = #{item.gzFcq},                                                                                GZ_QJKXYZ = #{item.gzQjkxyz},                                                                                GZ_QJKXLZ = #{item.gzQjkxlz},                                                                                GZ_BNFC = #{item.gzBnfc},                                                                                GZ_BZD = #{item.gzBzd},                                                                                SBZBZD = #{item.sbzbzd},                                                                                LZBBL = #{item.lzbbl},                                                                                LZBTQ = #{item.lzbtq},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestZdzjbsById" parameterType="long">
+        delete from TEST_ZDZJBS
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestZdzjbs" parameterType="list">
+        delete from TEST_ZDZJBS
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

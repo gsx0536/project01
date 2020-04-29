@@ -1,0 +1,203 @@
+import { Component, OnInit } from '@angular/core';
+import { _HttpClient } from '@delon/theme';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { HttpParams } from "@angular/common/http";
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { ApiService } from '../../../core/api.service';
+
+@Component({
+    selector: 'app-${table.entityPath}.component',
+    templateUrl: './${table.entityPath}.component.html'
+})
+
+export class ${table.entityPath}Component implements OnInit {
+    tableData: any = [];
+    displayData: any = [];
+    addData: any = {};
+    editData: any = {};
+    editIndex = 0;
+    pageTotal = 0;
+    pageIndexTable = 1;
+    selectedValue = '20';
+    allChecked = false;
+    indeterminate = false;
+    addVisible = false;
+    editVisible = false;
+    editStatus = false;
+    buildtext: any = {};
+
+#foreach ($field in ${table.fields})
+    #if(!${field.keyFlag})
+            #if($field.comment.split("-").get(1)=='select')
+                ${field.propertyName}List:any=[];
+            #end
+    #end
+#end
+
+
+#foreach ($field in ${table.fields})
+    #if(!${field.keyFlag})
+            #if($field.comment.split("-").get(1)=='select')
+                selectedChange${field.propertyName}(e) {
+                    setTimeout(() => {
+                    for (let i in this.${field.propertyName}List) {
+                        if (this.${field.propertyName}List[i].id == this.addData.${field.propertyName}) {
+                            break;
+                            }
+                        }
+                    }, 500)
+                }
+        #end
+    #end
+#end
+
+    constructor(
+        private apiService: ApiService,
+        private activatedRoute: ActivatedRoute,
+        private http: _HttpClient,
+        private router: Router,
+        public msg: NzMessageService,
+        private modalService: NzModalService
+    ) { }
+
+    ngOnInit() {
+        this.readyload(this.pageIndexTable, this.selectedValue);
+        this.activatedRoute.params.subscribe((params: Params) => {
+            if(params.status == "edit"){
+                this.editStatus = true;
+            }
+        });
+    #foreach ($field in ${table.fields})
+        #if(!${field.keyFlag})
+            #if($field.comment.split("-").get(1)=='select')
+                this.apiService.getAllChejian().subscribe((res: any) => {
+                    if (res.type == "success") {
+                        this.${field.propertyName}List = res.type.pageList
+                    }
+                });
+            #end
+        #end
+    #end
+    }
+
+    tablestyle = {
+        nzScroll: {
+        y: `${this.getHeight()}px`
+        }
+    };
+
+    getHeight() {
+        return window.innerHeight - 350;
+    }
+    //分页数量
+    selectedChange() {
+        this.readyload(this.pageIndexTable, this.selectedValue);
+    }
+    rowChangeTable(ev) {
+        this.pageIndexTable = ev;
+        this.readyload(this.pageIndexTable, this.selectedValue);
+    }
+    currentPageDataChange($event): void {
+        this.displayData = $event;
+        this.refreshStatus();
+    }
+    refreshStatus(): void {
+        const allChecked = this.displayData.filter(value => !value.disabled).every(value => value.checked === true);
+        const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
+        this.allChecked = allChecked;
+        this.indeterminate = (!allChecked) && (!allUnChecked);
+    }
+    //全选
+    checkAll(value: boolean): void {
+        this.displayData.forEach(data => {
+            if (!data.disabled) {
+                data.checked = value;
+            }
+        });
+        this.refreshStatus();
+    }
+    //加载当前列表
+    readyload(page, limit) {
+        let dataurl = this.apiService.baseUrl('build') + '/${table.entityPath}/query?page=' + page + '&limit=' + limit;
+        #foreach ($field in ${table.fields})
+            #if(!${field.keyFlag})
+                this.buildtext.${field.propertyName} != '' &&  this.buildtext.${field.propertyName} !=undefined? dataurl += '&${field.propertyName}='+this.buildtext.${field.propertyName} : '';
+            #end
+        #end
+        this.http.get(dataurl).subscribe((res: any) => {
+            this.tableData = res.data;
+            this.pageTotal = res.count;
+        });
+    }
+    //打开新增弹出层
+    addModel() {
+        this.addVisible = true;
+    }
+    //新增弹出层-确定
+    addOk() {
+        if (JSON.stringify(this.addData) == '{}') {
+            this.msg.error('新增的内容不能为空', { nzDuration: 1000 });
+            return;
+        }
+        let dataurl = this.apiService.baseUrl('build') + '/${table.entityPath}/add';
+
+    let params={#foreach ($field in ${table.fields})
+                    #if(!${field.keyFlag})
+                        "${field.propertyName}":this.addData.${field.propertyName}#if($foreach.hasNext),#end
+                    #end
+                #end}
+
+
+        this.http.post(dataurl, params).subscribe((res: any) => {
+            this.msg.success('新增成功', { nzDuration: 1000 });
+            this.readyload(this.pageIndexTable, this.selectedValue);
+            this.addVisible = false;
+        });
+    }
+    //新增弹出层-取消
+    addCancel() {
+        this.addVisible = false;
+    }
+    //打开修改弹出层
+    editModel(data, index) {
+        let newDate = JSON.stringify(data);
+        this.editIndex = index;
+        this.editData = JSON.parse(newDate);
+        this.editVisible = true;
+    }
+    //修改弹出层-确定
+    editOk() {
+        let dataurl = this.apiService.baseUrl('build') + '/${table.entityPath}/update';
+        let params={#foreach($field in ${table.fields})
+        "${field.propertyName}":this.editData.${field.propertyName}#if($foreach.hasNext),#end
+        #end}
+        this.http.post(dataurl, params).subscribe((res: any) => {
+            this.msg.success('修改成功', { nzDuration: 1000 });
+            this.tableData[this.editIndex] = this.editData;
+            this.editVisible = false;
+        });
+    }
+    //修改弹出层-取消
+    editCancel() {
+        this.editVisible = false;
+    }
+    //打开删除弹出层
+    delModel(data) {
+        this.modalService.confirm({
+            nzTitle: '确定删除 <font color="#ff0000">' + data.content + '</font> 吗？',
+            nzOkText: '确定',
+            nzCancelText: '取消',
+            nzOnOk: () => {
+                let dataurl = this.apiService.baseUrl('build') + '/${table.entityPath}/delete/' + data.id;
+                this.http.post(dataurl).subscribe((res: any) => {
+                    this.msg.success('删除成功', { nzDuration: 1000 });
+                    this.readyload(this.pageIndexTable, this.selectedValue);
+                    this.addVisible = false;
+                });
+            },
+            nzOnCancel: () => {
+                // to do
+            }
+        });
+    }
+}

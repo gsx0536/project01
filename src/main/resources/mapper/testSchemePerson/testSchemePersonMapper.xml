@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testSchemePerson.TestSchemePersonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testSchemePerson.TestSchemePerson">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="DUTY" property="duty"/>
+        <result column="CONTENT" property="content"/>
+        <result column="CHARGE" property="charge"/>
+        <result column="SCHEMEID" property="schemeid"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getTestSchemePersonById" parameterType="long" resultMap="BaseResultMap">
+        select ID, NAME, DUTY, CONTENT, CHARGE, SCHEMEID
+        from TEST_SCHEME_PERSON
+
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestSchemePersonList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, DUTY, CONTENT, CHARGE, SCHEMEID from TEST_SCHEME_PERSON
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="duty != null and duty != ''">
+                and DUTY = #{duty}
+            </if>
+            <if test="content != null and content != ''">
+                and CONTENT = #{content}
+            </if>
+            <if test="charge != null and charge != ''">
+                and CHARGE = #{charge}
+            </if>
+            <if test="schemeid != null and schemeid != ''">
+                and SCHEMEID = #{schemeid}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestSchemePerson" parameterType="com.tieda.alarm.entity.testSchemePerson.TestSchemePerson">
+        insert into TEST_SCHEME_PERSON (ID, NAME, DUTY, CONTENT, CHARGE, SCHEMEID)
+        values (#{id,jdbcType = VARCHAR},
+                #{name,jdbcType = VARCHAR},
+                #{duty,jdbcType = VARCHAR},
+                #{content,jdbcType = VARCHAR},
+                #{charge,jdbcType = VARCHAR},
+                #{schemeid,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestSchemePerson" parameterType="list">
+        insert into TEST_SCHEME_PERSON (ID, NAME, DUTY, CONTENT, CHARGE, SCHEMEID )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+             #{item.id,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.duty,jdbcType=VARCHAR},
+            #{item.content,jdbcType=VARCHAR},
+            #{item.charge,jdbcType=VARCHAR},
+            #{item.schemeid,jdbcType=VARCHAR} from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestSchemePerson" parameterType="com.tieda.alarm.entity.testSchemePerson.TestSchemePerson">
+        update TEST_SCHEME_PERSON
+        <set>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="duty != null and duty != ''">
+                DUTY = #{duty},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="charge != null and charge != ''">
+                CHARGE = #{charge},
+            </if>
+            <if test="schemeid != null and schemeid != ''">
+                SCHEMEID = #{schemeid}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestSchemePerson" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_SCHEME_PERSON
+            <set>
+                NAME = #{item.name}, DUTY = #{item.duty}, CONTENT = #{item.content}, CHARGE = #{item.charge}, SCHEMEID =
+                #{item.schemeid}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestSchemePersonById" parameterType="long">
+        delete
+        from TEST_SCHEME_PERSON
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestSchemePerson" parameterType="list">
+        delete from TEST_SCHEME_PERSON
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

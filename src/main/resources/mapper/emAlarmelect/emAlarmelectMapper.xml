@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.emAlarmelect.EmAlarmelectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.emAlarmelect.EmAlarmelect">
+        <id column="N_ID" property="nId"/>
+        <result column="ALARMTYPEID" property="alarmtypeid"/>
+        <result column="ALARMELEMAPID" property="alarmelemapid"/>
+        <result column="ALARMELEMAPNAME" property="alarmelemapname"/>
+        <result column="ALARMELEMAPNODES" property="alarmelemapnodes"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getEmAlarmelectById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  ALARMTYPEID,  ALARMELEMAPID,  ALARMELEMAPNAME,  ALARMELEMAPNODES         from EM_ALARMELECT
+                        where N_ID = #{nId}
+</select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getEmAlarmelectList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, ALARMTYPEID, ALARMELEMAPID, ALARMELEMAPNAME, ALARMELEMAPNODES from EM_ALARMELECT
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="alarmtypeid != null and alarmtypeid != ''">
+                and ALARMTYPEID = #{alarmtypeid}
+            </if>
+            <if test="alarmelemapid != null and alarmelemapid != ''">
+                and ALARMELEMAPID = #{alarmelemapid}
+            </if>
+            <if test="alarmelemapname != null and alarmelemapname != ''">
+                and ALARMELEMAPNAME = #{alarmelemapname}
+            </if>
+            <if test="alarmelemapnodes != null and alarmelemapnodes != ''">
+                and ALARMELEMAPNODES = #{alarmelemapnodes}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addEmAlarmelect" parameterType="com.tieda.alarm.entity.emAlarmelect.EmAlarmelect">
+        insert into EM_ALARMELECT (N_ID, ALARMTYPEID, ALARMELEMAPID, ALARMELEMAPNAME, ALARMELEMAPNODES )
+        values (                #{nId,jdbcType = VARCHAR},                        #{alarmtypeid,jdbcType = VARCHAR},                        #{alarmelemapid,jdbcType = VARCHAR},                        #{alarmelemapname,jdbcType = VARCHAR},                        #{alarmelemapnodes,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchEmAlarmelect" parameterType="list">
+        insert into EM_ALARMELECT (N_ID, ALARMTYPEID, ALARMELEMAPID, ALARMELEMAPNAME, ALARMELEMAPNODES ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.alarmtypeid}, #{item.alarmelemapid}, #{item.alarmelemapname}, #{item.alarmelemapnodes}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateEmAlarmelect" parameterType="com.tieda.alarm.entity.emAlarmelect.EmAlarmelect">
+        update EM_ALARMELECT
+        <set>
+            <if test="alarmtypeid != null and alarmtypeid != ''">
+                ALARMTYPEID = #{alarmtypeid},
+            </if>
+            <if test="alarmelemapid != null and alarmelemapid != ''">
+                ALARMELEMAPID = #{alarmelemapid},
+            </if>
+            <if test="alarmelemapname != null and alarmelemapname != ''">
+                ALARMELEMAPNAME = #{alarmelemapname},
+            </if>
+            <if test="alarmelemapnodes != null and alarmelemapnodes != ''">
+                ALARMELEMAPNODES = #{alarmelemapnodes}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathEmAlarmelect" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update EM_ALARMELECT
+            <set>
+                ALARMTYPEID = #{item.alarmtypeid}, ALARMELEMAPID = #{item.alarmelemapid}, ALARMELEMAPNAME =
+                #{item.alarmelemapname}, ALARMELEMAPNODES = #{item.alarmelemapnodes}
+            </set>
+            where
+
+            N_ID = #{item.nId}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteEmAlarmelectById" parameterType="long">
+        delete from EM_ALARMELECT
+
+        where
+
+        
+        
+            N_ID = #{nId}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchEmAlarmelect" parameterType="list">
+        delete from EM_ALARMELECT
+
+
+        where N_ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

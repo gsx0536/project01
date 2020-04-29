@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.pubTDictionary.PubTDictionaryMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.pubTDictionary.PubTDictionary">
+                                                <id column="VC_SERVER" property="vcServer"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    <result column="VC_ID" property="vcId"/>
+                                                                                                                            <result column="VC_M$ID" property="vcMid"/>
+                                                                                                        <result column="VC_NAME" property="vcName"/>
+                                                                                                        <result column="N_ORDER" property="nOrder"/>
+                                                                                                        <result column="VC_DEL" property="vcDel"/>
+                                                                                                        <result column="VC_USER" property="vcUser"/>
+                                                                                                        <result column="DT_DATE" property="dtDate"/>
+                                                                                                                            <result column="VC_ORG$ID" property="vcOrgid"/>
+                                                                                                        <result column="VC_DELORG" property="vcDelorg"/>
+                                                                                                        <result column="DT_DELTIME" property="dtDeltime"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getPubTDictionaryById" parameterType="long" resultMap="BaseResultMap">
+        select  VC_SERVER,  VC_ID,  VC_M$ID,  VC_NAME,  N_ORDER,  VC_DEL,  VC_USER,  DT_DATE,  VC_ORG$ID,  VC_DELORG,  DT_DELTIME         from PUB_T_DICTIONARY
+                
+                                            where VC_SERVER = #{vcServer}
+                                                                                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getPubTDictionaryList" parameterType="map" resultMap="BaseResultMap">
+        select VC_SERVER, VC_ID, VC_M$ID, VC_NAME, N_ORDER, VC_DEL, VC_USER, DT_DATE, VC_ORG$ID, VC_DELORG, DT_DELTIME         from PUB_T_DICTIONARY
+        <where>
+                                                                            <if test="vcServer != null and vcServer != ''">
+                        and VC_SERVER = #{vcServer}
+                    </if>
+                                                                                            <if test="vcId != null and vcId != ''">
+                        and VC_ID = #{vcId}
+                    </if>
+                                                                                                            <if test="vcMid != null and vcMid != ''">
+                        and VC_M$ID = #{vcMid}
+                    </if>
+                                                                                            <if test="vcName != null and vcName != ''">
+                        and VC_NAME = #{vcName}
+                    </if>
+                                                                                            <if test="nOrder != null and nOrder != ''">
+                        and N_ORDER = #{nOrder}
+                    </if>
+                                                                                            <if test="vcDel != null and vcDel != ''">
+                        and VC_DEL = #{vcDel}
+                    </if>
+                                                                                            <if test="vcUser != null and vcUser != ''">
+                        and VC_USER = #{vcUser}
+                    </if>
+                                                                                            <if test="dtDate != null and dtDate != ''">
+                        and DT_DATE = #{dtDate}
+                    </if>
+                                                                                                            <if test="vcOrgid != null and vcOrgid != ''">
+                        and VC_ORG$ID = #{vcOrgid}
+                    </if>
+                                                                                            <if test="vcDelorg != null and vcDelorg != ''">
+                        and VC_DELORG = #{vcDelorg}
+                    </if>
+                                                                                            <if test="dtDeltime != null and dtDeltime != ''">
+                        and DT_DELTIME = #{dtDeltime}
+                    </if>
+                                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addPubTDictionary" parameterType="com.tieda.alarm.entity.pubTDictionary.PubTDictionary">
+        insert into PUB_T_DICTIONARY (VC_SERVER, VC_ID, VC_M$ID, VC_NAME, N_ORDER, VC_DEL, VC_USER, DT_DATE, VC_ORG$ID, VC_DELORG, DT_DELTIME )
+        values (
+                                        #{vcServer,jdbcType = VARCHAR},    
+                                        #{vcId,jdbcType = VARCHAR},    
+                                                #{vcMid,jdbcType = VARCHAR},    
+                                        #{vcName,jdbcType = VARCHAR},    
+                                        #{nOrder,jdbcType = VARCHAR},    
+                                        #{vcDel,jdbcType = VARCHAR},    
+                                        #{vcUser,jdbcType = VARCHAR},    
+                                        #{dtDate,jdbcType = VARCHAR},    
+                                                #{vcOrgid,jdbcType = VARCHAR},    
+                                        #{vcDelorg,jdbcType = VARCHAR},    
+                                        #{dtDeltime,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchPubTDictionary" parameterType="list">
+        insert into PUB_T_DICTIONARY (VC_SERVER, VC_ID, VC_M$ID, VC_NAME, N_ORDER, VC_DEL, VC_USER, DT_DATE, VC_ORG$ID, VC_DELORG, DT_DELTIME         )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select 
+                                                #{item.vcServer}, 
+                                                #{item.vcId}, 
+                                                            #{item.vcMid}, 
+                                                #{item.vcName}, 
+                                                #{item.nOrder}, 
+                                                #{item.vcDel}, 
+                                                #{item.vcUser}, 
+                                                #{item.dtDate}, 
+                                                            #{item.vcOrgid}, 
+                                                #{item.vcDelorg}, 
+                                                #{item.dtDeltime}             from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updatePubTDictionary" parameterType="com.tieda.alarm.entity.pubTDictionary.PubTDictionary">
+        update PUB_T_DICTIONARY
+        <set>
+            
+                                                                            
+                                                                                                            <if test="vcId != null and vcId != ''">
+                             VC_ID = #{vcId},
+                        </if>
+                                                
+                                                                                                                            <if test="vcMid != null and vcMid != ''">
+                             VC_M$ID = #{vcMid},
+                        </if>
+                                                
+                                                                                                            <if test="vcName != null and vcName != ''">
+                             VC_NAME = #{vcName},
+                        </if>
+                                                
+                                                                                                            <if test="nOrder != null and nOrder != ''">
+                             N_ORDER = #{nOrder},
+                        </if>
+                                                
+                                                                                                            <if test="vcDel != null and vcDel != ''">
+                             VC_DEL = #{vcDel},
+                        </if>
+                                                
+                                                                                                            <if test="vcUser != null and vcUser != ''">
+                             VC_USER = #{vcUser},
+                        </if>
+                                                
+                                                                                                            <if test="dtDate != null and dtDate != ''">
+                             DT_DATE = #{dtDate},
+                        </if>
+                                                
+                                                                                                                            <if test="vcOrgid != null and vcOrgid != ''">
+                             VC_ORG$ID = #{vcOrgid},
+                        </if>
+                                                
+                                                                                                            <if test="vcDelorg != null and vcDelorg != ''">
+                             VC_DELORG = #{vcDelorg},
+                        </if>
+                                                
+                                                                                                            <if test="dtDeltime != null and dtDeltime != ''">
+                             DT_DELTIME = #{dtDeltime},
+                        </if>
+                                                        </set>
+                                                            where VC_SERVER = #{vcServer}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchPubTDictionary" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update PUB_T_DICTIONARY
+            <set>
+                                                                                                                                                                                                            <if test="vcId != null and vcId != ''">
+                                 VC_ID = #{vcId},
+                            </if>
+                                                                                                                                                                                                <if test="vcMid != null and vcMid != ''">
+                                 VC_M$ID = #{vcMid},
+                            </if>
+                                                                                                                                                                            <if test="vcName != null and vcName != ''">
+                                 VC_NAME = #{vcName},
+                            </if>
+                                                                                                                                                                            <if test="nOrder != null and nOrder != ''">
+                                 N_ORDER = #{nOrder},
+                            </if>
+                                                                                                                                                                            <if test="vcDel != null and vcDel != ''">
+                                 VC_DEL = #{vcDel},
+                            </if>
+                                                                                                                                                                            <if test="vcUser != null and vcUser != ''">
+                                 VC_USER = #{vcUser},
+                            </if>
+                                                                                                                                                                            <if test="dtDate != null and dtDate != ''">
+                                 DT_DATE = #{dtDate},
+                            </if>
+                                                                                                                                                                                                <if test="vcOrgid != null and vcOrgid != ''">
+                                 VC_ORG$ID = #{vcOrgid},
+                            </if>
+                                                                                                                                                                            <if test="vcDelorg != null and vcDelorg != ''">
+                                 VC_DELORG = #{vcDelorg},
+                            </if>
+                                                                                                                                                                            <if test="dtDeltime != null and dtDeltime != ''">
+                                 DT_DELTIME = #{dtDeltime},
+                            </if>
+                                                                        </set>
+            where
+                                                                                VC_SERVER = #{item.vcServer}
+                
+                                                            
+                                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                                            
+                                                            
+                                                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deletePubTDictionaryById" parameterType="long">
+        delete from PUB_T_DICTIONARY
+
+        where
+
+                                
+            VC_SERVER = #{vcServer=}
+
+        
+                            
+                                    
+                            
+                            
+                            
+                            
+                            
+                                    
+                            
+                            
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchPubTDictionary" parameterType="list">
+        delete from PUB_T_DICTIONARY
+
+        
+            
+                where VC_SERVER in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

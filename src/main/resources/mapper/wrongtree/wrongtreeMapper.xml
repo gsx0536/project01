@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.wrongtree.WrongtreeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.wrongtree.Wrongtree">
+        <id column="N_ID" property="nId"/>
+        <result column="NODEID" property="nodeid"/>
+        <result column="PARENTID" property="parentid"/>
+        <result column="MONITORTYPE" property="monitortype"/>
+        <result column="MONITORID" property="monitorid"/>
+        <result column="NODENAME" property="nodename"/>
+        <result column="TREENAME" property="treename"/>
+        <result column="TREEID" property="treeid"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getWrongtreeById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  NODEID,  PARENTID,  MONITORTYPE,  MONITORID,  NODENAME,  TREENAME,  TREEID         from WRONGTREE
+                        where N_ID = #{nId}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getWrongtreeList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, NODEID, PARENTID, MONITORTYPE, MONITORID, NODENAME, TREENAME, TREEID from WRONGTREE
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="nodeid != null and nodeid != ''">
+                and NODEID = #{nodeid}
+            </if>
+            <if test="parentid != null and parentid != ''">
+                and PARENTID = #{parentid}
+            </if>
+            <if test="monitortype != null and monitortype != ''">
+                and MONITORTYPE = #{monitortype}
+            </if>
+            <if test="monitorid != null and monitorid != ''">
+                and MONITORID = #{monitorid}
+            </if>
+            <if test="nodename != null and nodename != ''">
+                and NODENAME = #{nodename}
+            </if>
+            <if test="treename != null and treename != ''">
+                and TREENAME = #{treename}
+            </if>
+            <if test="treeid != null and treeid != ''">
+                and TREEID = #{treeid}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addWrongtree" parameterType="com.tieda.alarm.entity.wrongtree.Wrongtree">
+        insert into WRONGTREE (N_ID, NODEID, PARENTID, MONITORTYPE, MONITORID, NODENAME, TREENAME, TREEID )
+        values (                #{nId,jdbcType = VARCHAR},                        #{nodeid,jdbcType = VARCHAR},                        #{parentid,jdbcType = VARCHAR},                        #{monitortype,jdbcType = VARCHAR},                        #{monitorid,jdbcType = VARCHAR},                        #{nodename,jdbcType = VARCHAR},                        #{treename,jdbcType = VARCHAR},                        #{treeid,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchWrongtree" parameterType="list">
+        insert into WRONGTREE (N_ID, NODEID, PARENTID, MONITORTYPE, MONITORID, NODENAME, TREENAME, TREEID ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.nodeid}, #{item.parentid}, #{item.monitortype}, #{item.monitorid}, #{item.nodename},
+            #{item.treename}, #{item.treeid} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateWrongtree" parameterType="com.tieda.alarm.entity.wrongtree.Wrongtree">
+        update WRONGTREE
+        <set>
+            <if test="nodeid != null and nodeid != ''">
+                NODEID = #{nodeid},
+            </if>
+            <if test="parentid != null and parentid != ''">
+                PARENTID = #{parentid},
+            </if>
+            <if test="monitortype != null and monitortype != ''">
+                MONITORTYPE = #{monitortype},
+            </if>
+            <if test="monitorid != null and monitorid != ''">
+                MONITORID = #{monitorid},
+            </if>
+            <if test="nodename != null and nodename != ''">
+                NODENAME = #{nodename},
+            </if>
+            <if test="treename != null and treename != ''">
+                TREENAME = #{treename},
+            </if>
+            <if test="treeid != null and treeid != ''">
+                TREEID = #{treeid}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathWrongtree" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update WRONGTREE
+            <set>
+                NODEID = #{item.nodeid}, PARENTID = #{item.parentid}, MONITORTYPE = #{item.monitortype}, MONITORID =
+                #{item.monitorid}, NODENAME = #{item.nodename}, TREENAME = #{item.treename}, TREEID = #{item.treeid}
+            </set>
+            where
+            N_ID = #{item.nId}
+        </foreach>
+    </update>
+    <!-- 根据主键删除 -->
+    <delete id="deleteWrongtreeById" parameterType="long">
+        delete from WRONGTREE
+        where
+            N_ID = #{nId}
+    </delete>
+    <!-- 批量删除 -->
+    <delete id="deleteBatchWrongtree" parameterType="list">
+        delete from WRONGTREE
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--树查询-->
+    <select id="getWrongtrees" parameterType="list" resultType="java.util.HashMap">
+        select nodeid key,parentid parent ,nodename name
+        from wrongtree
+        start with parentid is null and treeid in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        connect by parentid=prior nodeid
+    </select>
+</mapper>

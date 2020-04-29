@@ -1,0 +1,1265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.SkywinStatistics.SkywinStatMapper">
+    <!-- 维修统计（段） -->
+    <select id="getWxskywinDayStatSeg" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_server unit,'昆明南电务段' orgname,
+        count(1) wxPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) wxPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0))/count(1),2.1) * 100||'%' wxPlanCashRate,
+        sum(p.planfz) wxTime,
+        sum(p.cashfz) wxTimeCash,
+        round(sum(p.cashfz)/sum(p.planfz),2.1) * 100||'%' wxTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') &lt; to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt; to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by vc_server
+    </select>
+    <!-- 维修统计（车间） -->
+    <select id="getWxskywinDayStatCj" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p1.*, p2.vc_name orgname
+        from (select p.vc_par$org$id unit,
+        count(1) wxPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) wxPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' wxPlanCashRate,
+        sum(p.planfz) wxTime,
+        sum(p.cashfz) wxTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' wxTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        c.vc_par$org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ym_t_wa$day$worksgrwx m,
+        ym_t_wa$day$work d,
+        Sys_t_Org c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        c.vc_par$org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by vc_par$org$id) p1,
+        sys_t_org p2
+        where p1.unit = p2.vc_org$id
+    </select>
+    <!-- 维修统计（工区） -->
+    <select id="getWxskywinDayStatGq" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_org$id unit,
+        p.orgname,
+        count(1) wxPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) wxPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' wxPlanCashRate,
+        sum(p.planfz) wxTime,
+        sum(p.cashfz) wxTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' wxTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        c.vc_name orgname,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d, sys_t_org c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_org$id = c.vc_org$id
+        <if test="workarea != null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        c.vc_name,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by p.vc_org$id, p.orgname
+    </select>
+    <!-- 维修统计（车站） -->
+    <select id="getWxskywinDayStatCz" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_sta unit,
+        p.orgname,
+        count(1) wxPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) wxPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' wxPlanCashRate,
+        sum(p.planfz) wxTime,
+        sum(p.cashfz) wxTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' wxTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_sta,
+        c.vc_name orgname,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d,sys_t_station c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_sta = c.vc_station$id
+        <if test="workarea!=null and workarea!=''">
+            and m.vc_org$id = #{workarea}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_sta,
+        c.vc_name,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by p.vc_sta, p.orgname
+    </select>
+    <!-- 施工统计（段） -->
+    <select id="getSgskywinDayStatSeg" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_server unit,'昆明南电务段' orgname,
+        count(1) sgPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) sgPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0))/count(1),2.1) * 100||'%' sgPlanCashRate,
+        sum(p.planfz) sgTime,
+        sum(p.cashfz) sgTimeCash,
+        round(sum(p.cashfz)/sum(p.planfz),2.1) * 100||'%' sgTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') &lt; to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt; to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by vc_server
+    </select>
+    <!-- 施工统计（车间） -->
+    <select id="getSgskywinDayStatCj" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p1.*, p2.vc_name orgname
+        from (select p.vc_par$org$id unit,
+        count(1) sgPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) sgPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' sgPlanCashRate,
+        sum(p.planfz) sgTime,
+        sum(p.cashfz) sgTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' sgTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        c.vc_par$org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d,
+        Sys_t_Org c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        c.vc_par$org$id,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by vc_par$org$id) p1,
+        sys_t_org p2
+        where p1.unit = p2.vc_org$id
+    </select>
+    <!-- 施工统计（工区） -->
+    <select id="getSgskywinDayStatGq" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_org$id unit,
+        p.orgname,
+        count(1) sgPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) sgPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' sgPlanCashRate,
+        sum(p.planfz) sgTime,
+        sum(p.cashfz) sgTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' sgTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        c.vc_name orgname,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$etime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        replace(m.vc_skywin$stime,'24:00','00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d, sys_t_org c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_org$id = c.vc_org$id
+        <if test="workarea != null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_org$id,
+        c.vc_name,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by p.vc_org$id, p.orgname
+    </select>
+    <!-- 施工统计（车站） -->
+    <select id="getSgskywinDayStatCz" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_sta unit,
+        p.orgname,
+        count(1) sgPlanCou,
+        sum(decode(p.plancash, '1', 1, 0)) sgPlanCash,
+        round(sum(decode(p.plancash, '1', 1, 0)) / count(1), 2.1) * 100 || '%' sgPlanCashRate,
+        sum(p.planfz) sgTime,
+        sum(p.cashfz) sgTimeCash,
+        round(sum(p.cashfz) / sum(p.planfz), 2.1) * 100 || '%' sgTimeCashRate
+        from (select m.vc_server,
+        d.vc_sg$id,
+        m.vc_sta,
+        c.vc_name orgname,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$etime,
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        m.vc_skywin$stime,
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end planfz,
+        case
+        when to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(m.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$ETIME), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(m.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.VC_WORK$STIME), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end cashfz,
+        min(d.vc_finishedornot) plancash
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d,sys_t_station c
+        where m.n_id = d.vc_sg$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_sta = c.vc_station$id
+        <if test="workarea!=null and workarea != ''">
+            and m.vc_org$id = #{workarea}
+        </if>
+        group by m.vc_server,
+        d.vc_sg$id,
+        m.vc_sta,
+        c.vc_name,
+        m.vc_skywin$stime,
+        m.vc_skywin$etime,
+        m.dt_work$day) p
+        group by p.vc_sta, p.orgname
+    </select>
+    <!--点外计划（段） -->
+    <select id="getDwMoredayskywinDayStatSeg"
+            parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select '昆明南电务段' unit,count(1) dwCou from dw_plan m
+        <where>
+            <if test="workdateStart!=null and workdateStart!=''">
+                and m.work_date >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+            </if>
+            <if test="workdateEnd!=null and workdateEnd!=''">
+                and m.work_date &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+            </if>
+        </where>
+    </select>
+    <!--点外计划（车间） -->
+    <select id="getDwMoredayskywinDayStatCj" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.vc_par$org$id unit,p.dwCou,p1.vc_name orgname from (select d.vc_par$org$id, count(1) dwCou
+        from dw_plan m, sys_t_org d
+        where m.WORK_ORG_ID = d.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and d.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.work_date >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.work_date &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by d.vc_par$org$id) p,sys_t_org p1 where p.vc_par$org$id = p1.vc_org$id
+    </select>
+    <!--点外计划（工区） -->
+    <select id="getDwMoredayskywinDayStatGq" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select d.vc_org$id unit,d.vc_name orgname, count(1) dwCou
+        from dw_plan m, sys_t_org d
+        where m.WORK_ORG_ID = d.vc_org$id
+        <if test="workarea != null and workarea != ''">
+            and d.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.work_date >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.work_date &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        <if test="workshop != null and workshop != ''">
+            and d.vc_par$org$id = #{workshop}
+        </if>
+        group by d.vc_org$id,d.vc_name
+    </select>
+
+    <!--点外计划固定日期（段）今天明天 -->
+    <select id="getDwDayskywinDayStatSeg" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select 'server' unit,
+        '昆明南电务段' orgname,
+        sum(decode(m.work_date, <if test="workdateStart!=null and workdateStart!=''">
+        to_date(#{workdateStart},'yyyy-MM-dd')</if>, 1, 0)) dwTodayCou
+        ,sum(decode(m.work_date, <if test="workdateStart!=null and workdateStart!=''">
+        to_date(#{workdateStart},'yyyy-MM-dd')+1</if>, 1, 0)) dwTommrowCou
+        from dw_plan m where m.work_date between
+        <if test="workdateStart!=null and workdateStart!=''">
+            to_date(#{workdateStart}, 'yyyy-MM-dd') and
+            to_date(#{workdateStart}, 'yyyy-MM-dd') + 1
+        </if>
+    </select>
+    <!--点外计划固定日期（车间）今天明天 -->
+    <select id="getDwDayskywinDayStatCj" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select p.*, p1.vc_name orgname
+        from (select d.vc_par$org$id unit,
+        sum(decode(m.work_date,
+        <if test="workdateStart!=null and workdateStart!=''">
+            to_date(#{workdateStart},'yyyy-MM-dd')</if>,
+        1,
+        0)) dwTodayCou,
+        sum(decode(m.work_date,
+        <if test="workdateStart!=null and workdateStart!=''">
+            to_date(#{workdateStart},'yyyy-MM-dd')+1</if>,
+        1,
+        0)) dwTommrowCou
+        from dw_plan m, sys_t_org d
+        where m.WORK_ORG_ID = d.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and d.vc_par$org$id = #{workshop}
+        </if>
+
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.work_date between to_date(#{workdateStart}, 'yyyy-MM-dd') and
+            to_date(#{workdateStart}, 'yyyy-MM-dd') + 1
+        </if>
+        group by d.vc_par$org$id) p,
+        sys_t_org p1
+        where p.unit = p1.vc_org$id
+    </select>
+    <!--点外计划固定日期（工区）今天明天 -->
+    <select id="getDwDayskywinDayStatGq" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStat">
+        select d.vc_org$id unit,
+        d.vc_name orgname,
+        sum(decode(m.work_date,
+        <if test="workdateStart!=null and workdateStart!=''">to_date(#{workdateStart}, 'yyyy-MM-dd')</if>
+        , 1, 0)) dwTodayCou
+        ,sum(decode(m.work_date,
+        <if test="workdateStart!=null and workdateStart!=''">
+            to_date(#{workdateStart}, 'yyyy-MM-dd')+1
+        </if>
+        , 1, 0)) dwTommrowCou
+        from dw_plan m, sys_t_org d
+        where m.WORK_ORG_ID = d.vc_org$id
+        <if test="workarea != null and workarea != ''">
+            and d.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.work_date between to_date(#{workdateStart}, 'yyyy-MM-dd') and
+            to_date(#{workdateStart}, 'yyyy-MM-dd') + 1
+        </if>
+        <if test="workshop != null and workshop != ''">
+            and d.vc_par$org$id = #{workshop}
+        </if>
+        group by d.vc_org$id, d.vc_name
+    </select>
+    <!-- 天窗日兑现率、未兑现-->
+    <select id="getSkywinDayStatNoCashInfos" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatForm">
+        select p.vc_do$section ||'['|| VC_SG$DIRECTORYNAME||']' statoin
+        from (select m.vc_do$section,m.VC_SG$DIRECTORYNAME
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d,sys_t_org c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_org$id = c.vc_org$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_do$section is not null
+        <if test="workshop!=null and workshop!=''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea!=null and workarea!=''">
+            and m.vc_org$id = #{workarea}
+        </if>
+        and (d.vc_finishedornot is null or d.vc_finishedornot = '0')
+        group by m.vc_do$section, m.VC_SG$DIRECTORYNAME) p
+        union
+        select p.vc_do$section ||'['|| VC_SG$DIRECTORYNAME||']' statoin
+        from (select m.vc_do$section,m.VC_SG$DIRECTORYNAME
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d,sys_t_org c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_org$id = c.vc_org$id
+        <if test="workdateStart!=null and workdateStart!=''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd!=null and workdateEnd!=''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_do$section is not null
+        <if test="workshop!=null and workshop!=''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea!=null and workarea!=''">
+            and m.vc_org$id = #{workarea}
+        </if>
+        and (d.vc_finishedornot is null or d.vc_finishedornot = '0')
+        group by m.vc_do$section, m.VC_SG$DIRECTORYNAME) p
+    </select>
+    <!-- 日天窗兑现率统计 多、少给点、施工-->
+    <select id="getSkywinDayStatGivePointInfosSg"
+            parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatForm">
+        select q.station station, sum(nums) nums
+        from (select p.n_id nId,
+        p.vc_do$section station,
+        (case
+        when to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(p1.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) - (case
+        when to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(p1.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) nums
+        from (select m.n_id,
+        m.vc_do$section,
+        min(d.vc_work$stime) vc_work$stime,
+        min(d.vc_work$etime) vc_work$etime
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d, sys_t_org c
+        where m.n_id = d.vc_sg$id
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea != null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.n_id, m.vc_do$section
+        having min(d.vc_finishedornot) = '1') p,
+        ph_t_construct$sgxt p1
+        where p.N_id = p1.n_id) q
+        group by q.station
+    </select>
+    <!-- 日天窗兑现率统计 多、少给点、维修-->
+    <select id="getSkywinDayStatGivePointInfosWx"
+            parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatForm">
+        select q.vc_level workLevel, q.vc_do$section station, sum(nums) nums
+        from (select p.n_id,
+        p.vc_level,
+        p.vc_do$section,
+        (case
+        when to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(p1.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p.vc_work$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) - (case
+        when to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(p1.dt_work$day + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$etime, '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(p1.dt_work$day, 'yyyy-MM-dd') || ' ' ||
+        nvl(p1.vc_skywin$stime, '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) nums
+        from (select m.n_id,
+        m.vc_level,
+        m.vc_do$section,
+        min(d.vc_work$stime) vc_work$stime,
+        min(d.vc_work$etime) vc_work$etime
+        from ym_t_wa$day$worksgrwx m,
+        ym_t_wa$day$work d,
+        sys_t_org c
+        where m.n_id = d.vc_sg$id
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop != null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea != null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.n_id, m.vc_level, m.vc_do$section
+        having min(d.vc_finishedornot) = '1') p,
+        ym_t_wa$day$worksgrwx p1
+        where p.N_id = p1.n_id) q
+        group by q.vc_level, q.vc_do$section
+    </select>
+    <!--小于30分钟天窗及原因 -->
+    <select id="getSkywinDayStatthirtyInfos"
+            parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatForm">
+        select q.vc_do$section||'（'||q.VC_SG$DIRECTORYNAME||'）' thirtyInfos from (select
+        p.vc_do$section,p.VC_SG$DIRECTORYNAME,p.sums from
+        (select m.vc_do$section,m.VC_SG$DIRECTORYNAME,
+        (case
+        when to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(min(d.dt_work$day) + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) sums
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d, sys_t_org c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop !=null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea !=null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_do$section is not null
+        group by m.vc_do$section, m.VC_SG$DIRECTORYNAME, d.n_id
+        having min(d.vc_finishedornot) = '1') p where p.sums &lt;= 30) q group by q.vc_do$section,q.VC_SG$DIRECTORYNAME
+        union
+        select q.vc_do$section||'（'||q.VC_SG$DIRECTORYNAME||'）' thirtyInfos from (select
+        p.vc_do$section,p.VC_SG$DIRECTORYNAME,p.sums from
+        (select m.vc_do$section,m.VC_SG$DIRECTORYNAME,
+        (case
+        when to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') > 0 then
+        (to_date(to_char(min(d.dt_work$day) + 1, 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$etime), '00:00'),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(d.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        nvl(min(d.vc_work$stime), '00:00'),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end) sums
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d, sys_t_org c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_org$id = c.vc_org$id
+        <if test="workshop !=null and workshop != ''">
+            and c.vc_par$org$id = #{workshop}
+        </if>
+        <if test="workarea !=null and workarea != ''">
+            and c.vc_org$id = #{workarea}
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        and m.vc_do$section is not null
+        group by m.vc_do$section, m.VC_SG$DIRECTORYNAME, d.n_id
+        having min(d.vc_finishedornot) = '1') p where p.sums &lt;= 30) q group by q.vc_do$section,q.VC_SG$DIRECTORYNAME
+    </select>
+    <!-- 根据机构id获取其机构等级-->
+    <select id="getOrgLevel" parameterType="java.lang.String" resultType="java.lang.String">
+      select n_level from sys_t_org where vc_org$id = #{unit}
+    </select>
+    <!-- 维修计划项数sql-->
+    <select id="dayStatDetailWxPlanCou" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select m.vc_type vcType,
+        to_char(DT_WORK$DAY, 'yyyy-MM-dd') dtWorkday,
+        VC_PROJECT vcProject,
+        VC_LEVEL vcLevel,
+        VC_WORK$PLACE vcWorkplace,
+        VC_SKYWIN$STIME vcSkywinStime,
+        VC_SKYWIN$ETIME vcSkywinEtime,
+        VC_SG$ROUTE vcSgroute,
+        VC_WA$PERSON vcWaperson,
+        VC_SG$DIRECTORYNAME vcSgDirectoryName
+        from ym_t_wa$day$worksgrwx m,sys_t_org o
+        where m.vc_org$id = o.vc_org$id
+        <if test="unitType == 'workshop'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_par$org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'workarea'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'station'">
+            <if test="unit!=null and unit!=''">
+                and m.VC_STA = #{unit}
+            </if>
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+    </select>
+    <!-- 施工计划项数sql-->
+    <select id="dayStatDetailSgPlanCou" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select m.vc_type vcType,
+        to_char(DT_WORK$DAY, 'yyyy-MM-dd') dtWorkday,
+        VC_PROJECT vcProject,
+        VC_LEVEL vcLevel,
+        VC_WORK$PLACE vcWorkplace,
+        VC_SKYWIN$STIME vcSkywinstime,
+        VC_SKYWIN$ETIME vcSkywinetime,
+        VC_SG$ROUTE vcSgroute,
+        VC_WA$PERSON vcWaperson,
+        VC_SG$DIRECTORYNAME vcSgdirectoryname
+        from ph_t_construct$sgxt m,sys_t_org o
+        where m.vc_org$id = o.vc_org$id
+        <if test="unitType == 'workshop'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_par$org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'workarea'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'station'">
+            <if test="unit!=null and unit!=''">
+                and m.VC_STA = #{unit}
+            </if>
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+    </select>
+    <!-- 维修计划兑现项数sql-->
+    <select id="dayStatDetailWxPlanCash" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select p1.vc_Type vcType,
+        to_char(p1.DT_WORK$DAY, 'yyyy-MM-dd') dtWorkday,
+        p1.VC_PROJECT vcProject,
+        p1.VC_LEVEL vcLevel,
+        p1.VC_WORK$PLACE vcWorkplace,
+        p1.VC_SKYWIN$STIME vcSkywinstime,
+        p1.VC_SKYWIN$ETIME vcSkywinetime,
+        p1.VC_SG$ROUTE vcSgroute,
+        p1.VC_WA$PERSON vcWaperson,
+        p1.VC_SG$DIRECTORYNAME vcSgdirectoryname
+        from (select m.n_id
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d, sys_t_org o
+        where m.n_id = d.vc_sg$id
+        and m.vc_org$id = o.vc_org$id
+        <if test="unitType == 'workshop'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_par$org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'workarea'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'station'">
+            <if test="unit!=null and unit!=''">
+                and m.VC_STA = #{unit}
+            </if>
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.n_id
+        having min(d.vc_finishedornot) = '1') p,
+        ym_t_wa$day$worksgrwx p1
+        where p.n_id = p1.n_id
+    </select>
+    <!-- 施工计划兑现项数sql-->
+    <select id="dayStatDetailSgPlanCash" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select p1.vc_type vcType,
+        to_char(p1.DT_WORK$DAY, 'yyyy-MM-dd') dtWorkday,
+        p1.VC_PROJECT vcProject,
+        p1.VC_LEVEL vcLevel,
+        p1.VC_WORK$PLACE vcWorkplace,
+        p1.VC_SKYWIN$STIME vcSkywinstime,
+        p1.VC_SKYWIN$ETIME vcSkywinetime,
+        p1.VC_SG$ROUTE vcSgroute,
+        p1.VC_WA$PERSON vcWaperson,
+        p1.VC_SG$DIRECTORYNAME vcSgdirectoryname
+        from (select m.n_id
+        from ph_t_construct$sgxt m, ph_t_construct$sgxtpgd d, sys_t_org o
+        where m.n_id = d.vc_sg$id
+        and m.vc_org$id = o.vc_org$id
+        <if test="unitType == 'workshop'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_par$org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'workarea'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'station'">
+            <if test="unit!=null and unit!=''">
+                and m.VC_STA = #{unit}
+            </if>
+        </if>
+        <if test="workdateStart != null and workdateStart != ''">
+            and m.dt_work$day >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+        </if>
+        <if test="workdateEnd != null and workdateEnd != ''">
+            and m.dt_work$day &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+        </if>
+        group by m.n_id
+        having min(d.vc_finishedornot) = '1') p,
+        ph_t_construct$sgxt p1
+        where p.n_id = p1.n_id
+    </select>
+    <!--点外计划明细查看sql -->
+    <select id="dayStatDetailDwPlan" parameterType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatSearch"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select code,
+        work_org workOrg,
+        work_place vcWorkplace,
+        content vcProject,
+        to_char(work_date, 'yyyy-MM-dd') dtWorkday,
+        start_time vcSkywinstime,
+        end_time vcSkywinetime,
+        charge vcWaperson
+        from dw_plan t,sys_t_org o
+        where t.work_org_id = o.vc_org$id
+        <if test="unitType == 'workshop'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_par$org$id = #{unit}
+            </if>
+        </if>
+        <if test="unitType == 'workarea'">
+            <if test="unit!=null and unit!=''">
+                and o.vc_org$id = #{unit}
+            </if>
+        </if>
+        <if test="detailType !=null and detailType == 'E'.toString()">
+            <if test="workdateStart != null and workdateStart != ''">
+                and t.work_date = to_date(#{workdateStart}, 'yyyy-MM-dd')
+            </if>
+        </if>
+        <if test="detailType !=null and detailType == 'F'.toString()">
+            <if test="workdateStart != null and workdateStart != ''">
+                and t.work_date = to_date(#{workdateStart}, 'yyyy-MM-dd') +1
+            </if>
+        </if>
+        <if test="detailType !=null and detailType == 'G'.toString()">
+            <if test="workdateStart != null and workdateStart != ''">
+                and t.work_date >= to_date(#{workdateStart}, 'yyyy-MM-dd')
+            </if>
+            <if test="workdateEnd != null and workdateEnd != ''">
+                and t.work_date &lt;= to_date(#{workdateEnd}, 'yyyy-MM-dd')
+            </if>
+        </if>
+    </select>
+</mapper>

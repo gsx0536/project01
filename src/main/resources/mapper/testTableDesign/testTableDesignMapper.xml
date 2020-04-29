@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testTableDesign.TestTableDesignMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testTableDesign.TestTableDesign">
+                                                                                                                                                                                                                    <result column="ID" property="id"/>
+                                                                <result column="TABLENAME" property="tablename"/>
+                                                                <result column="CELL" property="cell"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                                                <result column="NOTE" property="note"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestTableDesignById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  TABLENAME,  CELL,  CREATEDATE,  NOTE         from TEST_TABLE_DESIGN
+                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestTableDesignList" parameterType="map" resultMap="BaseResultMap">
+        select ID, TABLENAME, CELL, CREATEDATE, NOTE         from TEST_TABLE_DESIGN
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="tablename != null and tablename != ''">
+                    and TABLENAME = #{tablename}
+                </if>
+                            <if test="cell != null and cell != ''">
+                    and CELL = #{cell}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestTableDesign" parameterType="com.tieda.alarm.entity.testTableDesign.TestTableDesign">
+        insert into TEST_TABLE_DESIGN (ID, TABLENAME, CELL, CREATEDATE, NOTE )
+        values (                #{id,jdbcType = VARCHAR},                    #{tablename,jdbcType = VARCHAR},                    #{cell,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestTableDesign" parameterType="list">
+        insert into TEST_TABLE_DESIGN (ID, TABLENAME, CELL, CREATEDATE, NOTE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.tablename}, #{item.cell}, #{item.createdate}, #{item.note}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestTableDesign" parameterType="com.tieda.alarm.entity.testTableDesign.TestTableDesign">
+        update TEST_TABLE_DESIGN
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="tablename != null and tablename != ''">
+                        TABLENAME = #{tablename},                    </if>
+                                                                <if test="cell != null and cell != ''">
+                        CELL = #{cell},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note}                    </if>
+                                    </set>
+                                                                                                                </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestTableDesign" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_TABLE_DESIGN
+            <set>
+                                                            ID = #{item.id},                                                                                TABLENAME = #{item.tablename},                                                                                CELL = #{item.cell},                                                                                CREATEDATE = #{item.createdate},                                                                                NOTE = #{item.note}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestTableDesignById" parameterType="long">
+        delete from TEST_TABLE_DESIGN
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestTableDesign" parameterType="list">
+        delete from TEST_TABLE_DESIGN
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

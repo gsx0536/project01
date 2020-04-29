@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.SkywinStatistics.SkywinStatMonthMapper">
+    <!--施工5.0统计天窗计划信息-->
+    <select id="skywinStatMonthForApply" parameterType="java.lang.String"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinMonthStat">
+        select nvl(skywintype,'总计') skywintype,'昆明局' orgName,nvl(fun_route(p.route),'小计') line,
+        count(1) applyCount,
+        sum(case
+        when p.flow in ('正式日计划', '正式维修计划', '正式维修周计划') then
+        1
+        else
+        0
+        end) applyInplanCount,
+        round(sum(case
+        when p.flow in ('正式日计划', '正式维修计划', '正式维修周计划') then
+        1
+        else
+        0
+        end) / count(1),
+        2.1) * 100 || '%' applyCountRate,
+        sum(munis) applyTime,
+        sum(case
+        when p.flow in ('正式日计划', '正式维修计划', '正式维修周计划') then
+        munis
+        else
+        0
+        end) applyInplanTime,
+        round(sum(case
+        when p.flow in ('正式日计划', '正式维修计划', '正式维修周计划') then
+        munis
+        else
+        0
+        end) / sum(munis),
+        2.1) * 100 || '%' applyTimeRate
+        from (SELECT t.code,
+        t.route,
+        t.FLOW,
+        decode(t.SPARETIME_TYPE,'U','垂直天窗','综合天窗') skywintype,
+        case
+        when to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') &lt;
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi') then
+        (to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') + 1 -
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi')) * 24 * 60
+        else
+        (to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') -
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi')) * 24 * 60
+        end munis
+        FROM ym_v_sgrwx t
+        where (t.do_unit || t.work_help like '%昆明南电务段%' or
+        (t.type like '%一体化%' and t.CONDITION like '%电务%' and
+        (t.route in
+        ('沪昆动右线', '南昆线', '云桂动右线', '云桂动左线', '东川支线', '沪昆高速', '南昆客专',
+        '沪昆动左线', '沪昆线', '盘西疏解线', '羊场支线', '石林西至石林南联络线', '威红线',
+        '动车所三场右联线', '小团山出入所线', '小团山联络线', '盘西线', '石林西疏解线'))))
+        <if test="monthStr!=null and monthStr!=''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+        and t.FLOW not in ('未上报')
+        union all
+        SELECT t.code,
+        t.route,
+        t.FLOW,
+        '综合天窗' skywintype,
+        case
+        when to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') &lt;
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi') then
+        (to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') + 1 -
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi')) * 24 * 60
+        else
+        (to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 7, 11),
+        'yyyy-MM-dd HH24:mi') -
+        to_date(t.PLAN_DATE || ' ' || substr(t.do_time, 0, 5),
+        'yyyy-MM-dd HH24:mi')) * 24 * 60
+        end munis
+        FROM ph_v_sgrsg t
+        where (t.do_unit || t.work_help like '%昆明南电务段%' or
+        (t.type like '%一体化%' and
+        (t.route in
+        ('沪昆动右线', '南昆线', '云桂动右线', '云桂动左线', '东川支线', '沪昆高速', '南昆客专',
+        '沪昆动左线', '沪昆线', '盘西疏解线', '羊场支线', '石林西至石林南联络线', '威红线',
+        '动车所三场右联线', '小团山出入所线', '小团山联络线', '盘西线', '石林西疏解线'))))
+        <if test="monthStr!=null and monthStr!=''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+        and t.FLOW not in ('未上报')) p
+        group by rollup(skywintype,fun_route(p.route))
+    </select>
+    <!--调度指挥中心统计天窗计划信息-->
+    <select id="skywinStatMonthForPlan" parameterType="java.lang.String"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinMonthStat">
+        select nvl(p.skywintype,'总计') skywinType,
+        '昆明局' orgName,
+        nvl(p1.vc_name,'小计') line,
+        count(1) planCount,
+        sum(decode(p.finish, '1', 1, 0)) planCash,
+        round(sum(decode(p.finish, '1', 1, 0)) / count(1), 2.1) * 100 || '%' planCashRate,
+        sum(allmunit) planTime,
+        sum(finishmunit) planCashTime,
+        round(sum(finishmunit) / sum(allmunit), 2.1) * 100 || '%' planCashTimeRate
+        from (select m.n_id,
+        min(d.vc_finishedornot) finish,
+        min(c.vc_line$id) line,
+        decode(min(m.vc_skywin$type), 'U', '垂直天窗', '综合天窗') skywinType,
+        decode(min(d.vc_finishedornot),
+        '1',
+        case
+        when to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') + 1 -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end,
+        0) finishmunit,
+        case
+        when to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') + 1 -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end allmunit
+        from ym_t_wa$day$worksgrwx m, ym_t_wa$day$work d, sys_t_station c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_sta = c.vc_station$id
+        <if test="monthStr!=null and monthStr!=''">
+            and to_char(m.dt_work$day, 'yyyyMM') = #{monthStr}
+        </if>
+        group by m.n_id
+        union all
+        select m.n_id,
+        min(d.vc_finishedornot) finish,
+        min(c.vc_line$id) line,
+        decode(min(m.vc_skywin$type), 'U', '垂直天窗', '综合天窗') skywinType,
+        decode(min(d.vc_finishedornot),
+        '1',
+        case
+        when to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') + 1 -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end,
+        0) finishmunit,
+        case
+        when to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') &lt;
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi') then
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') + 1 -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        else
+        (to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$etime),
+        'yyyy-MM-dd hh24:mi') -
+        to_date(to_char(min(m.dt_work$day), 'yyyy-MM-dd') || ' ' ||
+        min(m.vc_skywin$stime),
+        'yyyy-MM-dd hh24:mi')) * 24 * 60
+        end allmunit
+        from ph_t_construct$sgxt m,
+        ph_t_construct$sgxtpgd d,
+        sys_t_station c
+        where m.n_id = d.vc_sg$id(+)
+        and m.vc_sta = c.vc_station$id
+        <if test="monthStr!=null and monthStr!=''">
+            and to_char(m.dt_work$day, 'yyyyMM') = #{monthStr}
+        </if>
+        group by m.n_id) p,
+        sys_t_line p1
+        where p.line = p1.vc_line$id
+        group by rollup(p.skywintype, p1.vc_name)
+    </select>
+    <!--月统计 计划数量明细 -->
+    <select id="monthStatDetailPlanC" parameterType="Map"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select m.vc_type vcType,
+        to_char(m.dt_work$day, 'yyyy-MM-dd') dtWorkday,
+        m.vc_project vcProject,
+        m.vc_level vcLevel,
+        m.vc_work$place vcWorkPlace,
+        m.vc_skywin$stime vcSkywinStime,
+        m.vc_skywin$etime vcSkywinetime,
+        m.vc_sg$route vcSgroute,
+        m.vc_wa$person vcWaPerson,
+        m.vc_sg$directoryname vcSgdirectoryname
+        from ym_t_wa$day$worksgrwx m, sys_t_station s, sys_t_line l
+        where m.vc_sta = s.vc_station$id
+        and s.vc_line$id = l.vc_line$id
+        <if test="line!=null and line != '' and line!='小计'">
+            and l.vc_name = #{line}
+        </if>
+        <if test="monthStr!=null and monthStr != ''">
+            and to_char(m.dt_work$day,'yyyyMM') = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz =='zh'">
+            <if test="skywinType!=null">
+                and nvl(m.vc_skywin$type,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz =='cz'">
+            <if test="skywinType!=null">
+                and m.vc_skywin$type in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        union all
+        select m.vc_type vcType,
+        to_char(m.dt_work$day, 'yyyy-MM-dd') dtWorkday,
+        m.vc_project vcProject,
+        m.vc_level vcLevel,
+        m.vc_work$place vcWorkPlace,
+        m.vc_skywin$stime vcSkywinStime,
+        m.vc_skywin$etime vcSkywinetime,
+        m.vc_sg$route vcSgroute,
+        m.vc_wa$person vcWaPerson,
+        m.vc_sg$directoryname vcSgdirectoryname
+        from ph_t_construct$sgxt m, sys_t_station s, sys_t_line l
+        where m.vc_sta = s.vc_station$id
+        and s.vc_line$id = l.vc_line$id
+        <if test="line!=null and line != ''">
+            and l.vc_name = #{line}
+        </if>
+        <if test="monthStr!=null and monthStr != ''">
+            and to_char(m.dt_work$day,'yyyyMM') = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz == 'zh'">
+            <if test="skywinType!=null">
+                and nvl(m.vc_skywin$type,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz == 'cz'">
+            <if test="skywinType!=null">
+                and m.vc_skywin$type in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+    </select>
+    <!--月统计 计划兑现数量明细 -->
+    <select id="monthStatDetailCashC" parameterType="Map"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select m.vc_type vcType,
+        to_char(m.dt_work$day, 'yyyy-MM-dd') dtWorkday,
+        m.vc_project vcProject,
+        m.vc_level vcLevel,
+        m.vc_work$place vcWorkPlace,
+        m.vc_skywin$stime vcSkywinStime,
+        m.vc_skywin$etime vcSkywinetime,
+        m.vc_sg$route vcSgroute,
+        m.vc_wa$person vcWaPerson,
+        m.vc_sg$directoryname vcSgdirectoryname
+        from ym_t_wa$day$worksgrwx m,ym_v_lastdaywork_finish d,sys_t_station s, sys_t_line l
+        where m.vc_sta = s.vc_station$id
+        and m.n_id = d.vc_sg$id
+        and s.vc_line$id = l.vc_line$id
+        <if test="line!=null and line != ''">
+            and l.vc_name = #{line}
+        </if>
+        <if test="monthStr!=null and monthStr != ''">
+            and to_char(m.dt_work$day,'yyyyMM') = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='zh'">
+            <if test="skywinType!=null">
+                and nvl(m.vc_skywin$type,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='cz'">
+            <if test="skywinType!=null">
+                and m.vc_skywin$type in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        and d.finish = '1'
+        union all
+        select m.vc_type vcType,
+        to_char(m.dt_work$day, 'yyyy-MM-dd') dtWorkday,
+        m.vc_project vcProject,
+        m.vc_level vcLevel,
+        m.vc_work$place vcWorkPlace,
+        m.vc_skywin$stime vcSkywinStime,
+        m.vc_skywin$etime vcSkywinetime,
+        m.vc_sg$route vcSgroute,
+        m.vc_wa$person vcWaPerson,
+        m.vc_sg$directoryname vcSgdirectoryname
+        from ph_t_construct$sgxt m,ym_v_lastconstruct_finish d,sys_t_station s, sys_t_line l
+        where m.vc_sta = s.vc_station$id
+        and m.n_id = d.vc_sg$id
+        and s.vc_line$id = l.vc_line$id
+        <if test="line!=null and line != ''">
+            and l.vc_name = #{line}
+        </if>
+        <if test="monthStr!=null and monthStr != ''">
+            and to_char(m.dt_work$day,'yyyyMM') = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='zh'">
+            <if test="skywinType!=null">
+                and nvl(m.vc_skywin$type,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='cz'">
+            <if test="skywinType!=null">
+                and m.vc_skywin$type in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        and d.finish = '1'
+    </select>
+    <select id="monthStatDetailApplyC" parameterType="Map"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select t.type vcType,
+        t.CONDITION vcProject,
+        t.plan_date dtWorkday,
+        t.GRADE vcLevel,
+        t.location workplace,
+        substr(t.DO_TIME, '0', instr(t.DO_TIME, '-') - 1) vcSkywinStime,
+        substr(t.DO_TIME, instr(t.DO_TIME, '-') + 1) vcSkywinetime,
+        t.route vcSgroute,
+        t.PRINCIPAL vcWaPerson,
+        t.DIRECTION vcSgdirectoryname
+        from ym_v_sgrwx t
+        where t.FLOW not in ('未上报')
+        and (t.do_unit || t.work_help like '%昆明南电务段%'
+        <if test="line!=null">
+            and t.route in
+            <foreach item="item" index="index" collection="line" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        <if test="monthStr!=null and monthStr != ''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='zh'">
+            <if test="skywinType!=null">
+                and nvl(t.SPARETIME_TYPE,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='cz'">
+            <if test="skywinType!=null">
+                and t.SPARETIME_TYPE in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        union all
+        select t.type vcType,
+        '' vcProject,
+        t.plan_date dtWorkday,
+        t.GRADE vcLevel,
+        t.location workplace,
+        substr(t.DO_TIME, '0', instr(t.DO_TIME, '-') - 1) vcSkywinStime,
+        substr(t.DO_TIME, instr(t.DO_TIME, '-') + 1) vcSkywinetime,
+        t.route vcSgroute,
+        t.PRINCIPAL vcWaPerson,
+        t.DIRECTORY vcSgdirectoryname
+        from ph_v_sgrsg t
+        where t.FLOW not in ('未上报')
+        and (t.do_unit || t.work_help like '%昆明南电务段%'
+        <if test="line!=null">
+            and t.route in
+            <foreach item="item" index="index" collection="line" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        <if test="monthStr!=null and monthStr != ''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+    </select>
+    <select id="monthStatDetailinPlan" parameterType="Map"
+            resultType="com.tieda.alarm.entity.SkywinStatistics.SkywinDayStatGrid">
+        select t.type vcType,
+        t.CONDITION vcProject,
+        t.plan_date dtWorkday,
+        t.GRADE vcLevel,
+        t.location workplace,
+        substr(t.DO_TIME, '0', instr(t.DO_TIME, '-') - 1) vcSkywinStime,
+        substr(t.DO_TIME, instr(t.DO_TIME, '-') + 1) vcSkywinetime,
+        t.route vcSgroute,
+        t.PRINCIPAL vcWaPerson,
+        t.DIRECTION vcSgdirectoryname
+        from ym_v_sgrwx t
+        where t.FLOW in ('正式日计划', '正式维修计划', '正式维修周计划')
+        and (t.do_unit || t.work_help like '%昆明南电务段%'
+        <if test="line!=null">
+            and t.route in
+            <foreach item="item" index="index" collection="line" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        <if test="monthStr!=null and monthStr != ''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='zh'">
+            <if test="skywinType!=null">
+                and nvl(t.SPARETIME_TYPE,'A') in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        <if test="zhOrcz!=null and zhOrcz=='cz'">
+            <if test="skywinType!=null">
+                and t.SPARETIME_TYPE in
+                <foreach item="item" index="index" collection="skywinType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </if>
+        union all
+        select t.type vcType,
+        '' vcProject,
+        t.plan_date dtWorkday,
+        t.GRADE vcLevel,
+        t.location workplace,
+        substr(t.DO_TIME, '0', instr(t.DO_TIME, '-') - 1) vcSkywinStime,
+        substr(t.DO_TIME, instr(t.DO_TIME, '-') + 1) vcSkywinetime,
+        t.route vcSgroute,
+        t.PRINCIPAL vcWaPerson,
+        t.DIRECTORY vcSgdirectoryname
+        from ph_v_sgrsg t
+        where t.FLOW in ('正式日计划', '正式维修计划', '正式维修周计划')
+        and (t.do_unit || t.work_help like '%昆明南电务段%'
+        <if test="line!=null">
+            and t.route in
+            <foreach item="item" index="index" collection="line" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        <if test="monthStr!=null and monthStr != ''">
+            and substr(t.plan_date, 0, 6) = #{monthStr}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTWeekPlan.YmTWeekPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTWeekPlan.YmTWeekPlan">
+        <id column="ID" property="id"/>
+        <result column="MID" property="mid"/>
+        <result column="LINE" property="line"/>
+        <result column="LINENAME" property="linename"/>
+        <result column="STATION" property="station"/>
+        <result column="STATIONNAME" property="stationname"/>
+        <result column="PLACE" property="place"/>
+        <result column="XINGBIE" property="xingbie"/>
+        <result column="LVL" property="lvl"/>
+        <result column="PROJECTNAME" property="projectname"/>
+        <result column="PROJECTID" property="projectid"/>
+        <result column="TCTYPE" property="tctype"/>
+        <result column="BEGINTIME" property="begintime"/>
+        <result column="ENDTIME" property="endtime"/>
+        <result column="PROJECTTYPE" property="projecttype"/>
+        <result column="SOURCE" property="source"/>
+        <result column="DEVNAME" property="devname"/>
+        <result column="DEVID" property="devid"/>
+        <result column="COOPERATE" property="cooperate"/>
+        <result column="ORGID" property="orgid"/>
+        <result column="ORGNAME" property="orgname"/>
+        <result column="CHARGE" property="charge"/>
+        <result column="CONTENT" property="content"/>
+        <result column="NOTE" property="note"/>
+        <result column="DEVTYPEID" property="devtypeid"/>
+        <result column="DEVTYPENAME" property="devtypename"/>
+        <result column="WORKDATE" property="workdate"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="USERID" property="userid"/>
+        <result column="NEEDSKYWIN" property="needskywin"/>
+        <result column="NEEDROAD" property="needroad"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTWeekPlanById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  ID,  MID,  LINE,LINENAME,  STATION,STATIONNAME,  PLACE,  XINGBIE,  LVL,  PROJECTNAME,  PROJECTID,  TCTYPE,  BEGINTIME,  ENDTIME,  PROJECTTYPE,  SOURCE,  DEVNAME,  DEVID,  COOPERATE,  ORGID,  ORGNAME,  CHARGE,  CONTENT,  NOTE,  DEVTYPEID,  DEVTYPENAME,  WORKDATE         from YM_T_WEEK_PLAN
+                        where ID = #{id}
+                                                                                                                                                                                                                                                                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTWeekPlanList" parameterType="map" resultMap="BaseResultMap">
+        select ID, MID, LINE,LINENAME, STATION,STATIONNAME, PLACE, XINGBIE, LVL, PROJECTNAME, PROJECTID, TCTYPE, BEGINTIME, ENDTIME,
+        PROJECTTYPE, SOURCE, DEVNAME, DEVID, COOPERATE, ORGID, ORGNAME, CHARGE, CONTENT, NOTE, DEVTYPEID, DEVTYPENAME,
+        USERID,CREATEDATE,NEEDSKYWIN,NEEDROAD,
+        WORKDATE from YM_T_WEEK_PLAN where 1=1
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="mid != null and mid != ''">
+                and MID = #{mid}
+            </if>
+            <if test="line != null and line != ''">
+                and LINE = #{line}
+            </if>
+            <if test="station != null and station != ''">
+                and STATION = #{station}
+            </if>
+            <if test="place != null and place != ''">
+                and PLACE = #{place}
+            </if>
+            <if test="xingbie != null and xingbie != ''">
+                and XINGBIE = #{xingbie}
+            </if>
+            <if test="lvl != null and lvl != ''">
+                and LVL = #{lvl}
+            </if>
+            <if test="projectname != null and projectname != ''">
+                and PROJECTNAME = #{projectname}
+            </if>
+            <if test="projectid != null and projectid != ''">
+                and PROJECTID = #{projectid}
+            </if>
+            <if test="tctype != null and tctype != ''">
+                and TCTYPE = #{tctype}
+            </if>
+            <if test="begintime != null and begintime != ''">
+                and BEGINTIME = #{begintime}
+            </if>
+            <if test="endtime != null and endtime != ''">
+                and ENDTIME = #{endtime}
+            </if>
+            <if test="projecttype != null and projecttype != ''">
+                and PROJECTTYPE = #{projecttype}
+            </if>
+            <if test="source != null and source != ''">
+                and SOURCE = #{source}
+            </if>
+            <if test="devname != null and devname != ''">
+                and DEVNAME = #{devname}
+            </if>
+            <if test="devid != null and devid != ''">
+                and DEVID = #{devid}
+            </if>
+            <if test="cooperate != null and cooperate != ''">
+                and COOPERATE = #{cooperate}
+            </if>
+            <if test="orgid != null and orgid != ''">
+                and ORGID = #{orgid}
+            </if>
+            <if test="orgname != null and orgname != ''">
+                and ORGNAME = #{orgname}
+            </if>
+            <if test="charge != null and charge != ''">
+                and CHARGE = #{charge}
+            </if>
+            <if test="content != null and content != ''">
+                and CONTENT = #{content}
+            </if>
+            <if test="note != null and note != ''">
+                and NOTE = #{note}
+            </if>
+            <if test="devtypeid != null and devtypeid != ''">
+                and DEVTYPEID = #{devtypeid}
+            </if>
+            <if test="devtypename != null and devtypename != ''">
+                and DEVTYPENAME = #{devtypename}
+            </if>
+            <if test="workdate != null and workdate != ''">
+                and WORKDATE = #{workdate}
+            </if>
+        order by WORKDATE desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTWeekPlan" parameterType="com.tieda.alarm.entity.ymTWeekPlan.YmTWeekPlan">
+        insert into YM_T_WEEK_PLAN (USERID,CREATEDATE,NEEDSKYWIN,NEEDROAD,ID, MID, LINE,LINENAME, STATION,STATIONNAME, PLACE, XINGBIE, LVL, PROJECTNAME, PROJECTID, TCTYPE, BEGINTIME, ENDTIME, PROJECTTYPE, SOURCE, DEVNAME, DEVID, COOPERATE, ORGID, ORGNAME, CHARGE, CONTENT, NOTE, DEVTYPEID, DEVTYPENAME, WORKDATE )
+        values (   #{userid,jdbcType = VARCHAR}, #{createdate,jdbcType = VARCHAR}, #{needskywin,jdbcType = VARCHAR}, #{needroad,jdbcType = VARCHAR},              #{id,jdbcType = VARCHAR},                    #{mid,jdbcType = VARCHAR},    #{line,jdbcType = VARCHAR},#{linename,jdbcType = VARCHAR},
+                           #{station,jdbcType = VARCHAR}, #{stationname,jdbcType = VARCHAR},                      #{place,jdbcType = VARCHAR},                    #{xingbie,jdbcType = VARCHAR},                    #{lvl,jdbcType = VARCHAR},                    #{projectname,jdbcType = VARCHAR},                    #{projectid,jdbcType = VARCHAR},                    #{tctype,jdbcType = VARCHAR},                    #{begintime,jdbcType = VARCHAR},                    #{endtime,jdbcType = VARCHAR},                    #{projecttype,jdbcType = VARCHAR},                    #{source,jdbcType = VARCHAR},                    #{devname,jdbcType = VARCHAR},                    #{devid,jdbcType = VARCHAR},                    #{cooperate,jdbcType = VARCHAR},                    #{orgid,jdbcType = VARCHAR},                    #{orgname,jdbcType = VARCHAR},                    #{charge,jdbcType = VARCHAR},                    #{content,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{devtypeid,jdbcType = VARCHAR},                    #{devtypename,jdbcType = VARCHAR},                    #{workdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTWeekPlan" parameterType="list">
+        insert into YM_T_WEEK_PLAN (ID, MID, LINE, STATION, PLACE, XINGBIE, LVL, PROJECTNAME, PROJECTID, TCTYPE,
+        BEGINTIME, ENDTIME, PROJECTTYPE, SOURCE, DEVNAME, DEVID, COOPERATE, ORGID, ORGNAME, CHARGE, CONTENT, NOTE,
+        DEVTYPEID, DEVTYPENAME, WORKDATE ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.mid}, #{item.line}, #{item.station}, #{item.place}, #{item.xingbie}, #{item.lvl},
+            #{item.projectname}, #{item.projectid}, #{item.tctype}, #{item.begintime}, #{item.endtime},
+            #{item.projecttype}, #{item.source}, #{item.devname}, #{item.devid}, #{item.cooperate}, #{item.orgid},
+            #{item.orgname}, #{item.charge}, #{item.content}, #{item.note}, #{item.devtypeid}, #{item.devtypename},
+            #{item.workdate} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTWeekPlan" parameterType="com.tieda.alarm.entity.ymTWeekPlan.YmTWeekPlan">
+        update YM_T_WEEK_PLAN
+        <set>
+            <if test="mid != null and mid != ''">
+                MID = #{mid},
+            </if>
+            <if test="line != null and line != ''">
+                LINE = #{line},
+            </if>
+            <if test="linename != null and linename != ''">
+                LINENAME = #{linename},
+            </if>
+            <if test="station != null and station != ''">
+                STATION = #{station},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                STATIONNAME = #{stationname},
+            </if>
+            <if test="place != null and place != ''">
+                PLACE = #{place},
+            </if>
+            <if test="xingbie != null and xingbie != ''">
+                XINGBIE = #{xingbie},
+            </if>
+            <if test="lvl != null and lvl != ''">
+                LVL = #{lvl},
+            </if>
+            <if test="projectname != null and projectname != ''">
+                PROJECTNAME = #{projectname},
+            </if>
+            <if test="projectid != null and projectid != ''">
+                PROJECTID = #{projectid},
+            </if>
+            <if test="tctype != null and tctype != ''">
+                TCTYPE = #{tctype},
+            </if>
+            <if test="begintime != null and begintime != ''">
+                BEGINTIME = #{begintime},
+            </if>
+            <if test="endtime != null and endtime != ''">
+                ENDTIME = #{endtime},
+            </if>
+            <if test="projecttype != null and projecttype != ''">
+                PROJECTTYPE = #{projecttype},
+            </if>
+
+            <if test="devname != null and devname != ''">
+                DEVNAME = #{devname},
+            </if>
+            <if test="devid != null and devid != ''">
+                DEVID = #{devid},
+            </if>
+            <if test="cooperate != null and cooperate != ''">
+                COOPERATE = #{cooperate},
+            </if>
+            <if test="orgid != null and orgid != ''">
+                ORGID = #{orgid},
+            </if>
+            <if test="orgname != null and orgname != ''">
+                ORGNAME = #{orgname},
+            </if>
+            <if test="charge != null and charge != ''">
+                CHARGE = #{charge},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="note != null and note != ''">
+                NOTE = #{note},
+            </if>
+            <if test="devtypeid != null and devtypeid != ''">
+                DEVTYPEID = #{devtypeid},
+            </if>
+            <if test="devtypename != null and devtypename != ''">
+                DEVTYPENAME = #{devtypename},
+            </if>
+            <if test="workdate != null and workdate != ''">
+                WORKDATE = #{workdate}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathYmTWeekPlan" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_WEEK_PLAN
+            <set>
+                MID = #{item.mid}, LINE = #{item.line}, STATION = #{item.station}, PLACE = #{item.place}, XINGBIE =
+                #{item.xingbie}, LVL = #{item.lvl}, PROJECTNAME = #{item.projectname}, PROJECTID = #{item.projectid},
+                TCTYPE = #{item.tctype}, BEGINTIME = #{item.begintime}, ENDTIME = #{item.endtime}, PROJECTTYPE =
+                #{item.projecttype}, SOURCE = #{item.source}, DEVNAME = #{item.devname}, DEVID = #{item.devid},
+                COOPERATE = #{item.cooperate}, ORGID = #{item.orgid}, ORGNAME = #{item.orgname}, CHARGE =
+                #{item.charge}, CONTENT = #{item.content}, NOTE = #{item.note}, DEVTYPEID = #{item.devtypeid},
+                DEVTYPENAME = #{item.devtypename}, WORKDATE = #{item.workdate}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTWeekPlanById" parameterType="java.lang.String">
+        delete from YM_T_WEEK_PLAN
+        where
+            ID = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTWeekPlan" parameterType="list">
+        delete from YM_T_WEEK_PLAN
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

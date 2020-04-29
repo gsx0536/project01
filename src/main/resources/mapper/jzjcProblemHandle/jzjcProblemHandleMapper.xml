@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.jzjcProblemHandle.JzjcProblemHandleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.jzjcProblemHandle.JzjcProblemHandle">
+        <id column="ID" property="id"/>
+        <result column="PROBLEMID" property="problemid"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="ORG" property="org"/>
+        <result column="ORGNAME" property="orgname"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getJzjcProblemHandleById" parameterType="long" resultMap="BaseResultMap">
+        select ID, PROBLEMID, CREATEDATE, ORG, ORGNAME, OPERATOR,content
+        from JZJC_PROBLEM_HANDLE
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getJzjcProblemHandleList" parameterType="map" resultMap="BaseResultMap">
+        select ID,PROBLEMID,CREATEDATE,ORG,ORGNAME,OPERATOR,CONTENT from (
+        select ID,PROBLEMID,CREATEDATE,ORG,ORGNAME,OPERATOR,CONTENT from JZJC_PROBLEM_HANDLE
+        <if test="problemid != null and problemid != ''">
+            where PROBLEMID = #{problemid}
+        </if>
+        union all
+        select ID,PROBLEMID,CREATEDATE,OPERORG,'','',INFOR from jzjc_problem_log
+        <if test="problemid != null and problemid != ''">
+            where PROBLEMID = #{problemid}
+        </if>
+        )p order by CREATEDATE
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addJzjcProblemHandle" parameterType="com.tieda.alarm.entity.jzjcProblemHandle.JzjcProblemHandle">
+        insert into JZJC_PROBLEM_HANDLE (ID, PROBLEMID, CREATEDATE, ORG, ORGNAME, OPERATOR,content)
+        values (#{id,jdbcType = VARCHAR}, #{problemid,jdbcType = VARCHAR}, #{createdate,jdbcType = VARCHAR},
+                #{org,jdbcType = VARCHAR}, #{orgname,jdbcType = VARCHAR}, #{operator,jdbcType = VARCHAR}, #{content,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchJzjcProblemHandle" parameterType="list">
+        insert into JZJC_PROBLEM_HANDLE (ID, PROBLEMID, CREATEDATE, ORG, ORGNAME, OPERATOR ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.problemid}, #{item.createdate}, #{item.org}, #{item.orgname}, #{item.operator} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateJzjcProblemHandle" parameterType="com.tieda.alarm.entity.jzjcProblemHandle.JzjcProblemHandle">
+        update JZJC_PROBLEM_HANDLE
+        <set>
+            <if test="problemid != null and problemid != ''">
+                PROBLEMID = #{problemid},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate},
+            </if>
+            <if test="org != null and org != ''">
+                ORG = #{org},
+            </if>
+            <if test="orgname != null and orgname != ''">
+                ORGNAME = #{orgname},
+            </if>
+            <if test="operator != null and operator != ''">
+                OPERATOR = #{operator}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathJzjcProblemHandle" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update JZJC_PROBLEM_HANDLE
+            <set>
+                PROBLEMID = #{item.problemid}, CREATEDATE = #{item.createdate}, ORG = #{item.org}, ORGNAME =
+                #{item.orgname}, OPERATOR = #{item.operator}
+            </set>
+            where
+            ID = #{item.id}
+        </foreach>
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteJzjcProblemHandleById" parameterType="long">
+        delete
+        from JZJC_PROBLEM_HANDLE
+        where
+            ID = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchJzjcProblemHandle" parameterType="list">
+        delete from JZJC_PROBLEM_HANDLE
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

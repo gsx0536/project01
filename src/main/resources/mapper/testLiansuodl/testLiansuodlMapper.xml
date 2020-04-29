@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testLiansuodl.TestLiansuodlMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testLiansuodl.TestLiansuodl">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <result column="ID" property="id"/>
+                                                                <result column="JLHM" property="jlhm"/>
+                                                                <result column="JLSD" property="jlsd"/>
+                                                                <result column="JLBT" property="jlbt"/>
+                                                                <result column="JLZD" property="jlzd"/>
+                                                                <result column="DTZFFC" property="dtzffc"/>
+                                                                <result column="MTFX" property="mtfx"/>
+                                                                <result column="MTZX" property="mtzx"/>
+                                                                <result column="ZSBKF" property="zsbkf"/>
+                                                                <result column="TWJS" property="twjs"/>
+                                                                <result column="ZJBSFC" property="zjbsfc"/>
+                                                                <result column="WBLJL" property="wbljl"/>
+                                                                <result column="JLBLBGB" property="jlblbgb"/>
+                                                                <result column="DTXGJCD" property="dtxgjcd"/>
+                                                                <result column="DTGDJX" property="dtgdjx"/>
+                                                                <result column="HTTS" property="htts"/>
+                                                                <result column="JLJS" property="jljs"/>
+                                                                <result column="DTZXJC" property="dtzxjc"/>
+                                                                <result column="JZDGJC" property="jzdgjc"/>
+                                                                <result column="LSXS" property="lsxs"/>
+                                                                <result column="LWSY" property="lwsy"/>
+                                                                <result column="NOTE" property="note"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestLiansuodlById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  JLHM,  JLSD,  JLBT,  JLZD,  DTZFFC,  MTFX,  MTZX,  ZSBKF,  TWJS,  ZJBSFC,  WBLJL,  JLBLBGB,  DTXGJCD,  DTGDJX,  HTTS,  JLJS,  DTZXJC,  JZDGJC,  LSXS,  LWSY,  NOTE         from TEST_LIANSUODL
+                                                                                                                                                                                                                                                                                    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestLiansuodlList" parameterType="map" resultMap="BaseResultMap">
+        select ID, JLHM, JLSD, JLBT, JLZD, DTZFFC, MTFX, MTZX, ZSBKF, TWJS, ZJBSFC, WBLJL, JLBLBGB, DTXGJCD, DTGDJX, HTTS, JLJS, DTZXJC, JZDGJC, LSXS, LWSY, NOTE         from TEST_LIANSUODL
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="jlhm != null and jlhm != ''">
+                    and JLHM = #{jlhm}
+                </if>
+                            <if test="jlsd != null and jlsd != ''">
+                    and JLSD = #{jlsd}
+                </if>
+                            <if test="jlbt != null and jlbt != ''">
+                    and JLBT = #{jlbt}
+                </if>
+                            <if test="jlzd != null and jlzd != ''">
+                    and JLZD = #{jlzd}
+                </if>
+                            <if test="dtzffc != null and dtzffc != ''">
+                    and DTZFFC = #{dtzffc}
+                </if>
+                            <if test="mtfx != null and mtfx != ''">
+                    and MTFX = #{mtfx}
+                </if>
+                            <if test="mtzx != null and mtzx != ''">
+                    and MTZX = #{mtzx}
+                </if>
+                            <if test="zsbkf != null and zsbkf != ''">
+                    and ZSBKF = #{zsbkf}
+                </if>
+                            <if test="twjs != null and twjs != ''">
+                    and TWJS = #{twjs}
+                </if>
+                            <if test="zjbsfc != null and zjbsfc != ''">
+                    and ZJBSFC = #{zjbsfc}
+                </if>
+                            <if test="wbljl != null and wbljl != ''">
+                    and WBLJL = #{wbljl}
+                </if>
+                            <if test="jlblbgb != null and jlblbgb != ''">
+                    and JLBLBGB = #{jlblbgb}
+                </if>
+                            <if test="dtxgjcd != null and dtxgjcd != ''">
+                    and DTXGJCD = #{dtxgjcd}
+                </if>
+                            <if test="dtgdjx != null and dtgdjx != ''">
+                    and DTGDJX = #{dtgdjx}
+                </if>
+                            <if test="htts != null and htts != ''">
+                    and HTTS = #{htts}
+                </if>
+                            <if test="jljs != null and jljs != ''">
+                    and JLJS = #{jljs}
+                </if>
+                            <if test="dtzxjc != null and dtzxjc != ''">
+                    and DTZXJC = #{dtzxjc}
+                </if>
+                            <if test="jzdgjc != null and jzdgjc != ''">
+                    and JZDGJC = #{jzdgjc}
+                </if>
+                            <if test="lsxs != null and lsxs != ''">
+                    and LSXS = #{lsxs}
+                </if>
+                            <if test="lwsy != null and lwsy != ''">
+                    and LWSY = #{lwsy}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestLiansuodl" parameterType="com.tieda.alarm.entity.testLiansuodl.TestLiansuodl">
+        insert into TEST_LIANSUODL (ID, JLHM, JLSD, JLBT, JLZD, DTZFFC, MTFX, MTZX, ZSBKF, TWJS, ZJBSFC, WBLJL, JLBLBGB, DTXGJCD, DTGDJX, HTTS, JLJS, DTZXJC, JZDGJC, LSXS, LWSY, NOTE )
+        values (                #{id,jdbcType = VARCHAR},                    #{jlhm,jdbcType = VARCHAR},                    #{jlsd,jdbcType = VARCHAR},                    #{jlbt,jdbcType = VARCHAR},                    #{jlzd,jdbcType = VARCHAR},                    #{dtzffc,jdbcType = VARCHAR},                    #{mtfx,jdbcType = VARCHAR},                    #{mtzx,jdbcType = VARCHAR},                    #{zsbkf,jdbcType = VARCHAR},                    #{twjs,jdbcType = VARCHAR},                    #{zjbsfc,jdbcType = VARCHAR},                    #{wbljl,jdbcType = VARCHAR},                    #{jlblbgb,jdbcType = VARCHAR},                    #{dtxgjcd,jdbcType = VARCHAR},                    #{dtgdjx,jdbcType = VARCHAR},                    #{htts,jdbcType = VARCHAR},                    #{jljs,jdbcType = VARCHAR},                    #{dtzxjc,jdbcType = VARCHAR},                    #{jzdgjc,jdbcType = VARCHAR},                    #{lsxs,jdbcType = VARCHAR},                    #{lwsy,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestLiansuodl" parameterType="list">
+        insert into TEST_LIANSUODL (ID, JLHM, JLSD, JLBT, JLZD, DTZFFC, MTFX, MTZX, ZSBKF, TWJS, ZJBSFC, WBLJL, JLBLBGB, DTXGJCD, DTGDJX, HTTS, JLJS, DTZXJC, JZDGJC, LSXS, LWSY, NOTE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.jlhm}, #{item.jlsd}, #{item.jlbt}, #{item.jlzd}, #{item.dtzffc}, #{item.mtfx}, #{item.mtzx}, #{item.zsbkf}, #{item.twjs}, #{item.zjbsfc}, #{item.wbljl}, #{item.jlblbgb}, #{item.dtxgjcd}, #{item.dtgdjx}, #{item.htts}, #{item.jljs}, #{item.dtzxjc}, #{item.jzdgjc}, #{item.lsxs}, #{item.lwsy}, #{item.note}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestLiansuodl" parameterType="com.tieda.alarm.entity.testLiansuodl.TestLiansuodl">
+        update TEST_LIANSUODL
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="jlhm != null and jlhm != ''">
+                        JLHM = #{jlhm},                    </if>
+                                                                <if test="jlsd != null and jlsd != ''">
+                        JLSD = #{jlsd},                    </if>
+                                                                <if test="jlbt != null and jlbt != ''">
+                        JLBT = #{jlbt},                    </if>
+                                                                <if test="jlzd != null and jlzd != ''">
+                        JLZD = #{jlzd},                    </if>
+                                                                <if test="dtzffc != null and dtzffc != ''">
+                        DTZFFC = #{dtzffc},                    </if>
+                                                                <if test="mtfx != null and mtfx != ''">
+                        MTFX = #{mtfx},                    </if>
+                                                                <if test="mtzx != null and mtzx != ''">
+                        MTZX = #{mtzx},                    </if>
+                                                                <if test="zsbkf != null and zsbkf != ''">
+                        ZSBKF = #{zsbkf},                    </if>
+                                                                <if test="twjs != null and twjs != ''">
+                        TWJS = #{twjs},                    </if>
+                                                                <if test="zjbsfc != null and zjbsfc != ''">
+                        ZJBSFC = #{zjbsfc},                    </if>
+                                                                <if test="wbljl != null and wbljl != ''">
+                        WBLJL = #{wbljl},                    </if>
+                                                                <if test="jlblbgb != null and jlblbgb != ''">
+                        JLBLBGB = #{jlblbgb},                    </if>
+                                                                <if test="dtxgjcd != null and dtxgjcd != ''">
+                        DTXGJCD = #{dtxgjcd},                    </if>
+                                                                <if test="dtgdjx != null and dtgdjx != ''">
+                        DTGDJX = #{dtgdjx},                    </if>
+                                                                <if test="htts != null and htts != ''">
+                        HTTS = #{htts},                    </if>
+                                                                <if test="jljs != null and jljs != ''">
+                        JLJS = #{jljs},                    </if>
+                                                                <if test="dtzxjc != null and dtzxjc != ''">
+                        DTZXJC = #{dtzxjc},                    </if>
+                                                                <if test="jzdgjc != null and jzdgjc != ''">
+                        JZDGJC = #{jzdgjc},                    </if>
+                                                                <if test="lsxs != null and lsxs != ''">
+                        LSXS = #{lsxs},                    </if>
+                                                                <if test="lwsy != null and lwsy != ''">
+                        LWSY = #{lwsy},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestLiansuodl" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_LIANSUODL
+            <set>
+                                                            ID = #{item.id},                                                                                JLHM = #{item.jlhm},                                                                                JLSD = #{item.jlsd},                                                                                JLBT = #{item.jlbt},                                                                                JLZD = #{item.jlzd},                                                                                DTZFFC = #{item.dtzffc},                                                                                MTFX = #{item.mtfx},                                                                                MTZX = #{item.mtzx},                                                                                ZSBKF = #{item.zsbkf},                                                                                TWJS = #{item.twjs},                                                                                ZJBSFC = #{item.zjbsfc},                                                                                WBLJL = #{item.wbljl},                                                                                JLBLBGB = #{item.jlblbgb},                                                                                DTXGJCD = #{item.dtxgjcd},                                                                                DTGDJX = #{item.dtgdjx},                                                                                HTTS = #{item.htts},                                                                                JLJS = #{item.jljs},                                                                                DTZXJC = #{item.dtzxjc},                                                                                JZDGJC = #{item.jzdgjc},                                                                                LSXS = #{item.lsxs},                                                                                LWSY = #{item.lwsy},                                                                                NOTE = #{item.note}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestLiansuodlById" parameterType="long">
+        delete from TEST_LIANSUODL
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestLiansuodl" parameterType="list">
+        delete from TEST_LIANSUODL
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

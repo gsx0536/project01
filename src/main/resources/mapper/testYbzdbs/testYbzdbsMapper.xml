@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testYbzdbs.TestYbzdbsMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testYbzdbs.TestYbzdbs">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <result column="ID" property="id"/>
+                                                                <result column="NAME" property="name"/>
+                                                                <result column="ZP" property="zp"/>
+                                                                <result column="ZPHD" property="zphd"/>
+                                                                <result column="JC" property="jc"/>
+                                                                <result column="HU" property="hu"/>
+                                                                <result column="HB" property="hb"/>
+                                                                <result column="UU" property="uu"/>
+                                                                <result column="UUS" property="uus"/>
+                                                                <result column="U" property="u"/>
+                                                                <result column="U2" property="u2"/>
+                                                                <result column="U2S" property="u2s"/>
+                                                                <result column="LU" property="lu"/>
+                                                                <result column="L" property="l"/>
+                                                                <result column="L2" property="l2"/>
+                                                                <result column="L3" property="l3"/>
+                                                                <result column="L4" property="l4"/>
+                                                                <result column="L5" property="l5"/>
+                                                                <result column="JS_DP_ZJ" property="jsDpZj"/>
+                                                                <result column="JS_DP_BJ" property="jsDpBj"/>
+                                                                <result column="JS_YP_ZJ" property="jsYpZj"/>
+                                                                <result column="JS_YP_BJ" property="jsYpBj"/>
+                                                                <result column="DGXSHD_H" property="dgxshdH"/>
+                                                                <result column="DGXSHD_U" property="dgxshdU"/>
+                                                                <result column="DGXSHD_LU" property="dgxshdLu"/>
+                                                                <result column="DGXSHD_L" property="dgxshdL"/>
+                                                                <result column="ZFSZH" property="zfszh"/>
+                                                                <result column="DGZY_H" property="dgzyH"/>
+                                                                <result column="DGZY_U" property="dgzyU"/>
+                                                                <result column="DGZY_LU" property="dgzyLu"/>
+                                                                <result column="DGZY_L" property="dgzyL"/>
+                                                                <result column="FSJSGZ" property="fsjsgz"/>
+                                                                <result column="ZGQDHD" property="zgqdhd"/>
+                                                                <result column="XGQDHD" property="xgqdhd"/>
+                                                                <result column="CYCS" property="cycs"/>
+                                                                <result column="SJZH" property="sjzh"/>
+                                                                <result column="FSJSSZHD" property="fsjsszhd"/>
+                                                                <result column="JZKFGHC" property="jzkfghc"/>
+                                                                <result column="FXFGHC" property="fxfghc"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestYbzdbsById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  ZP,  ZPHD,  JC,  HU,  HB,  UU,  UUS,  U,  U2,  U2S,  LU,  L,  L2,  L3,  L4,  L5,  JS_DP_ZJ,  JS_DP_BJ,  JS_YP_ZJ,  JS_YP_BJ,  DGXSHD_H,  DGXSHD_U,  DGXSHD_LU,  DGXSHD_L,  ZFSZH,  DGZY_H,  DGZY_U,  DGZY_LU,  DGZY_L,  FSJSGZ,  ZGQDHD,  XGQDHD,  CYCS,  SJZH,  FSJSSZHD,  JZKFGHC,  FXFGHC,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_YBZDBS
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestYbzdbsList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, ZP, ZPHD, JC, HU, HB, UU, UUS, U, U2, U2S, LU, L, L2, L3, L4, L5, JS_DP_ZJ, JS_DP_BJ, JS_YP_ZJ, JS_YP_BJ, DGXSHD_H, DGXSHD_U, DGXSHD_LU, DGXSHD_L, ZFSZH, DGZY_H, DGZY_U, DGZY_LU, DGZY_L, FSJSGZ, ZGQDHD, XGQDHD, CYCS, SJZH, FSJSSZHD, JZKFGHC, FXFGHC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         from TEST_YBZDBS
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="zp != null and zp != ''">
+                    and ZP = #{zp}
+                </if>
+                            <if test="zphd != null and zphd != ''">
+                    and ZPHD = #{zphd}
+                </if>
+                            <if test="jc != null and jc != ''">
+                    and JC = #{jc}
+                </if>
+                            <if test="hu != null and hu != ''">
+                    and HU = #{hu}
+                </if>
+                            <if test="hb != null and hb != ''">
+                    and HB = #{hb}
+                </if>
+                            <if test="uu != null and uu != ''">
+                    and UU = #{uu}
+                </if>
+                            <if test="uus != null and uus != ''">
+                    and UUS = #{uus}
+                </if>
+                            <if test="u != null and u != ''">
+                    and U = #{u}
+                </if>
+                            <if test="u2 != null and u2 != ''">
+                    and U2 = #{u2}
+                </if>
+                            <if test="u2s != null and u2s != ''">
+                    and U2S = #{u2s}
+                </if>
+                            <if test="lu != null and lu != ''">
+                    and LU = #{lu}
+                </if>
+                            <if test="l != null and l != ''">
+                    and L = #{l}
+                </if>
+                            <if test="l2 != null and l2 != ''">
+                    and L2 = #{l2}
+                </if>
+                            <if test="l3 != null and l3 != ''">
+                    and L3 = #{l3}
+                </if>
+                            <if test="l4 != null and l4 != ''">
+                    and L4 = #{l4}
+                </if>
+                            <if test="l5 != null and l5 != ''">
+                    and L5 = #{l5}
+                </if>
+                            <if test="jsDpZj != null and jsDpZj != ''">
+                    and JS_DP_ZJ = #{jsDpZj}
+                </if>
+                            <if test="jsDpBj != null and jsDpBj != ''">
+                    and JS_DP_BJ = #{jsDpBj}
+                </if>
+                            <if test="jsYpZj != null and jsYpZj != ''">
+                    and JS_YP_ZJ = #{jsYpZj}
+                </if>
+                            <if test="jsYpBj != null and jsYpBj != ''">
+                    and JS_YP_BJ = #{jsYpBj}
+                </if>
+                            <if test="dgxshdH != null and dgxshdH != ''">
+                    and DGXSHD_H = #{dgxshdH}
+                </if>
+                            <if test="dgxshdU != null and dgxshdU != ''">
+                    and DGXSHD_U = #{dgxshdU}
+                </if>
+                            <if test="dgxshdLu != null and dgxshdLu != ''">
+                    and DGXSHD_LU = #{dgxshdLu}
+                </if>
+                            <if test="dgxshdL != null and dgxshdL != ''">
+                    and DGXSHD_L = #{dgxshdL}
+                </if>
+                            <if test="zfszh != null and zfszh != ''">
+                    and ZFSZH = #{zfszh}
+                </if>
+                            <if test="dgzyH != null and dgzyH != ''">
+                    and DGZY_H = #{dgzyH}
+                </if>
+                            <if test="dgzyU != null and dgzyU != ''">
+                    and DGZY_U = #{dgzyU}
+                </if>
+                            <if test="dgzyLu != null and dgzyLu != ''">
+                    and DGZY_LU = #{dgzyLu}
+                </if>
+                            <if test="dgzyL != null and dgzyL != ''">
+                    and DGZY_L = #{dgzyL}
+                </if>
+                            <if test="fsjsgz != null and fsjsgz != ''">
+                    and FSJSGZ = #{fsjsgz}
+                </if>
+                            <if test="zgqdhd != null and zgqdhd != ''">
+                    and ZGQDHD = #{zgqdhd}
+                </if>
+                            <if test="xgqdhd != null and xgqdhd != ''">
+                    and XGQDHD = #{xgqdhd}
+                </if>
+                            <if test="cycs != null and cycs != ''">
+                    and CYCS = #{cycs}
+                </if>
+                            <if test="sjzh != null and sjzh != ''">
+                    and SJZH = #{sjzh}
+                </if>
+                            <if test="fsjsszhd != null and fsjsszhd != ''">
+                    and FSJSSZHD = #{fsjsszhd}
+                </if>
+                            <if test="jzkfghc != null and jzkfghc != ''">
+                    and JZKFGHC = #{jzkfghc}
+                </if>
+                            <if test="fxfghc != null and fxfghc != ''">
+                    and FXFGHC = #{fxfghc}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestYbzdbs" parameterType="com.tieda.alarm.entity.testYbzdbs.TestYbzdbs">
+        insert into TEST_YBZDBS (ID, NAME, ZP, ZPHD, JC, HU, HB, UU, UUS, U, U2, U2S, LU, L, L2, L3, L4, L5, JS_DP_ZJ, JS_DP_BJ, JS_YP_ZJ, JS_YP_BJ, DGXSHD_H, DGXSHD_U, DGXSHD_LU, DGXSHD_L, ZFSZH, DGZY_H, DGZY_U, DGZY_LU, DGZY_L, FSJSGZ, ZGQDHD, XGQDHD, CYCS, SJZH, FSJSSZHD, JZKFGHC, FXFGHC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{zp,jdbcType = VARCHAR},                    #{zphd,jdbcType = VARCHAR},                    #{jc,jdbcType = VARCHAR},                    #{hu,jdbcType = VARCHAR},                    #{hb,jdbcType = VARCHAR},                    #{uu,jdbcType = VARCHAR},                    #{uus,jdbcType = VARCHAR},                    #{u,jdbcType = VARCHAR},                    #{u2,jdbcType = VARCHAR},                    #{u2s,jdbcType = VARCHAR},                    #{lu,jdbcType = VARCHAR},                    #{l,jdbcType = VARCHAR},                    #{l2,jdbcType = VARCHAR},                    #{l3,jdbcType = VARCHAR},                    #{l4,jdbcType = VARCHAR},                    #{l5,jdbcType = VARCHAR},                    #{jsDpZj,jdbcType = VARCHAR},                    #{jsDpBj,jdbcType = VARCHAR},                    #{jsYpZj,jdbcType = VARCHAR},                    #{jsYpBj,jdbcType = VARCHAR},                    #{dgxshdH,jdbcType = VARCHAR},                    #{dgxshdU,jdbcType = VARCHAR},                    #{dgxshdLu,jdbcType = VARCHAR},                    #{dgxshdL,jdbcType = VARCHAR},                    #{zfszh,jdbcType = VARCHAR},                    #{dgzyH,jdbcType = VARCHAR},                    #{dgzyU,jdbcType = VARCHAR},                    #{dgzyLu,jdbcType = VARCHAR},                    #{dgzyL,jdbcType = VARCHAR},                    #{fsjsgz,jdbcType = VARCHAR},                    #{zgqdhd,jdbcType = VARCHAR},                    #{xgqdhd,jdbcType = VARCHAR},                    #{cycs,jdbcType = VARCHAR},                    #{sjzh,jdbcType = VARCHAR},                    #{fsjsszhd,jdbcType = VARCHAR},                    #{jzkfghc,jdbcType = VARCHAR},                    #{fxfghc,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestYbzdbs" parameterType="list">
+        insert into TEST_YBZDBS (ID, NAME, ZP, ZPHD, JC, HU, HB, UU, UUS, U, U2, U2S, LU, L, L2, L3, L4, L5, JS_DP_ZJ, JS_DP_BJ, JS_YP_ZJ, JS_YP_BJ, DGXSHD_H, DGXSHD_U, DGXSHD_LU, DGXSHD_L, ZFSZH, DGZY_H, DGZY_U, DGZY_LU, DGZY_L, FSJSGZ, ZGQDHD, XGQDHD, CYCS, SJZH, FSJSSZHD, JZKFGHC, FXFGHC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.zp}, #{item.zphd}, #{item.jc}, #{item.hu}, #{item.hb}, #{item.uu}, #{item.uus}, #{item.u}, #{item.u2}, #{item.u2s}, #{item.lu}, #{item.l}, #{item.l2}, #{item.l3}, #{item.l4}, #{item.l5}, #{item.jsDpZj}, #{item.jsDpBj}, #{item.jsYpZj}, #{item.jsYpBj}, #{item.dgxshdH}, #{item.dgxshdU}, #{item.dgxshdLu}, #{item.dgxshdL}, #{item.zfszh}, #{item.dgzyH}, #{item.dgzyU}, #{item.dgzyLu}, #{item.dgzyL}, #{item.fsjsgz}, #{item.zgqdhd}, #{item.xgqdhd}, #{item.cycs}, #{item.sjzh}, #{item.fsjsszhd}, #{item.jzkfghc}, #{item.fxfghc}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestYbzdbs" parameterType="com.tieda.alarm.entity.testYbzdbs.TestYbzdbs">
+        update TEST_YBZDBS
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="zp != null and zp != ''">
+                        ZP = #{zp},                    </if>
+                                                                <if test="zphd != null and zphd != ''">
+                        ZPHD = #{zphd},                    </if>
+                                                                <if test="jc != null and jc != ''">
+                        JC = #{jc},                    </if>
+                                                                <if test="hu != null and hu != ''">
+                        HU = #{hu},                    </if>
+                                                                <if test="hb != null and hb != ''">
+                        HB = #{hb},                    </if>
+                                                                <if test="uu != null and uu != ''">
+                        UU = #{uu},                    </if>
+                                                                <if test="uus != null and uus != ''">
+                        UUS = #{uus},                    </if>
+                                                                <if test="u != null and u != ''">
+                        U = #{u},                    </if>
+                                                                <if test="u2 != null and u2 != ''">
+                        U2 = #{u2},                    </if>
+                                                                <if test="u2s != null and u2s != ''">
+                        U2S = #{u2s},                    </if>
+                                                                <if test="lu != null and lu != ''">
+                        LU = #{lu},                    </if>
+                                                                <if test="l != null and l != ''">
+                        L = #{l},                    </if>
+                                                                <if test="l2 != null and l2 != ''">
+                        L2 = #{l2},                    </if>
+                                                                <if test="l3 != null and l3 != ''">
+                        L3 = #{l3},                    </if>
+                                                                <if test="l4 != null and l4 != ''">
+                        L4 = #{l4},                    </if>
+                                                                <if test="l5 != null and l5 != ''">
+                        L5 = #{l5},                    </if>
+                                                                <if test="jsDpZj != null and jsDpZj != ''">
+                        JS_DP_ZJ = #{jsDpZj},                    </if>
+                                                                <if test="jsDpBj != null and jsDpBj != ''">
+                        JS_DP_BJ = #{jsDpBj},                    </if>
+                                                                <if test="jsYpZj != null and jsYpZj != ''">
+                        JS_YP_ZJ = #{jsYpZj},                    </if>
+                                                                <if test="jsYpBj != null and jsYpBj != ''">
+                        JS_YP_BJ = #{jsYpBj},                    </if>
+                                                                <if test="dgxshdH != null and dgxshdH != ''">
+                        DGXSHD_H = #{dgxshdH},                    </if>
+                                                                <if test="dgxshdU != null and dgxshdU != ''">
+                        DGXSHD_U = #{dgxshdU},                    </if>
+                                                                <if test="dgxshdLu != null and dgxshdLu != ''">
+                        DGXSHD_LU = #{dgxshdLu},                    </if>
+                                                                <if test="dgxshdL != null and dgxshdL != ''">
+                        DGXSHD_L = #{dgxshdL},                    </if>
+                                                                <if test="zfszh != null and zfszh != ''">
+                        ZFSZH = #{zfszh},                    </if>
+                                                                <if test="dgzyH != null and dgzyH != ''">
+                        DGZY_H = #{dgzyH},                    </if>
+                                                                <if test="dgzyU != null and dgzyU != ''">
+                        DGZY_U = #{dgzyU},                    </if>
+                                                                <if test="dgzyLu != null and dgzyLu != ''">
+                        DGZY_LU = #{dgzyLu},                    </if>
+                                                                <if test="dgzyL != null and dgzyL != ''">
+                        DGZY_L = #{dgzyL},                    </if>
+                                                                <if test="fsjsgz != null and fsjsgz != ''">
+                        FSJSGZ = #{fsjsgz},                    </if>
+                                                                <if test="zgqdhd != null and zgqdhd != ''">
+                        ZGQDHD = #{zgqdhd},                    </if>
+                                                                <if test="xgqdhd != null and xgqdhd != ''">
+                        XGQDHD = #{xgqdhd},                    </if>
+                                                                <if test="cycs != null and cycs != ''">
+                        CYCS = #{cycs},                    </if>
+                                                                <if test="sjzh != null and sjzh != ''">
+                        SJZH = #{sjzh},                    </if>
+                                                                <if test="fsjsszhd != null and fsjsszhd != ''">
+                        FSJSSZHD = #{fsjsszhd},                    </if>
+                                                                <if test="jzkfghc != null and jzkfghc != ''">
+                        JZKFGHC = #{jzkfghc},                    </if>
+                                                                <if test="fxfghc != null and fxfghc != ''">
+                        FXFGHC = #{fxfghc},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestYbzdbs" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_YBZDBS
+            <set>
+                                                            ID = #{item.id},                                                                                NAME = #{item.name},                                                                                ZP = #{item.zp},                                                                                ZPHD = #{item.zphd},                                                                                JC = #{item.jc},                                                                                HU = #{item.hu},                                                                                HB = #{item.hb},                                                                                UU = #{item.uu},                                                                                UUS = #{item.uus},                                                                                U = #{item.u},                                                                                U2 = #{item.u2},                                                                                U2S = #{item.u2s},                                                                                LU = #{item.lu},                                                                                L = #{item.l},                                                                                L2 = #{item.l2},                                                                                L3 = #{item.l3},                                                                                L4 = #{item.l4},                                                                                L5 = #{item.l5},                                                                                JS_DP_ZJ = #{item.jsDpZj},                                                                                JS_DP_BJ = #{item.jsDpBj},                                                                                JS_YP_ZJ = #{item.jsYpZj},                                                                                JS_YP_BJ = #{item.jsYpBj},                                                                                DGXSHD_H = #{item.dgxshdH},                                                                                DGXSHD_U = #{item.dgxshdU},                                                                                DGXSHD_LU = #{item.dgxshdLu},                                                                                DGXSHD_L = #{item.dgxshdL},                                                                                ZFSZH = #{item.zfszh},                                                                                DGZY_H = #{item.dgzyH},                                                                                DGZY_U = #{item.dgzyU},                                                                                DGZY_LU = #{item.dgzyLu},                                                                                DGZY_L = #{item.dgzyL},                                                                                FSJSGZ = #{item.fsjsgz},                                                                                ZGQDHD = #{item.zgqdhd},                                                                                XGQDHD = #{item.xgqdhd},                                                                                CYCS = #{item.cycs},                                                                                SJZH = #{item.sjzh},                                                                                FSJSSZHD = #{item.fsjsszhd},                                                                                JZKFGHC = #{item.jzkfghc},                                                                                FXFGHC = #{item.fxfghc},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestYbzdbsById" parameterType="long">
+        delete from TEST_YBZDBS
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestYbzdbs" parameterType="list">
+        delete from TEST_YBZDBS
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

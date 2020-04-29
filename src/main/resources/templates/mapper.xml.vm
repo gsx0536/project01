@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+    #if(${enableCache})
+        <!-- 开启二级缓存 -->
+        <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    #end
+    #if(${baseResultMap})
+        <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+            #foreach($field in ${table.fields})
+                #if(${field.keyFlag})##生成主键排在第一位
+                    <id column="${field.name}" property="${field.propertyName}"/>
+                #end
+            #end
+            #foreach($field in ${table.commonFields})##生成公共字段
+                #if(!${field.keyFlag})##生成普通字段
+                    #set($temp="")
+                    #foreach ($splitstr in $field.propertyName.split("\$"))
+                        #set($temp=$temp+$splitstr)
+                    #end
+                    <result column="${field.name}" property="$temp"/>
+                #end
+            #end
+            #foreach($field in ${table.fields})
+                #if(!${field.keyFlag})##生成普通字段
+                    #set($temp="")
+                    #foreach ($splitstr in $field.propertyName.split("\$"))
+                        #set($temp=$temp+$splitstr)
+                    #end
+                    <result column="${field.name}" property="$temp"/>
+                #end
+            #end
+        </resultMap>
+
+    #end
+    #if(${baseColumnList})
+        <!-- 通用查询结果列 -->
+        <sql id="Base_Column_List">
+#foreach($field in ${table.commonFields})
+            ${field.name},
+#end
+        ${table.fieldNames}
+    </sql>
+    #end
+
+    <!-- 根据主键查询对象 -->
+    <select id="get${entity}ById" parameterType="long" resultMap="BaseResultMap">
+        select #foreach($field in ${table.fields}) ${field.name}#if($foreach.hasNext),#end #end
+        from ${table.name}
+        #foreach($field in ${table.fields})
+        #if(${field.keyFlag})
+
+            #set($temp="")
+            #foreach ($splitstr in $field.propertyName.split("\$"))
+                #set($temp=$temp+$splitstr)
+            #end
+        where ${field.name} = #{$temp}
+        #end
+    #end
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="get${entity}List" parameterType="map" resultMap="BaseResultMap">
+        select #foreach($field in ${table.fields})${field.name}#if($foreach.hasNext),#end #end
+        from ${table.name}
+        <where>
+            #foreach($field in ${table.fields})
+                #set($temp="")
+                #foreach ($splitstr in $field.propertyName.split("\$"))
+                    #set($temp=$temp+$splitstr)
+                #end
+            #if($field.comment.split("-").get(1)=='date')
+                <if test="$temp != null">
+                    and ${field.name} = #{$temp}
+                </if>
+                #else
+                    <if test="$temp != null and $temp != ''">
+                        and ${field.name} = #{$temp}
+                    </if>
+                #end
+            #end
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="add${entity}" parameterType="${package.Entity}.${entity}">
+        insert into ${table.name} (#foreach($field in ${table.fields})${field.name}#if($foreach.hasNext),#end #end)
+        values (#foreach($field in ${table.fields})
+
+        #set($temp="")
+        #foreach ($splitstr in $field.propertyName.split("\$"))
+            #set($temp=$temp+$splitstr)
+        #end
+                #{$temp,jdbcType = VARCHAR}#if($foreach.hasNext),#end
+    #end
+        )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatch${entity}" parameterType="list">
+        insert into ${table.name} (#foreach($field in ${table.fields})${field.name}#if($foreach.hasNext),#end #end
+        )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select #foreach($field in ${table.fields})
+
+            #set($temp="")
+            #foreach ($splitstr in $field.propertyName.split("\$"))
+                #set($temp=$temp+$splitstr)
+            #end
+            #{item.$temp}#if($foreach.hasNext),#end #end
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update${entity}" parameterType="${package.Entity}.${entity}">
+        update ${table.name}
+        <set>
+            #foreach($field in ${table.fields})
+
+                #set($temp="")
+                #foreach ($splitstr in $field.propertyName.split("\$"))
+                    #set($temp=$temp+$splitstr)
+                #end
+                #if(!${field.keyFlag})
+                    #if($field.comment.split("-").get(1)=='date')
+                        <if test="$temp != null">
+                             ${field.name} = #{$temp},
+                        </if>
+                    #else
+                        <if test="$temp != null and $temp != ''">
+                             ${field.name} = #{$temp},
+                        </if>
+                    #end
+                #end
+            #end
+        </set>
+        #foreach($field in ${table.fields})
+            #set($temp="")
+            #foreach ($splitstr in $field.propertyName.split("\$"))
+                #set($temp=$temp+$splitstr)
+            #end
+            #if(${field.keyFlag})
+                where ${field.name} = #{$temp}
+            #end
+        #end
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch${entity}" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update ${table.name}
+            <set>
+                #foreach($field in ${table.fields})
+                    #set($temp="")
+                    #foreach ($splitstr in $field.propertyName.split("\$"))
+                        #set($temp=$temp+$splitstr)
+                    #end
+                    #if(!${field.keyFlag})
+                        #if($field.comment.split("-").get(1)=='date')
+                            <if test="$temp != null">
+                                 ${field.name} = #{$temp},
+                            </if>
+                        #else
+                            <if test="$temp != null and $temp != ''">
+                                 ${field.name} = #{$temp},
+                            </if>
+                        #end
+                    #end
+                #end
+            </set>
+            where
+            #foreach($field in ${table.fields})
+                #set($temp="")
+                #foreach ($splitstr in $field.propertyName.split("\$"))
+                    #set($temp=$temp+$splitstr)
+                #end
+                #if(${field.keyFlag})
+                    ${field.name} = #{item.$temp}
+                #end
+
+            #end
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="delete${entity}ById" parameterType="long">
+        delete from ${table.name}
+
+        where
+
+        #foreach($field in ${table.fields})
+        #set($temp="")
+        #foreach ($splitstr in $field.propertyName.split("\$"))
+            #set($temp=$temp+$splitstr)
+        #end
+        #if(${field.keyFlag})
+
+            ${field.name} = #{$temp=}
+
+        #end
+
+    #end
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatch${entity}" parameterType="list">
+        delete from ${table.name}
+
+        #foreach($field in ${table.fields})
+
+            #if(${field.keyFlag})
+
+                where ${field.name} in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            #end
+
+        #end
+
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testScheme.TestSchemeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testScheme.TestScheme">
+        <id column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="PRE" property="pre"/>
+        <result column="METHOD" property="method"/>
+        <result column="STEP" property="step"/>
+        <result column="CONTROL" property="control"/>
+        <result column="STATUS" property="status"/>
+        <result column="VCORGID" property="vcorgid"/>
+        <result column="TYPE" property="type"/>
+        <result column="CREATEDATE" property="createdate"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getTestSchemeById" parameterType="long" resultMap="BaseResultMap">
+        select ID,
+               NAME,
+               PRE,
+               METHOD,
+               STEP,
+               CONTROL,
+               STATUS,
+               VCORGID,
+               TYPE,
+               CREATEDATE
+        from TEST_SCHEME
+
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestSchemeList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, PRE, METHOD, STEP, CONTROL, STATUS, VCORGID, TYPE, CREATEDATE from TEST_SCHEME
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="pre != null and pre != ''">
+                and PRE = #{pre}
+            </if>
+            <if test="method != null and method != ''">
+                and METHOD = #{method}
+            </if>
+            <if test="step != null and step != ''">
+                and STEP = #{step}
+            </if>
+            <if test="control != null and control != ''">
+                and CONTROL = #{control}
+            </if>
+            <if test="status != null and status != ''">
+                and STATUS = #{status}
+            </if>
+            <if test="vcorgid != null and vcorgid != ''">
+                and (VCORGID = #{vcorgid} or vcorgid in (select vc_org$id from sys_t_org where vc_par$org$id=#{vcorgid}) )
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE = #{type}
+            </if>
+            <if test="createdate != null and createdate != ''">
+                and CREATEDATE = #{createdate}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestScheme" parameterType="com.tieda.alarm.entity.testScheme.TestScheme">
+        insert into TEST_SCHEME (ID, NAME, PRE, METHOD, STEP, CONTROL, STATUS, VCORGID, TYPE, CREATEDATE)
+        values (#{id,jdbcType = VARCHAR},
+                #{name,jdbcType = VARCHAR},
+                #{pre,jdbcType = VARCHAR},
+                #{method,jdbcType = VARCHAR},
+                #{step,jdbcType = VARCHAR},
+                #{control,jdbcType = VARCHAR},
+                #{status,jdbcType = VARCHAR},
+                #{vcorgid,jdbcType = VARCHAR},
+                #{type,jdbcType = VARCHAR},
+                #{createdate,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestScheme" parameterType="list">
+        insert into TEST_SCHEME (ID, NAME, PRE, METHOD, STEP, CONTROL, STATUS, VCORGID, TYPE, CREATEDATE )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+            #{item.id},
+            #{item.name},
+            #{item.pre},
+            #{item.method},
+            #{item.step},
+            #{item.control},
+            #{item.status},
+            #{item.vcorgid},
+            #{item.type},
+            #{item.createdate} from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestScheme" parameterType="com.tieda.alarm.entity.testScheme.TestScheme">
+        update TEST_SCHEME
+        <set>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="pre != null and pre != ''">
+                PRE = #{pre},
+            </if>
+            <if test="method != null and method != ''">
+                METHOD = #{method},
+            </if>
+            <if test="step != null and step != ''">
+                STEP = #{step},
+            </if>
+            <if test="control != null and control != ''">
+                CONTROL = #{control},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="vcorgid != null and vcorgid != ''">
+                VCORGID = #{vcorgid},
+            </if>
+            <if test="type != null and type != ''">
+                TYPE = #{type},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestScheme" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_SCHEME
+            <set>
+                NAME = #{item.name}, PRE = #{item.pre}, METHOD = #{item.method}, STEP = #{item.step}, CONTROL =
+                #{item.control}, STATUS = #{item.status}, VCORGID = #{item.vcorgid}, TYPE = #{item.type}, CREATEDATE =
+                #{item.createdate}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestSchemeById" parameterType="long">
+        delete
+        from TEST_SCHEME
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestScheme" parameterType="list">
+        delete from TEST_SCHEME
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

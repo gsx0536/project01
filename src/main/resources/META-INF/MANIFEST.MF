@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Class-Path: mybatis-spring-boot-autoconfigure-1.3.1.jar spring-boot-st
+ arter-json-2.1.3.RELEASE.jar jackson-annotations-2.9.7.jar mybatis-pl
+ us-boot-starter-2.2.0.jar spring-beans-5.1.5.RELEASE.jar commons-code
+ c-1.11.jar spring-boot-starter-log4j2-2.1.3.RELEASE.jar spring-boot-s
+ tarter-web-2.1.3.RELEASE.jar spring-web-5.1.5.RELEASE.jar spring-cont
+ ext-5.1.5.RELEASE.jar spring-core-5.1.5.RELEASE.jar commons-io-2.6.ja
+ r log4j-api-2.11.2.jar druid-1.1.12.jar spring-boot-starter-tomcat-2.
+ 1.3.RELEASE.jar spring-expression-5.1.5.RELEASE.jar pagehelper-5.1.2.
+ jar jackson-databind-2.9.8.jar mybatis-spring-1.3.1.jar java-jwt-2.2.
+ 0.jar druid-spring-boot-starter-1.1.10.jar slf4j-api-1.7.25.jar tomca
+ t-embed-core-9.0.16.jar spring-jdbc-5.1.5.RELEASE.jar log4j-slf4j-imp
+ l-2.11.2.jar pagehelper-spring-boot-autoconfigure-1.2.3.jar classmate
+ -1.4.0.jar spring-boot-starter-jdbc-2.1.3.RELEASE.jar snakeyaml-1.23.
+ jar javax.annotation-api-1.3.2.jar spring-jcl-5.1.5.RELEASE.jar commo
+ ns-collections-3.2.1.jar mysql-connector-java-5.1.45.jar fastjson-1.2
+ .54.jar ojdbc6-11.2.0.1.0.jar spring-aop-5.1.5.RELEASE.jar jackson-mo
+ dule-parameter-names-2.9.8.jar jsqlparser-1.0.jar velocity-1.7.jar sp
+ ring-boot-starter-2.1.3.RELEASE.jar commons-lang-2.4.jar jackson-data
+ type-jdk8-2.9.8.jar mybatis-plus-support-2.2.0.jar jackson-core-2.9.8
+ .jar tomcat-embed-el-9.0.16.jar log4j-jul-2.11.2.jar log4j-core-2.11.
+ 2.jar jboss-logging-3.3.2.Final.jar pagehelper-spring-boot-starter-1.
+ 2.3.jar mybatis-spring-boot-starter-1.3.1.jar validation-api-2.0.1.Fi
+ nal.jar mybatis-plus-core-2.2.0.jar spring-boot-autoconfigure-2.1.3.R
+ ELEASE.jar jackson-datatype-jsr310-2.9.8.jar HikariCP-3.2.0.jar mybat
+ is-plus-generate-2.2.0.jar hibernate-validator-6.0.14.Final.jar tomca
+ t-embed-websocket-9.0.16.jar jjwt-0.7.0.jar spring-webmvc-5.1.5.RELEA
+ SE.jar jul-to-slf4j-1.7.25.jar spring-tx-5.1.5.RELEASE.jar mybatis-3.
+ 4.5.jar mybatis-plus-2.2.0.jar spring-boot-2.1.3.RELEASE.jar
+Main-Class: com.tieda.alarm.Project01Application
+

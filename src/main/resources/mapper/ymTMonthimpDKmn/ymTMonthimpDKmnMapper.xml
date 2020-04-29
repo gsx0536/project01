@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.ymTMonthimpDKmn.YmTMonthimpDKmnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.ymTMonthimpDKmn.YmTMonthimpDKmn">
+        <id column="N_ID" property="nId"/>
+        <result column="N_MID" property="nMid"/>
+        <result column="VC_WORKTYPE" property="vcWorktype"/>
+        <result column="VC_WORKTYPEID" property="vcWorktypeid"/>
+        <result column="VC_PROJECTID" property="vcProjectid"/>
+        <result column="VC_PROJECT" property="vcProject"/>
+        <result column="VC_WORKDETAIL" property="vcWorkdetail"/>
+        <result column="VC_NOTICEDEP" property="vcNoticedep"/>
+        <result column="VC_NOTICEDEPID" property="vcNoticedepId"/>
+        <result column="VC_NOTE" property="vcNote"/>
+        <result column="N_SOURCEID" property="nSourceid"/>
+        <result column="VC_NUMBER" property="vcNumber"/>
+        <result column="DT_DEADLINE" property="dtDeadline"/>
+        <result column="VC_CHARGER" property="vcCharger"/>
+        <result column="VC_STATUS" property="vcStatus"/>
+        <result column="N_ORDER" property="nOrder"/>
+        <result column="N_FINISH" property="nFinish"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getYmTMonthimpDKmnById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  N_MID,  VC_WORKTYPE,  VC_WORKTYPEID,  VC_PROJECTID,  VC_PROJECT,  VC_WORKDETAIL,  VC_NOTICEDEP, VC_NOTICEDEPID,  VC_NOTE,  N_SOURCEID,  VC_NUMBER,  DT_DEADLINE,  VC_CHARGER,  VC_STATUS,N_ORDER,N_FINISH    from YM_T_MONTHIMP_D_KMN
+                        where N_ID = #{nId}  order by to_number(n_order)
+            </select>
+
+    <!--查询所有作业类型-->
+    <select id="getWorkType" resultType="String">
+        select distinct VC_WORKTYPE from YM_T_MONTHIMP_D_KMN where VC_WORKTYPE is not null
+    </select>
+    <!--查询所有作业项目-->
+    <select id="getWorkProject" resultType="String">
+        select distinct VC_PROJECT from YM_T_MONTHIMP_D_KMN where vc_project is not null
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getYmTMonthimpDKmnList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, N_MID, VC_WORKTYPE, VC_WORKTYPEID, VC_PROJECTID, VC_PROJECT, VC_WORKDETAIL, VC_NOTICEDEP,
+        VC_NOTICEDEPID, VC_NOTE, N_SOURCEID, VC_NUMBER, DT_DEADLINE, VC_CHARGER, VC_STATUS,N_ORDER,N_FINISH from YM_T_MONTHIMP_D_KMN
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="nMid != null and nMid != ''">
+                and N_MID = #{nMid}
+            </if>
+            <if test="vcWorktype != null and vcWorktype != ''">
+                and VC_WORKTYPE = #{vcWorktype}
+            </if>
+            <if test="vcWorktypeid != null and vcWorktypeid != ''">
+                and VC_WORKTYPEID = #{vcWorktypeid}
+            </if>
+            <if test="vcProjectid != null and vcProjectid != ''">
+                and VC_PROJECTID = #{vcProjectid}
+            </if>
+            <if test="vcProject != null and vcProject != ''">
+                and VC_PROJECT = #{vcProject}
+            </if>
+            <if test="vcWorkdetail != null and vcWorkdetail != ''">
+                and VC_WORKDETAIL = #{vcWorkdetail}
+            </if>
+            <if test="vcNoticedep != null and vcNoticedep != ''">
+                and VC_NOTICEDEP = #{vcNoticedep}
+            </if>
+            <if test="vcNoticedepId != null and vcNoticedepId != ''">
+                and VC_NOTICEDEPID like concat(concat('%',#{vcNoticedepId}),'%')
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                and VC_NOTE = #{vcNote}
+            </if>
+            <if test="nSourceid != null and nSourceid != ''">
+                and N_SOURCEID = #{nSourceid}
+            </if>
+            <if test="vcNumber != null and vcNumber != ''">
+                and VC_NUMBER = #{vcNumber}
+            </if>
+            <if test="dtDeadline != null">
+                and DT_DEADLINE = #{dtDeadline}
+            </if>
+            <if test="vcCharger != null and vcCharger != ''">
+                and VC_CHARGER = #{vcCharger}
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                and VC_STATUS = #{vcStatus}
+            </if>
+            order by to_number(n_order)
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addYmTMonthimpDKmn" parameterType="com.tieda.alarm.entity.ymTMonthimpDKmn.YmTMonthimpDKmn">
+        insert into YM_T_MONTHIMP_D_KMN (N_ID, N_MID, VC_WORKTYPE, VC_WORKTYPEID, VC_PROJECTID, VC_PROJECT, VC_WORKDETAIL, VC_NOTICEDEP,VC_NOTICEDEPID, VC_NOTE, N_SOURCEID, VC_NUMBER, DT_DEADLINE, VC_CHARGER, VC_STATUS,N_ORDER,N_FINISH )
+        values (                #{nId,jdbcType = VARCHAR},                    #{nMid,jdbcType = VARCHAR},                    #{vcWorktype,jdbcType = VARCHAR},                    #{vcWorktypeid,jdbcType = VARCHAR},                    #{vcProjectid,jdbcType = VARCHAR},                    #{vcProject,jdbcType = VARCHAR},                    #{vcWorkdetail,jdbcType = VARCHAR},                    #{vcNoticedep,jdbcType = VARCHAR},  #{vcNoticedepId,jdbcType = VARCHAR},                    #{vcNote,jdbcType = VARCHAR},                    #{nSourceid,jdbcType = VARCHAR},                    #{vcNumber,jdbcType = VARCHAR},                    #{dtDeadline,jdbcType=DATE },                    #{vcCharger,jdbcType = VARCHAR},                    #{vcStatus,jdbcType = VARCHAR}  ,  #{nOrder,jdbcType=VARCHAR},#{nFinish,jdbcType=VARCHAR}          )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchYmTMonthimpDKmn" parameterType="list">
+        insert into YM_T_MONTHIMP_D_KMN (N_ID, N_MID, VC_WORKTYPE, VC_WORKTYPEID, VC_PROJECTID, VC_PROJECT,
+        VC_WORKDETAIL, VC_NOTICEDEP, VC_NOTICEDEPID, VC_NOTE, N_SOURCEID, VC_NUMBER, DT_DEADLINE, VC_CHARGER, VC_STATUS,N_ORDER,N_FINISH )
+        select * from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            SELECT
+            #{item.nId,jdbcType = VARCHAR}, #{item.nMid,jdbcType = VARCHAR}, #{item.vcWorktype,jdbcType = VARCHAR},
+            #{item.vcWorktypeid,jdbcType = VARCHAR}, #{item.vcProjectid,jdbcType = VARCHAR},
+            #{item.vcProject,jdbcType = VARCHAR}, #{item.vcWorkdetail,jdbcType = VARCHAR},
+            #{item.vcNoticedep,jdbcType = VARCHAR},#{item.vcNoticedepId,jdbcType = VARCHAR},
+            #{item.vcNote,jdbcType = VARCHAR}, #{item.nSourceid,jdbcType = VARCHAR},
+            #{item.vcNumber,jdbcType = VARCHAR}, #{item.dtDeadline,jdbcType=DATE}, #{item.vcCharger,jdbcType = VARCHAR},
+            #{item.vcStatus,jdbcType = VARCHAR},#{item.nOrder,jdbcType = VARCHAR},#{item.nFinish,jdbcType = VARCHAR}
+            from dual
+        </foreach>
+        )a
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateYmTMonthimpDKmn" parameterType="com.tieda.alarm.entity.ymTMonthimpDKmn.YmTMonthimpDKmn">
+        update YM_T_MONTHIMP_D_KMN
+        <set>
+            <if test="nMid != null and nMid != ''">
+                N_MID = #{nMid},
+            </if>
+            <if test="vcWorktype != null and vcWorktype != ''">
+                VC_WORKTYPE = #{vcWorktype},
+            </if>
+            <if test="vcWorktypeid != null and vcWorktypeid != ''">
+                VC_WORKTYPEID = #{vcWorktypeid},
+            </if>
+            <if test="vcProjectid != null and vcProjectid != ''">
+                VC_PROJECTID = #{vcProjectid},
+            </if>
+            <if test="vcProject != null and vcProject != ''">
+                VC_PROJECT = #{vcProject},
+            </if>
+            <if test="vcWorkdetail != null and vcWorkdetail != ''">
+                VC_WORKDETAIL = #{vcWorkdetail},
+            </if>
+            <if test="vcNoticedep != null and vcNoticedep != ''">
+                VC_NOTICEDEP = #{vcNoticedep},
+            </if>
+            <if test="vcNoticedepId != null and vcNoticedepId != ''">
+                VC_NOTICEDEPID = #{vcNoticedepId},
+            </if>
+            <if test="vcNote != null and vcNote != ''">
+                VC_NOTE = #{vcNote},
+            </if>
+            <if test="nSourceid != null and nSourceid != ''">
+                N_SOURCEID = #{nSourceid},
+            </if>
+            <if test="vcNumber != null and vcNumber != ''">
+                VC_NUMBER = #{vcNumber},
+            </if>
+            <if test="dtDeadline != null">
+                DT_DEADLINE =  #{dtDeadline},
+            </if>
+            <if test="vcCharger != null and vcCharger != ''">
+                VC_CHARGER = #{vcCharger},
+            </if>
+            <if test="vcStatus != null and vcStatus != ''">
+                VC_STATUS = #{vcStatus}
+            </if>
+            <if test="nOrder != null and nOrder != ''">
+                N_ORDER = #{nOrder}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+    <!--依照排序号更新-->
+    <update id="updatenNorderByNorder" parameterType="java.util.Map">
+        update YM_T_MONTHIMP_D_KMN
+        <set>
+            N_ORDER = #{nOrder,jdbcType = VARCHAR}
+        </set>
+        where
+        N_ORDER = #{nOrderTarget,jdbcType = VARCHAR} and n_mid =#{nMid,jdbcType = VARCHAR}
+    </update>
+    <!--依照排序号更新-->
+    <update id="updatenNorderByNid" parameterType="java.util.Map">
+        update YM_T_MONTHIMP_D_KMN
+        <set>
+            N_ORDER = #{nOrderTarget,jdbcType = VARCHAR}
+        </set>
+        where
+        N_ID = #{nId,jdbcType = VARCHAR}
+    </update>
+    <!-- 批量更新 -->
+    <update id="updateBathYmTMonthimpDKmn" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update YM_T_MONTHIMP_D_KMN
+            <set>
+                N_MID = #{item.nMid}, VC_WORKTYPE = #{item.vcWorktype}, VC_WORKTYPEID = #{item.vcWorktypeid},
+                VC_PROJECTID = #{item.vcProjectid}, VC_PROJECT = #{item.vcProject}, VC_WORKDETAIL =
+                #{item.vcWorkdetail}, VC_NOTICEDEP = #{item.vcNoticedep}, VC_NOTICEDEPID = #{item.vcNoticedepId}, VC_NOTE = #{item.vcNote}, N_SOURCEID =
+                #{item.nSourceid}, VC_NUMBER = #{item.vcNumber}, DT_DEADLINE = #{item.dtDeadline,jdbcType=DATE}, VC_CHARGER =
+                #{item.vcCharger}, VC_STATUS = #{item.vcStatus}, N_ORDER = #{item.nOrder}
+            </set>
+            where
+            N_ID = #{item.nId}
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteYmTMonthimpDKmnById" parameterType="long">
+        delete from YM_T_MONTHIMP_D_KMN
+        where
+            N_ID = #{nId}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchYmTMonthimpDKmn" parameterType="list">
+        delete from YM_T_MONTHIMP_D_KMN
+
+
+        where N_ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+    <update id="checknorder" parameterType="com.tieda.alarm.entity.ymTMonthimpDKmn.YmTMonthimpDKmn">
+        update YM_T_MONTHIMP_D_KMN set N_ORDER=to_number(N_ORDER)+1 where to_number(N_ORDER)>=to_number(#{nOrder,jdbcType = VARCHAR}) and  N_MID = #{nMid,jdbcType = VARCHAR}
+    </update>
+
+    <update id="checknorderfordel" parameterType="com.tieda.alarm.entity.ymTMonthimpDKmn.YmTMonthimpDKmn">
+        update YM_T_MONTHIMP_D_KMN set N_ORDER=to_number(N_ORDER)-1 where to_number(N_ORDER)>to_number(#{nOrder,jdbcType = VARCHAR}) and  N_MID = #{nMid,jdbcType = VARCHAR}
+    </update>
+
+    <select id="getAllOrgByLvl" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from sys_t_org where n_level=#{nlvl}
+        <if test="name != null and name != ''">
+            and vc_name like concat(concat('%',#{name}),'%')
+        </if>
+    </select>
+
+</mapper>

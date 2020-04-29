@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.sysTRulesblob.SysTRulesblobMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.sysTRulesblob.SysTRulesblob">
+        <result column="N_ID" property="nId"/>
+        <result column="VC_ELECTRONIC$BLOB" property="vcElectronicblob"/>
+        <result column="VC_ANNEX$ONE$BLOB" property="vcAnnexoneblob"/>
+        <result column="VC_ANNEX$TWO$BLOB" property="vcAnnextwoblob"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getSysTRulesblobById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  VC_ELECTRONIC$BLOB,  VC_ANNEX$ONE$BLOB,  VC_ANNEX$TWO$BLOB         from SYS_T_RULES$BLOB where N_ID = #{nId}
+</select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getSysTRulesblobList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, VC_ELECTRONIC$BLOB, VC_ANNEX$ONE$BLOB, VC_ANNEX$TWO$BLOB from SYS_T_RULES$BLOB
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcElectronicblob != null and vcElectronicblob != ''">
+                and VC_ELECTRONIC$BLOB = #{vcElectronicblob}
+            </if>
+            <if test="vcAnnexoneblob != null and vcAnnexoneblob != ''">
+                and VC_ANNEX$ONE$BLOB = #{vcAnnexoneblob}
+            </if>
+            <if test="vcAnnextwoblob != null and vcAnnextwoblob != ''">
+                and VC_ANNEX$TWO$BLOB = #{vcAnnextwoblob}
+            </if>
+        </where>
+    </select>
+    <!-- 添加 -->
+    <insert id="addSysTRulesblob" parameterType="com.tieda.alarm.entity.sysTRulesblob.SysTRulesblob">
+        insert into SYS_T_RULES$BLOB (N_ID, VC_ELECTRONIC$BLOB, VC_ANNEX$ONE$BLOB, VC_ANNEX$TWO$BLOB )
+        values (
+                                        #{nId,jdbcType = VARCHAR},    
+                                                #{vcElectronicblob,jdbcType = VARCHAR},    
+                                                        #{vcAnnexoneblob,jdbcType = VARCHAR},    
+                                                        #{vcAnnextwoblob,jdbcType = VARCHAR}            )
+    </insert>
+    <!-- 批量添加 -->
+    <insert id="addBatchSysTRulesblob" parameterType="list">
+        insert into SYS_T_RULES$BLOB (N_ID, VC_ELECTRONIC$BLOB, VC_ANNEX$ONE$BLOB, VC_ANNEX$TWO$BLOB )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+            #{item.nId},
+            #{item.vcElectronicblob},
+            #{item.vcAnnexoneblob},
+            #{item.vcAnnextwoblob} from dual
+        </foreach>
+        ) A
+    </insert>
+    <!-- 更新 -->
+    <update id="updateSysTRulesblob" parameterType="com.tieda.alarm.entity.sysTRulesblob.SysTRulesblob">
+        update SYS_T_RULES$BLOB
+        <set>
+            <if test="nId != null and nId != ''">
+                N_ID = #{nId},
+            </if>
+            <if test="vcElectronicblob != null and vcElectronicblob != ''">
+                VC_ELECTRONIC$BLOB = #{vcElectronicblob},
+            </if>
+            <if test="vcAnnexoneblob != null and vcAnnexoneblob != ''">
+                VC_ANNEX$ONE$BLOB = #{vcAnnexoneblob},
+            </if>
+            <if test="vcAnnextwoblob != null and vcAnnextwoblob != ''">
+                VC_ANNEX$TWO$BLOB = #{vcAnnextwoblob},
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchSysTRulesblob" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update SYS_T_RULES$BLOB
+            <set>
+                <if test="nId != null and nId != ''">
+                    N_ID = #{nId},
+                </if>
+                <if test="vcElectronicblob != null and vcElectronicblob != ''">
+                    VC_ELECTRONIC$BLOB = #{vcElectronicblob},
+                </if>
+                <if test="vcAnnexoneblob != null and vcAnnexoneblob != ''">
+                    VC_ANNEX$ONE$BLOB = #{vcAnnexoneblob},
+                </if>
+                <if test="vcAnnextwoblob != null and vcAnnextwoblob != ''">
+                    VC_ANNEX$TWO$BLOB = #{vcAnnextwoblob},
+                </if>
+            </set>
+            where
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteSysTRulesblobById" parameterType="long">
+        delete from SYS_T_RULES$BLOB
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchSysTRulesblob" parameterType="list">
+        delete from SYS_T_RULES$BLOB
+    </delete>
+
+
+</mapper>

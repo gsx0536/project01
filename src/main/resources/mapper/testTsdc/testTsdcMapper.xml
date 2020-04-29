@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testTsdc.TestTsdcMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testTsdc.TestTsdc">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <result column="ID" property="id"/>
+                                                                <result column="NAME" property="name"/>
+                                                                <result column="HDWZDW" property="hdwzdw"/>
+                                                                <result column="HDWZFW" property="hdwzfw"/>
+                                                                <result column="DCDDW1" property="dcddw1"/>
+                                                                <result column="DCDDW2" property="dcddw2"/>
+                                                                <result column="DCDDW3" property="dcddw3"/>
+                                                                <result column="DCDFW1" property="dcdfw1"/>
+                                                                <result column="DCDFW2" property="dcdfw2"/>
+                                                                <result column="DCDFW3" property="dcdfw3"/>
+                                                                <result column="DXBH1" property="dxbh1"/>
+                                                                <result column="DXBH2" property="dxbh2"/>
+                                                                <result column="DXBH3" property="dxbh3"/>
+                                                                <result column="SY4DW" property="sy4dw"/>
+                                                                <result column="SY4FW" property="sy4fw"/>
+                                                                <result column="SY5610DW" property="sy5610dw"/>
+                                                                <result column="SY5610FW" property="sy5610fw"/>
+                                                                <result column="DCBSYZDW" property="dcbsyzdw"/>
+                                                                <result column="DCBSYZFW" property="dcbsyzfw"/>
+                                                                <result column="DCSBDD" property="dcsbdd"/>
+                                                                <result column="DCSBQD" property="dcsbqd"/>
+                                                                <result column="DCSBJL" property="dcsbjl"/>
+                                                                <result column="DCSBYDZS" property="dcsbydzs"/>
+                                                                <result column="DZDQDW" property="dzdqdw"/>
+                                                                <result column="DZDQFW" property="dzdqfw"/>
+                                                                <result column="DJQY" property="djqy"/>
+                                                                <result column="DJQYSD" property="djqysd"/>
+                                                                <result column="DCZBDL" property="dczbdl"/>
+                                                                <result column="DCJHS" property="dcjhs"/>
+                                                                <result column="JCD" property="jcd"/>
+                                                                <result column="QD" property="qd"/>
+                                                                <result column="DWMT1" property="dwmt1"/>
+                                                                <result column="DWMT2" property="dwmt2"/>
+                                                                <result column="DWCL1" property="dwcl1"/>
+                                                                <result column="DWCL2" property="dwcl2"/>
+                                                                <result column="FWMT1" property="fwmt1"/>
+                                                                <result column="FWMT2" property="fwmt2"/>
+                                                                <result column="FWCL1" property="fwcl1"/>
+                                                                <result column="FWCL2" property="fwcl2"/>
+                                                                <result column="DBSBX" property="dbsbx"/>
+                                                                <result column="XLZZ" property="xlzz"/>
+                                                                <result column="JDJRQD" property="jdjrqd"/>
+                                                                <result column="DCBZ" property="dcbz"/>
+                                                                <result column="DKJDWJFWJ" property="dkjdwjfwj"/>
+                                                                <result column="FJBDW" property="fjbdw"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                                                <result column="DCDDW4" property="dcddw4"/>
+                                                                <result column="DCDFW4" property="dcdfw4"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestTsdcById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  HDWZDW,  HDWZFW,  DCDDW1,  DCDDW2,  DCDDW3,  DCDFW1,  DCDFW2,  DCDFW3,  DXBH1,  DXBH2,  DXBH3,  SY4DW,  SY4FW,  SY5610DW,  SY5610FW,  DCBSYZDW,  DCBSYZFW,  DCSBDD,  DCSBQD,  DCSBJL,  DCSBYDZS,  DZDQDW,  DZDQFW,  DJQY,  DJQYSD,  DCZBDL,  DCJHS,  JCD,  QD,  DWMT1,  DWMT2,  DWCL1,  DWCL2,  FWMT1,  FWMT2,  FWCL1,  FWCL2,  DBSBX,  XLZZ,  JDJRQD,  DCBZ,  DKJDWJFWJ,  FJBDW,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE,  DCDDW4,  DCDFW4         from TEST_TSDC
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestTsdcList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, HDWZDW, HDWZFW, DCDDW1, DCDDW2, DCDDW3, DCDFW1, DCDFW2, DCDFW3, DXBH1, DXBH2, DXBH3, SY4DW, SY4FW, SY5610DW, SY5610FW, DCBSYZDW, DCBSYZFW, DCSBDD, DCSBQD, DCSBJL, DCSBYDZS, DZDQDW, DZDQFW, DJQY, DJQYSD, DCZBDL, DCJHS, JCD, QD, DWMT1, DWMT2, DWCL1, DWCL2, FWMT1, FWMT2, FWCL1, FWCL2, DBSBX, XLZZ, JDJRQD, DCBZ, DKJDWJFWJ, FJBDW, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DCDDW4, DCDFW4         from TEST_TSDC
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="hdwzdw != null and hdwzdw != ''">
+                    and HDWZDW = #{hdwzdw}
+                </if>
+                            <if test="hdwzfw != null and hdwzfw != ''">
+                    and HDWZFW = #{hdwzfw}
+                </if>
+                            <if test="dcddw1 != null and dcddw1 != ''">
+                    and DCDDW1 = #{dcddw1}
+                </if>
+                            <if test="dcddw2 != null and dcddw2 != ''">
+                    and DCDDW2 = #{dcddw2}
+                </if>
+                            <if test="dcddw3 != null and dcddw3 != ''">
+                    and DCDDW3 = #{dcddw3}
+                </if>
+                            <if test="dcdfw1 != null and dcdfw1 != ''">
+                    and DCDFW1 = #{dcdfw1}
+                </if>
+                            <if test="dcdfw2 != null and dcdfw2 != ''">
+                    and DCDFW2 = #{dcdfw2}
+                </if>
+                            <if test="dcdfw3 != null and dcdfw3 != ''">
+                    and DCDFW3 = #{dcdfw3}
+                </if>
+                            <if test="dxbh1 != null and dxbh1 != ''">
+                    and DXBH1 = #{dxbh1}
+                </if>
+                            <if test="dxbh2 != null and dxbh2 != ''">
+                    and DXBH2 = #{dxbh2}
+                </if>
+                            <if test="dxbh3 != null and dxbh3 != ''">
+                    and DXBH3 = #{dxbh3}
+                </if>
+                            <if test="sy4dw != null and sy4dw != ''">
+                    and SY4DW = #{sy4dw}
+                </if>
+                            <if test="sy4fw != null and sy4fw != ''">
+                    and SY4FW = #{sy4fw}
+                </if>
+                            <if test="sy5610dw != null and sy5610dw != ''">
+                    and SY5610DW = #{sy5610dw}
+                </if>
+                            <if test="sy5610fw != null and sy5610fw != ''">
+                    and SY5610FW = #{sy5610fw}
+                </if>
+                            <if test="dcbsyzdw != null and dcbsyzdw != ''">
+                    and DCBSYZDW = #{dcbsyzdw}
+                </if>
+                            <if test="dcbsyzfw != null and dcbsyzfw != ''">
+                    and DCBSYZFW = #{dcbsyzfw}
+                </if>
+                            <if test="dcsbdd != null and dcsbdd != ''">
+                    and DCSBDD = #{dcsbdd}
+                </if>
+                            <if test="dcsbqd != null and dcsbqd != ''">
+                    and DCSBQD = #{dcsbqd}
+                </if>
+                            <if test="dcsbjl != null and dcsbjl != ''">
+                    and DCSBJL = #{dcsbjl}
+                </if>
+                            <if test="dcsbydzs != null and dcsbydzs != ''">
+                    and DCSBYDZS = #{dcsbydzs}
+                </if>
+                            <if test="dzdqdw != null and dzdqdw != ''">
+                    and DZDQDW = #{dzdqdw}
+                </if>
+                            <if test="dzdqfw != null and dzdqfw != ''">
+                    and DZDQFW = #{dzdqfw}
+                </if>
+                            <if test="djqy != null and djqy != ''">
+                    and DJQY = #{djqy}
+                </if>
+                            <if test="djqysd != null and djqysd != ''">
+                    and DJQYSD = #{djqysd}
+                </if>
+                            <if test="dczbdl != null and dczbdl != ''">
+                    and DCZBDL = #{dczbdl}
+                </if>
+                            <if test="dcjhs != null and dcjhs != ''">
+                    and DCJHS = #{dcjhs}
+                </if>
+                            <if test="jcd != null and jcd != ''">
+                    and JCD = #{jcd}
+                </if>
+                            <if test="qd != null and qd != ''">
+                    and QD = #{qd}
+                </if>
+                            <if test="dwmt1 != null and dwmt1 != ''">
+                    and DWMT1 = #{dwmt1}
+                </if>
+                            <if test="dwmt2 != null and dwmt2 != ''">
+                    and DWMT2 = #{dwmt2}
+                </if>
+                            <if test="dwcl1 != null and dwcl1 != ''">
+                    and DWCL1 = #{dwcl1}
+                </if>
+                            <if test="dwcl2 != null and dwcl2 != ''">
+                    and DWCL2 = #{dwcl2}
+                </if>
+                            <if test="fwmt1 != null and fwmt1 != ''">
+                    and FWMT1 = #{fwmt1}
+                </if>
+                            <if test="fwmt2 != null and fwmt2 != ''">
+                    and FWMT2 = #{fwmt2}
+                </if>
+                            <if test="fwcl1 != null and fwcl1 != ''">
+                    and FWCL1 = #{fwcl1}
+                </if>
+                            <if test="fwcl2 != null and fwcl2 != ''">
+                    and FWCL2 = #{fwcl2}
+                </if>
+                            <if test="dbsbx != null and dbsbx != ''">
+                    and DBSBX = #{dbsbx}
+                </if>
+                            <if test="xlzz != null and xlzz != ''">
+                    and XLZZ = #{xlzz}
+                </if>
+                            <if test="jdjrqd != null and jdjrqd != ''">
+                    and JDJRQD = #{jdjrqd}
+                </if>
+                            <if test="dcbz != null and dcbz != ''">
+                    and DCBZ = #{dcbz}
+                </if>
+                            <if test="dkjdwjfwj != null and dkjdwjfwj != ''">
+                    and DKJDWJFWJ = #{dkjdwjfwj}
+                </if>
+                            <if test="fjbdw != null and fjbdw != ''">
+                    and FJBDW = #{fjbdw}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                            <if test="dcddw4 != null and dcddw4 != ''">
+                    and DCDDW4 = #{dcddw4}
+                </if>
+                            <if test="dcdfw4 != null and dcdfw4 != ''">
+                    and DCDFW4 = #{dcdfw4}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestTsdc" parameterType="com.tieda.alarm.entity.testTsdc.TestTsdc">
+        insert into TEST_TSDC (ID, NAME, HDWZDW, HDWZFW, DCDDW1, DCDDW2, DCDDW3, DCDFW1, DCDFW2, DCDFW3, DXBH1, DXBH2, DXBH3, SY4DW, SY4FW, SY5610DW, SY5610FW, DCBSYZDW, DCBSYZFW, DCSBDD, DCSBQD, DCSBJL, DCSBYDZS, DZDQDW, DZDQFW, DJQY, DJQYSD, DCZBDL, DCJHS, JCD, QD, DWMT1, DWMT2, DWCL1, DWCL2, FWMT1, FWMT2, FWCL1, FWCL2, DBSBX, XLZZ, JDJRQD, DCBZ, DKJDWJFWJ, FJBDW, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DCDDW4, DCDFW4 )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{hdwzdw,jdbcType = VARCHAR},                    #{hdwzfw,jdbcType = VARCHAR},                    #{dcddw1,jdbcType = VARCHAR},                    #{dcddw2,jdbcType = VARCHAR},                    #{dcddw3,jdbcType = VARCHAR},                    #{dcdfw1,jdbcType = VARCHAR},                    #{dcdfw2,jdbcType = VARCHAR},                    #{dcdfw3,jdbcType = VARCHAR},                    #{dxbh1,jdbcType = VARCHAR},                    #{dxbh2,jdbcType = VARCHAR},                    #{dxbh3,jdbcType = VARCHAR},                    #{sy4dw,jdbcType = VARCHAR},                    #{sy4fw,jdbcType = VARCHAR},                    #{sy5610dw,jdbcType = VARCHAR},                    #{sy5610fw,jdbcType = VARCHAR},                    #{dcbsyzdw,jdbcType = VARCHAR},                    #{dcbsyzfw,jdbcType = VARCHAR},                    #{dcsbdd,jdbcType = VARCHAR},                    #{dcsbqd,jdbcType = VARCHAR},                    #{dcsbjl,jdbcType = VARCHAR},                    #{dcsbydzs,jdbcType = VARCHAR},                    #{dzdqdw,jdbcType = VARCHAR},                    #{dzdqfw,jdbcType = VARCHAR},                    #{djqy,jdbcType = VARCHAR},                    #{djqysd,jdbcType = VARCHAR},                    #{dczbdl,jdbcType = VARCHAR},                    #{dcjhs,jdbcType = VARCHAR},                    #{jcd,jdbcType = VARCHAR},                    #{qd,jdbcType = VARCHAR},                    #{dwmt1,jdbcType = VARCHAR},                    #{dwmt2,jdbcType = VARCHAR},                    #{dwcl1,jdbcType = VARCHAR},                    #{dwcl2,jdbcType = VARCHAR},                    #{fwmt1,jdbcType = VARCHAR},                    #{fwmt2,jdbcType = VARCHAR},                    #{fwcl1,jdbcType = VARCHAR},                    #{fwcl2,jdbcType = VARCHAR},                    #{dbsbx,jdbcType = VARCHAR},                    #{xlzz,jdbcType = VARCHAR},                    #{jdjrqd,jdbcType = VARCHAR},                    #{dcbz,jdbcType = VARCHAR},                    #{dkjdwjfwj,jdbcType = VARCHAR},                    #{fjbdw,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{dcddw4,jdbcType = VARCHAR},                    #{dcdfw4,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestTsdc" parameterType="list">
+        insert into TEST_TSDC (ID, NAME, HDWZDW, HDWZFW, DCDDW1, DCDDW2, DCDDW3, DCDFW1, DCDFW2, DCDFW3, DXBH1, DXBH2, DXBH3, SY4DW, SY4FW, SY5610DW, SY5610FW, DCBSYZDW, DCBSYZFW, DCSBDD, DCSBQD, DCSBJL, DCSBYDZS, DZDQDW, DZDQFW, DJQY, DJQYSD, DCZBDL, DCJHS, JCD, QD, DWMT1, DWMT2, DWCL1, DWCL2, FWMT1, FWMT2, FWCL1, FWCL2, DBSBX, XLZZ, JDJRQD, DCBZ, DKJDWJFWJ, FJBDW, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE, DCDDW4, DCDFW4         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.hdwzdw}, #{item.hdwzfw}, #{item.dcddw1}, #{item.dcddw2}, #{item.dcddw3}, #{item.dcdfw1}, #{item.dcdfw2}, #{item.dcdfw3}, #{item.dxbh1}, #{item.dxbh2}, #{item.dxbh3}, #{item.sy4dw}, #{item.sy4fw}, #{item.sy5610dw}, #{item.sy5610fw}, #{item.dcbsyzdw}, #{item.dcbsyzfw}, #{item.dcsbdd}, #{item.dcsbqd}, #{item.dcsbjl}, #{item.dcsbydzs}, #{item.dzdqdw}, #{item.dzdqfw}, #{item.djqy}, #{item.djqysd}, #{item.dczbdl}, #{item.dcjhs}, #{item.jcd}, #{item.qd}, #{item.dwmt1}, #{item.dwmt2}, #{item.dwcl1}, #{item.dwcl2}, #{item.fwmt1}, #{item.fwmt2}, #{item.fwcl1}, #{item.fwcl2}, #{item.dbsbx}, #{item.xlzz}, #{item.jdjrqd}, #{item.dcbz}, #{item.dkjdwjfwj}, #{item.fjbdw}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}, #{item.dcddw4}, #{item.dcdfw4}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestTsdc" parameterType="com.tieda.alarm.entity.testTsdc.TestTsdc">
+        update TEST_TSDC
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="hdwzdw != null and hdwzdw != ''">
+                        HDWZDW = #{hdwzdw},                    </if>
+                                                                <if test="hdwzfw != null and hdwzfw != ''">
+                        HDWZFW = #{hdwzfw},                    </if>
+                                                                <if test="dcddw1 != null and dcddw1 != ''">
+                        DCDDW1 = #{dcddw1},                    </if>
+                                                                <if test="dcddw2 != null and dcddw2 != ''">
+                        DCDDW2 = #{dcddw2},                    </if>
+                                                                <if test="dcddw3 != null and dcddw3 != ''">
+                        DCDDW3 = #{dcddw3},                    </if>
+                                                                <if test="dcdfw1 != null and dcdfw1 != ''">
+                        DCDFW1 = #{dcdfw1},                    </if>
+                                                                <if test="dcdfw2 != null and dcdfw2 != ''">
+                        DCDFW2 = #{dcdfw2},                    </if>
+                                                                <if test="dcdfw3 != null and dcdfw3 != ''">
+                        DCDFW3 = #{dcdfw3},                    </if>
+                                                                <if test="dxbh1 != null and dxbh1 != ''">
+                        DXBH1 = #{dxbh1},                    </if>
+                                                                <if test="dxbh2 != null and dxbh2 != ''">
+                        DXBH2 = #{dxbh2},                    </if>
+                                                                <if test="dxbh3 != null and dxbh3 != ''">
+                        DXBH3 = #{dxbh3},                    </if>
+                                                                <if test="sy4dw != null and sy4dw != ''">
+                        SY4DW = #{sy4dw},                    </if>
+                                                                <if test="sy4fw != null and sy4fw != ''">
+                        SY4FW = #{sy4fw},                    </if>
+                                                                <if test="sy5610dw != null and sy5610dw != ''">
+                        SY5610DW = #{sy5610dw},                    </if>
+                                                                <if test="sy5610fw != null and sy5610fw != ''">
+                        SY5610FW = #{sy5610fw},                    </if>
+                                                                <if test="dcbsyzdw != null and dcbsyzdw != ''">
+                        DCBSYZDW = #{dcbsyzdw},                    </if>
+                                                                <if test="dcbsyzfw != null and dcbsyzfw != ''">
+                        DCBSYZFW = #{dcbsyzfw},                    </if>
+                                                                <if test="dcsbdd != null and dcsbdd != ''">
+                        DCSBDD = #{dcsbdd},                    </if>
+                                                                <if test="dcsbqd != null and dcsbqd != ''">
+                        DCSBQD = #{dcsbqd},                    </if>
+                                                                <if test="dcsbjl != null and dcsbjl != ''">
+                        DCSBJL = #{dcsbjl},                    </if>
+                                                                <if test="dcsbydzs != null and dcsbydzs != ''">
+                        DCSBYDZS = #{dcsbydzs},                    </if>
+                                                                <if test="dzdqdw != null and dzdqdw != ''">
+                        DZDQDW = #{dzdqdw},                    </if>
+                                                                <if test="dzdqfw != null and dzdqfw != ''">
+                        DZDQFW = #{dzdqfw},                    </if>
+                                                                <if test="djqy != null and djqy != ''">
+                        DJQY = #{djqy},                    </if>
+                                                                <if test="djqysd != null and djqysd != ''">
+                        DJQYSD = #{djqysd},                    </if>
+                                                                <if test="dczbdl != null and dczbdl != ''">
+                        DCZBDL = #{dczbdl},                    </if>
+                                                                <if test="dcjhs != null and dcjhs != ''">
+                        DCJHS = #{dcjhs},                    </if>
+                                                                <if test="jcd != null and jcd != ''">
+                        JCD = #{jcd},                    </if>
+                                                                <if test="qd != null and qd != ''">
+                        QD = #{qd},                    </if>
+                                                                <if test="dwmt1 != null and dwmt1 != ''">
+                        DWMT1 = #{dwmt1},                    </if>
+                                                                <if test="dwmt2 != null and dwmt2 != ''">
+                        DWMT2 = #{dwmt2},                    </if>
+                                                                <if test="dwcl1 != null and dwcl1 != ''">
+                        DWCL1 = #{dwcl1},                    </if>
+                                                                <if test="dwcl2 != null and dwcl2 != ''">
+                        DWCL2 = #{dwcl2},                    </if>
+                                                                <if test="fwmt1 != null and fwmt1 != ''">
+                        FWMT1 = #{fwmt1},                    </if>
+                                                                <if test="fwmt2 != null and fwmt2 != ''">
+                        FWMT2 = #{fwmt2},                    </if>
+                                                                <if test="fwcl1 != null and fwcl1 != ''">
+                        FWCL1 = #{fwcl1},                    </if>
+                                                                <if test="fwcl2 != null and fwcl2 != ''">
+                        FWCL2 = #{fwcl2},                    </if>
+                                                                <if test="dbsbx != null and dbsbx != ''">
+                        DBSBX = #{dbsbx},                    </if>
+                                                                <if test="xlzz != null and xlzz != ''">
+                        XLZZ = #{xlzz},                    </if>
+                                                                <if test="jdjrqd != null and jdjrqd != ''">
+                        JDJRQD = #{jdjrqd},                    </if>
+                                                                <if test="dcbz != null and dcbz != ''">
+                        DCBZ = #{dcbz},                    </if>
+                                                                <if test="dkjdwjfwj != null and dkjdwjfwj != ''">
+                        DKJDWJFWJ = #{dkjdwjfwj},                    </if>
+                                                                <if test="fjbdw != null and fjbdw != ''">
+                        FJBDW = #{fjbdw},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate},                    </if>
+                                                                <if test="dcddw4 != null and dcddw4 != ''">
+                        DCDDW4 = #{dcddw4},                    </if>
+                                                                <if test="dcdfw4 != null and dcdfw4 != ''">
+                        DCDFW4 = #{dcdfw4}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestTsdc" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_TSDC
+            <set>
+                                                            ID = #{item.id},                                                                                NAME = #{item.name},                                                                                HDWZDW = #{item.hdwzdw},                                                                                HDWZFW = #{item.hdwzfw},                                                                                DCDDW1 = #{item.dcddw1},                                                                                DCDDW2 = #{item.dcddw2},                                                                                DCDDW3 = #{item.dcddw3},                                                                                DCDFW1 = #{item.dcdfw1},                                                                                DCDFW2 = #{item.dcdfw2},                                                                                DCDFW3 = #{item.dcdfw3},                                                                                DXBH1 = #{item.dxbh1},                                                                                DXBH2 = #{item.dxbh2},                                                                                DXBH3 = #{item.dxbh3},                                                                                SY4DW = #{item.sy4dw},                                                                                SY4FW = #{item.sy4fw},                                                                                SY5610DW = #{item.sy5610dw},                                                                                SY5610FW = #{item.sy5610fw},                                                                                DCBSYZDW = #{item.dcbsyzdw},                                                                                DCBSYZFW = #{item.dcbsyzfw},                                                                                DCSBDD = #{item.dcsbdd},                                                                                DCSBQD = #{item.dcsbqd},                                                                                DCSBJL = #{item.dcsbjl},                                                                                DCSBYDZS = #{item.dcsbydzs},                                                                                DZDQDW = #{item.dzdqdw},                                                                                DZDQFW = #{item.dzdqfw},                                                                                DJQY = #{item.djqy},                                                                                DJQYSD = #{item.djqysd},                                                                                DCZBDL = #{item.dczbdl},                                                                                DCJHS = #{item.dcjhs},                                                                                JCD = #{item.jcd},                                                                                QD = #{item.qd},                                                                                DWMT1 = #{item.dwmt1},                                                                                DWMT2 = #{item.dwmt2},                                                                                DWCL1 = #{item.dwcl1},                                                                                DWCL2 = #{item.dwcl2},                                                                                FWMT1 = #{item.fwmt1},                                                                                FWMT2 = #{item.fwmt2},                                                                                FWCL1 = #{item.fwcl1},                                                                                FWCL2 = #{item.fwcl2},                                                                                DBSBX = #{item.dbsbx},                                                                                XLZZ = #{item.xlzz},                                                                                JDJRQD = #{item.jdjrqd},                                                                                DCBZ = #{item.dcbz},                                                                                DKJDWJFWJ = #{item.dkjdwjfwj},                                                                                FJBDW = #{item.fjbdw},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate},                                                                                DCDDW4 = #{item.dcddw4},                                                                                DCDFW4 = #{item.dcdfw4}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestTsdcById" parameterType="long">
+        delete from TEST_TSDC
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestTsdc" parameterType="list">
+        delete from TEST_TSDC
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

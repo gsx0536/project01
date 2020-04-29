@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testGddlls.TestGddllsMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testGddlls.TestGddlls">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <result column="ID" property="id"/>
+                                                                <result column="NAME" property="name"/>
+                                                                <result column="QDHD" property="qdhd"/>
+                                                                <result column="QDHDD" property="qdhdd"/>
+                                                                <result column="JXJC" property="jxjc"/>
+                                                                <result column="JXJCD" property="jxjcd"/>
+                                                                <result column="FLCY" property="flcy"/>
+                                                                <result column="FLCYD" property="flcyd"/>
+                                                                <result column="JYJQX" property="jyjqx"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                                                <result column="CHARGE" property="charge"/>
+                                                                <result column="STATIONNAME" property="stationname"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestGddllsById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  QDHD,  QDHDD,  JXJC,  JXJCD,  FLCY,  FLCYD,  JYJQX,  NOTE,  OPERATOR,  CREATEDATE,  CHARGE,  STATIONNAME,  DIRECTOR         from TEST_GDDLLS
+                                                                                                                                                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestGddllsList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, QDHD, QDHDD, JXJC, JXJCD, FLCY, FLCYD, JYJQX, NOTE, OPERATOR, CREATEDATE, CHARGE, STATIONNAME, DIRECTOR         from TEST_GDDLLS
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="qdhd != null and qdhd != ''">
+                    and QDHD = #{qdhd}
+                </if>
+                            <if test="qdhdd != null and qdhdd != ''">
+                    and QDHDD = #{qdhdd}
+                </if>
+                            <if test="jxjc != null and jxjc != ''">
+                    and JXJC = #{jxjc}
+                </if>
+                            <if test="jxjcd != null and jxjcd != ''">
+                    and JXJCD = #{jxjcd}
+                </if>
+                            <if test="flcy != null and flcy != ''">
+                    and FLCY = #{flcy}
+                </if>
+                            <if test="flcyd != null and flcyd != ''">
+                    and FLCYD = #{flcyd}
+                </if>
+                            <if test="jyjqx != null and jyjqx != ''">
+                    and JYJQX = #{jyjqx}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                            <if test="charge != null and charge != ''">
+                    and CHARGE = #{charge}
+                </if>
+                            <if test="stationname != null and stationname != ''">
+                    and STATIONNAME = #{stationname}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestGddlls" parameterType="com.tieda.alarm.entity.testGddlls.TestGddlls">
+        insert into TEST_GDDLLS (ID, NAME, QDHD, QDHDD, JXJC, JXJCD, FLCY, FLCYD, JYJQX, NOTE, OPERATOR, CREATEDATE, CHARGE, STATIONNAME, DIRECTOR )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{qdhd,jdbcType = VARCHAR},                    #{qdhdd,jdbcType = VARCHAR},                    #{jxjc,jdbcType = VARCHAR},                    #{jxjcd,jdbcType = VARCHAR},                    #{flcy,jdbcType = VARCHAR},                    #{flcyd,jdbcType = VARCHAR},                    #{jyjqx,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{charge,jdbcType = VARCHAR},                    #{stationname,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestGddlls" parameterType="list">
+        insert into TEST_GDDLLS (ID, NAME, QDHD, QDHDD, JXJC, JXJCD, FLCY, FLCYD, JYJQX, NOTE, OPERATOR, CREATEDATE, CHARGE, STATIONNAME, DIRECTOR         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.qdhd}, #{item.qdhdd}, #{item.jxjc}, #{item.jxjcd}, #{item.flcy}, #{item.flcyd}, #{item.jyjqx}, #{item.note}, #{item.operator}, #{item.createdate}, #{item.charge}, #{item.stationname}, #{item.director}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestGddlls" parameterType="com.tieda.alarm.entity.testGddlls.TestGddlls">
+        update TEST_GDDLLS
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="qdhd != null and qdhd != ''">
+                        QDHD = #{qdhd},                    </if>
+                                                                <if test="qdhdd != null and qdhdd != ''">
+                        QDHDD = #{qdhdd},                    </if>
+                                                                <if test="jxjc != null and jxjc != ''">
+                        JXJC = #{jxjc},                    </if>
+                                                                <if test="jxjcd != null and jxjcd != ''">
+                        JXJCD = #{jxjcd},                    </if>
+                                                                <if test="flcy != null and flcy != ''">
+                        FLCY = #{flcy},                    </if>
+                                                                <if test="flcyd != null and flcyd != ''">
+                        FLCYD = #{flcyd},                    </if>
+                                                                <if test="jyjqx != null and jyjqx != ''">
+                        JYJQX = #{jyjqx},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate},                    </if>
+                                                                <if test="charge != null and charge != ''">
+                        CHARGE = #{charge},                    </if>
+                                                                <if test="stationname != null and stationname != ''">
+                        STATIONNAME = #{stationname},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                        </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestGddlls" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_GDDLLS
+            <set>
+                                                            ID = #{item.id},                                                                                NAME = #{item.name},                                                                                QDHD = #{item.qdhd},                                                                                QDHDD = #{item.qdhdd},                                                                                JXJC = #{item.jxjc},                                                                                JXJCD = #{item.jxjcd},                                                                                FLCY = #{item.flcy},                                                                                FLCYD = #{item.flcyd},                                                                                JYJQX = #{item.jyjqx},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                CREATEDATE = #{item.createdate},                                                                                CHARGE = #{item.charge},                                                                                STATIONNAME = #{item.stationname},                                                                                DIRECTOR = #{item.director}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestGddllsById" parameterType="long">
+        delete from TEST_GDDLLS
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestGddlls" parameterType="list">
+        delete from TEST_GDDLLS
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

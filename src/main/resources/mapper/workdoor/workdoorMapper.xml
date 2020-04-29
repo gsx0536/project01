@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.workdoor.WorkdoorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.workdoor.Workdoor">
+        <id column="N_ID" property="nId"/>
+        <result column="NAME" property="name"/>
+        <result column="DEV" property="dev"/>
+        <result column="STATION" property="station"/>
+        <result column="DOORKEY" property="doorkey"/>
+        <result column="ADDR_URL" property="addrUrl"/>
+        <result column="DOORID" property="doorid"/>
+        <result column="STATION2ID" property="station2id"/>
+        <result column="S2DEVS" property="s2devs"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getWorkdoorById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  NAME,  DEV,  STATION,  DOORKEY,  ADDR_URL,  DOORID,  STATION2ID,  S2DEVS         from WORKDOOR
+                        where N_ID = #{nId}
+                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getWorkdoorList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, NAME, DEV, STATION, DOORKEY, ADDR_URL, DOORID, STATION2ID, S2DEVS from WORKDOOR
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="dev != null and dev != ''">
+                and DEV like concat(concat('%',#{dev}),'%')
+            </if>
+            <if test="station != null and station != ''">
+                and STATION = #{station}
+            </if>
+            <if test="doorkey != null and doorkey != ''">
+                and DOORKEY = #{doorkey}
+            </if>
+            <if test="addrUrl != null and addrUrl != ''">
+                and ADDR_URL = #{addrUrl}
+            </if>
+            <if test="doorid != null and doorid != ''">
+                and DOORID = #{doorid}
+            </if>
+            <if test="station2id != null and station2id != ''">
+                and STATION2ID = #{station2id}
+            </if>
+            <if test="s2devs != null and s2devs != ''">
+                and S2DEVS = #{s2devs}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addWorkdoor" parameterType="com.tieda.alarm.entity.workdoor.Workdoor">
+        insert into WORKDOOR (N_ID, NAME, DEV, STATION, DOORKEY, ADDR_URL, DOORID, STATION2ID, S2DEVS )
+        values (                #{nId,jdbcType = VARCHAR},                        #{name,jdbcType = VARCHAR},                        #{dev,jdbcType = VARCHAR},                        #{station,jdbcType = VARCHAR},                        #{doorkey,jdbcType = VARCHAR},                        #{addrUrl,jdbcType = VARCHAR},                        #{doorid,jdbcType = VARCHAR},                        #{station2id,jdbcType = VARCHAR},                        #{s2devs,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchWorkdoor" parameterType="list">
+        insert into WORKDOOR (N_ID, NAME, DEV, STATION, DOORKEY, ADDR_URL, DOORID, STATION2ID, S2DEVS ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.name}, #{item.dev}, #{item.station}, #{item.doorkey}, #{item.addrUrl}, #{item.doorid},
+            #{item.station2id}, #{item.s2devs} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateWorkdoor" parameterType="com.tieda.alarm.entity.workdoor.Workdoor">
+        update WORKDOOR
+        <set>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="dev != null and dev != ''">
+                DEV = #{dev},
+            </if>
+            <if test="station != null and station != ''">
+                STATION = #{station},
+            </if>
+            <if test="doorkey != null and doorkey != ''">
+                DOORKEY = #{doorkey},
+            </if>
+            <if test="addrUrl != null">
+                ADDR_URL = #{addrUrl},
+            </if>
+            <if test="doorid != null and doorid != ''">
+                DOORID = #{doorid},
+            </if>
+            <if test="station2id != null and station2id != ''">
+                STATION2ID = #{station2id},
+            </if>
+            <if test="s2devs != null and s2devs != ''">
+                S2DEVS = #{s2devs}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathWorkdoor" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update WORKDOOR
+            <set>
+                NAME = #{item.name}, DEV = #{item.dev}, STATION = #{item.station}, DOORKEY = #{item.doorkey}, ADDR_URL =
+                #{item.addrUrl}, DOORID = #{item.doorid}, STATION2ID = #{item.station2id}, S2DEVS = #{item.s2devs}
+            </set>
+            where
+
+            N_ID = #{item.nId}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteWorkdoorById" parameterType="long">
+        delete from WORKDOOR
+
+        where
+
+        
+        
+            N_ID = #{nId}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchWorkdoor" parameterType="list">
+        delete from WORKDOOR
+
+
+        where N_ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+    <select id="getTrafficImage" resultType="string">
+        select ADDR_URL from WORKDOOR
+        <where>
+            STATION = #{staId} and dev like '%${devId}%'
+        </where>
+    </select>
+
+</mapper>

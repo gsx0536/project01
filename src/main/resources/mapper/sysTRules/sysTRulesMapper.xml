@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.sysTRules.SysTRulesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.sysTRules.SysTRules">
+        <id column="N_ID" property="nId"/>
+        <result column="VC_CATALOG$NO" property="vcCatalogno"/>
+        <result column="VC_FILE$TITLE" property="vcFiletitle"/>
+        <result column="VC_FILE$NUMBER" property="vcFilenumber"/>
+        <result column="DT_SEND$TIME" property="dtSendtime"/>
+        <result column="VC_DRAFT$DEPT" property="vcDraftdept"/>
+        <result column="VC_SEND$FILE$NUMBER" property="vcSendfilenumber"/>
+        <result column="VC_KEY$WORD" property="vcKeyword"/>
+        <result column="VC_REMARKS" property="vcRemarks"/>
+        <result column="VC_ELECTRONIC$SAVE$NAME" property="vcElectronicsavename"/>
+        <result column="VC_ELECTRONIC$SOURCE$NAME" property="vcElectronicsourcename"/>
+        <result column="VC_ANNEX$ONE$SAVE$NAME" property="vcAnnexonesavename"/>
+        <result column="VC_ANNEX$ONE$SOURCE$NAME" property="vcAnnexonesourcename"/>
+        <result column="VC_ANNEX$TWO$SAVE$NAME" property="vcAnnextwosavename"/>
+        <result column="VC_ANNEX$TWO$SOURCE$NAME" property="vcAnnextwosourcename"/>
+        <result column="DT_UPLOAD$TIME" property="dtUploadtime"/>
+        <result column="FILE_CLASS" property="fileClass"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getSysTRulesById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  VC_CATALOG$NO,  VC_FILE$TITLE,  VC_FILE$NUMBER,  DT_SEND$TIME,  VC_DRAFT$DEPT,  VC_SEND$FILE$NUMBER,  VC_KEY$WORD,  VC_REMARKS,  VC_ELECTRONIC$SAVE$NAME,  VC_ELECTRONIC$SOURCE$NAME,  VC_ANNEX$ONE$SAVE$NAME,  VC_ANNEX$ONE$SOURCE$NAME,  VC_ANNEX$TWO$SAVE$NAME,  VC_ANNEX$TWO$SOURCE$NAME,  DT_UPLOAD$TIME,  FILE_CLASS         from SYS_T_RULES
+                
+                                            where N_ID = #{nId}
+                                                                                                                                                                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getSysTRulesList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, VC_CATALOG$NO, VC_FILE$TITLE, VC_FILE$NUMBER, DT_SEND$TIME, VC_DRAFT$DEPT, VC_SEND$FILE$NUMBER,
+        VC_KEY$WORD, VC_REMARKS, VC_ELECTRONIC$SAVE$NAME, VC_ELECTRONIC$SOURCE$NAME, VC_ANNEX$ONE$SAVE$NAME,
+        VC_ANNEX$ONE$SOURCE$NAME, VC_ANNEX$TWO$SAVE$NAME, VC_ANNEX$TWO$SOURCE$NAME, DT_UPLOAD$TIME,
+        PUB_T_DICTIONARY.VC_NAME as FILE_CLASS from
+        SYS_T_RULES INNER JOIN PUB_T_DICTIONARY ON SYS_T_RULES.FILE_CLASS = PUB_T_DICTIONARY.VC_ID
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="vcCatalogno != null and vcCatalogno != ''">
+                and VC_CATALOG$NO = #{vcCatalogno}
+            </if>
+            <if test="vcFiletitle != null and vcFiletitle != ''">
+                and VC_FILE$TITLE = #{vcFiletitle}
+            </if>
+            <if test="vcFilenumber != null and vcFilenumber != ''">
+                and VC_FILE$NUMBER = #{vcFilenumber}
+            </if>
+            <if test="dtSendtime != null and dtSendtime != ''">
+                and DT_SEND$TIME = #{dtSendtime}
+            </if>
+            <if test="vcDraftdept != null and vcDraftdept != ''">
+                and VC_DRAFT$DEPT = #{vcDraftdept}
+            </if>
+            <if test="vcSendfilenumber != null and vcSendfilenumber != ''">
+                and VC_SEND$FILE$NUMBER = #{vcSendfilenumber}
+            </if>
+            <if test="vcKeyword != null and vcKeyword != ''">
+                and VC_KEY$WORD = #{vcKeyword}
+            </if>
+            <if test="vcRemarks != null and vcRemarks != ''">
+                and VC_REMARKS = #{vcRemarks}
+            </if>
+            <if test="vcElectronicsavename != null and vcElectronicsavename != ''">
+                and VC_ELECTRONIC$SAVE$NAME = #{vcElectronicsavename}
+            </if>
+            <if test="vcElectronicsourcename != null and vcElectronicsourcename != ''">
+                and VC_ELECTRONIC$SOURCE$NAME = #{vcElectronicsourcename}
+            </if>
+            <if test="vcAnnexonesavename != null and vcAnnexonesavename != ''">
+                and VC_ANNEX$ONE$SAVE$NAME = #{vcAnnexonesavename}
+            </if>
+            <if test="vcAnnexonesourcename != null and vcAnnexonesourcename != ''">
+                and VC_ANNEX$ONE$SOURCE$NAME = #{vcAnnexonesourcename}
+            </if>
+            <if test="vcAnnextwosavename != null and vcAnnextwosavename != ''">
+                and VC_ANNEX$TWO$SAVE$NAME = #{vcAnnextwosavename}
+            </if>
+            <if test="vcAnnextwosourcename != null and vcAnnextwosourcename != ''">
+                and VC_ANNEX$TWO$SOURCE$NAME = #{vcAnnextwosourcename}
+            </if>
+            <if test="dtUploadtime != null and dtUploadtime != ''">
+                and DT_UPLOAD$TIME = #{dtUploadtime}
+            </if>
+            <if test="fileClass != null and fileClass != ''">
+                and FILE_CLASS = #{fileClass}
+            </if>
+        </where>
+        order by DT_SEND$TIME desc,VC_FILE$NUMBER
+    </select>
+
+    <!-- 关键字参数查询 -->
+    <select id="getSysTRulesListByKeyword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select N_ID, VC_CATALOG$NO, VC_FILE$TITLE, VC_FILE$NUMBER, DT_SEND$TIME, VC_DRAFT$DEPT, VC_SEND$FILE$NUMBER,
+        VC_KEY$WORD, VC_REMARKS, VC_ELECTRONIC$SAVE$NAME, VC_ELECTRONIC$SOURCE$NAME, VC_ANNEX$ONE$SAVE$NAME,
+        VC_ANNEX$ONE$SOURCE$NAME, VC_ANNEX$TWO$SAVE$NAME, VC_ANNEX$TWO$SOURCE$NAME, DT_UPLOAD$TIME,
+        PUB_T_DICTIONARY.VC_NAME as FILE_CLASS from
+        SYS_T_RULES INNER JOIN PUB_T_DICTIONARY ON SYS_T_RULES.FILE_CLASS = PUB_T_DICTIONARY.VC_ID
+        and (VC_FILE$TITLE like '%'||#{keyword}||'%' or VC_FILE$NUMBER like '%'||#{keyword}||'%' or VC_KEY$WORD like '%'||#{keyword}||'%')
+        order by DT_SEND$TIME desc,VC_FILE$NUMBER
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addSysTRules" parameterType="com.tieda.alarm.entity.sysTRules.SysTRules">
+        insert into SYS_T_RULES (N_ID, VC_CATALOG$NO, VC_FILE$TITLE, VC_FILE$NUMBER, DT_SEND$TIME, VC_DRAFT$DEPT, VC_SEND$FILE$NUMBER, VC_KEY$WORD, VC_REMARKS, VC_ELECTRONIC$SAVE$NAME, VC_ELECTRONIC$SOURCE$NAME, VC_ANNEX$ONE$SAVE$NAME, VC_ANNEX$ONE$SOURCE$NAME, VC_ANNEX$TWO$SAVE$NAME, VC_ANNEX$TWO$SOURCE$NAME, DT_UPLOAD$TIME, FILE_CLASS )
+        values (
+                                        #{nId,jdbcType = VARCHAR},    
+                                                #{vcCatalogno,jdbcType = VARCHAR},    
+                                                #{vcFiletitle,jdbcType = VARCHAR},    
+                                                #{vcFilenumber,jdbcType = VARCHAR},    
+                                                #{dtSendtime,jdbcType = VARCHAR},    
+                                                #{vcDraftdept,jdbcType = VARCHAR},    
+                                                        #{vcSendfilenumber,jdbcType = VARCHAR},    
+                                                #{vcKeyword,jdbcType = VARCHAR},    
+                                        #{vcRemarks,jdbcType = VARCHAR},    
+                                                        #{vcElectronicsavename,jdbcType = VARCHAR},    
+                                                        #{vcElectronicsourcename,jdbcType = VARCHAR},    
+                                                                #{vcAnnexonesavename,jdbcType = VARCHAR},    
+                                                                #{vcAnnexonesourcename,jdbcType = VARCHAR},    
+                                                                #{vcAnnextwosavename,jdbcType = VARCHAR},    
+                                                                #{vcAnnextwosourcename,jdbcType = VARCHAR},    
+                                                #{dtUploadtime,jdbcType = VARCHAR},    
+                                        #{fileClass,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchSysTRules" parameterType="list">
+        insert into SYS_T_RULES (N_ID, VC_CATALOG$NO, VC_FILE$TITLE, VC_FILE$NUMBER, DT_SEND$TIME, VC_DRAFT$DEPT,
+        VC_SEND$FILE$NUMBER, VC_KEY$WORD, VC_REMARKS, VC_ELECTRONIC$SAVE$NAME, VC_ELECTRONIC$SOURCE$NAME,
+        VC_ANNEX$ONE$SAVE$NAME, VC_ANNEX$ONE$SOURCE$NAME, VC_ANNEX$TWO$SAVE$NAME, VC_ANNEX$TWO$SOURCE$NAME,
+        DT_UPLOAD$TIME, FILE_CLASS )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select
+            #{item.nId},
+            #{item.vcCatalogno},
+            #{item.vcFiletitle},
+            #{item.vcFilenumber},
+            #{item.dtSendtime},
+            #{item.vcDraftdept},
+            #{item.vcSendfilenumber},
+            #{item.vcKeyword},
+            #{item.vcRemarks},
+            #{item.vcElectronicsavename},
+            #{item.vcElectronicsourcename},
+            #{item.vcAnnexonesavename},
+            #{item.vcAnnexonesourcename},
+            #{item.vcAnnextwosavename},
+            #{item.vcAnnextwosourcename},
+            #{item.dtUploadtime},
+            #{item.fileClass} from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateSysTRules" parameterType="com.tieda.alarm.entity.sysTRules.SysTRules">
+        update SYS_T_RULES
+        <set>
+
+
+            <if test="vcCatalogno != null and vcCatalogno != ''">
+                VC_CATALOG$NO = #{vcCatalogno},
+            </if>
+
+            <if test="vcFiletitle != null and vcFiletitle != ''">
+                VC_FILE$TITLE = #{vcFiletitle},
+            </if>
+
+            <if test="vcFilenumber != null and vcFilenumber != ''">
+                VC_FILE$NUMBER = #{vcFilenumber},
+            </if>
+
+            <if test="dtSendtime != null and dtSendtime != ''">
+                DT_SEND$TIME = #{dtSendtime},
+            </if>
+
+            <if test="vcDraftdept != null and vcDraftdept != ''">
+                VC_DRAFT$DEPT = #{vcDraftdept},
+            </if>
+
+            <if test="vcSendfilenumber != null and vcSendfilenumber != ''">
+                VC_SEND$FILE$NUMBER = #{vcSendfilenumber},
+            </if>
+
+            <if test="vcKeyword != null and vcKeyword != ''">
+                VC_KEY$WORD = #{vcKeyword},
+            </if>
+
+            <if test="vcRemarks != null and vcRemarks != ''">
+                VC_REMARKS = #{vcRemarks},
+            </if>
+
+            <if test="vcElectronicsavename != null and vcElectronicsavename != ''">
+                VC_ELECTRONIC$SAVE$NAME = #{vcElectronicsavename},
+            </if>
+
+            <if test="vcElectronicsourcename != null and vcElectronicsourcename != ''">
+                VC_ELECTRONIC$SOURCE$NAME = #{vcElectronicsourcename},
+            </if>
+
+            <if test="vcAnnexonesavename != null and vcAnnexonesavename != ''">
+                VC_ANNEX$ONE$SAVE$NAME = #{vcAnnexonesavename},
+            </if>
+
+            <if test="vcAnnexonesourcename != null and vcAnnexonesourcename != ''">
+                VC_ANNEX$ONE$SOURCE$NAME = #{vcAnnexonesourcename},
+            </if>
+
+            <if test="vcAnnextwosavename != null and vcAnnextwosavename != ''">
+                VC_ANNEX$TWO$SAVE$NAME = #{vcAnnextwosavename},
+            </if>
+
+            <if test="vcAnnextwosourcename != null and vcAnnextwosourcename != ''">
+                VC_ANNEX$TWO$SOURCE$NAME = #{vcAnnextwosourcename},
+            </if>
+
+            <if test="dtUploadtime != null and dtUploadtime != ''">
+                DT_UPLOAD$TIME = #{dtUploadtime},
+            </if>
+
+            <if test="fileClass != null and fileClass != ''">
+                FILE_CLASS = #{fileClass},
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatchSysTRules" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update SYS_T_RULES
+            <set>
+                <if test="vcCatalogno != null and vcCatalogno != ''">
+                    VC_CATALOG$NO = #{vcCatalogno},
+                </if>
+                <if test="vcFiletitle != null and vcFiletitle != ''">
+                    VC_FILE$TITLE = #{vcFiletitle},
+                </if>
+                <if test="vcFilenumber != null and vcFilenumber != ''">
+                    VC_FILE$NUMBER = #{vcFilenumber},
+                </if>
+                <if test="dtSendtime != null and dtSendtime != ''">
+                    DT_SEND$TIME = #{dtSendtime},
+                </if>
+                <if test="vcDraftdept != null and vcDraftdept != ''">
+                    VC_DRAFT$DEPT = #{vcDraftdept},
+                </if>
+                <if test="vcSendfilenumber != null and vcSendfilenumber != ''">
+                    VC_SEND$FILE$NUMBER = #{vcSendfilenumber},
+                </if>
+                <if test="vcKeyword != null and vcKeyword != ''">
+                    VC_KEY$WORD = #{vcKeyword},
+                </if>
+                <if test="vcRemarks != null and vcRemarks != ''">
+                    VC_REMARKS = #{vcRemarks},
+                </if>
+                <if test="vcElectronicsavename != null and vcElectronicsavename != ''">
+                    VC_ELECTRONIC$SAVE$NAME = #{vcElectronicsavename},
+                </if>
+                <if test="vcElectronicsourcename != null and vcElectronicsourcename != ''">
+                    VC_ELECTRONIC$SOURCE$NAME = #{vcElectronicsourcename},
+                </if>
+                <if test="vcAnnexonesavename != null and vcAnnexonesavename != ''">
+                    VC_ANNEX$ONE$SAVE$NAME = #{vcAnnexonesavename},
+                </if>
+                <if test="vcAnnexonesourcename != null and vcAnnexonesourcename != ''">
+                    VC_ANNEX$ONE$SOURCE$NAME = #{vcAnnexonesourcename},
+                </if>
+                <if test="vcAnnextwosavename != null and vcAnnextwosavename != ''">
+                    VC_ANNEX$TWO$SAVE$NAME = #{vcAnnextwosavename},
+                </if>
+                <if test="vcAnnextwosourcename != null and vcAnnextwosourcename != ''">
+                    VC_ANNEX$TWO$SOURCE$NAME = #{vcAnnextwosourcename},
+                </if>
+                <if test="dtUploadtime != null and dtUploadtime != ''">
+                    DT_UPLOAD$TIME = #{dtUploadtime},
+                </if>
+                <if test="fileClass != null and fileClass != ''">
+                    FILE_CLASS = #{fileClass},
+                </if>
+            </set>
+            where
+            N_ID = #{item.nId}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteSysTRulesById" parameterType="long">
+        delete from SYS_T_RULES
+
+        where
+
+                                
+            N_ID = #{nId=}
+
+        
+                                    
+                                    
+                                    
+                                    
+                                    
+                                            
+                                    
+                            
+                                            
+                                            
+                                                    
+                                                    
+                                                    
+                                                    
+                                    
+                            
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchSysTRules" parameterType="list">
+        delete from SYS_T_RULES
+
+
+        where N_ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

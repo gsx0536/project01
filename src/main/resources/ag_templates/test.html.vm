@@ -1,0 +1,103 @@
+<div class="auto-build-page">
+    <div nz-row>
+        #foreach($field in ${table.fields})
+            #if(!${field.keyFlag})
+                #if($field.comment.split("-").get(1)!='hidden')
+                    $field.comment.split("-").get(0)：<input style="width: 120px;" nz-input [(ngModel)]="buildtext.${field.propertyName}">
+                #end
+            #end
+        #end
+        <button style="margin-left:10px;" nz-button nzType="primary" (click)="readyload(pageIndexTable,selectedValue)">查询</button>
+    </div>
+    <div nz-row *ngIf="editStatus">
+        <button nz-button nzType="primary" (click)="addModel()">新增</button>
+    </div>
+
+    <div nz-row class="mt10 bgwhite">
+        <nz-table #basicTable [nzData]="tableData" nzSize="small" [nzLoadingDelay]="1000" nzBordered
+            [nzShowPagination]="false" [nzFrontPagination]="false"
+            (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()"
+            (nzPageSizeChange)="refreshStatus()" [nzScroll]="tablestyle.nzScroll">
+            <thead>
+                <tr>
+                    #foreach($field in ${table.fields})
+                        #if(!${field.keyFlag})
+                                #if($field.comment.split("-").get(1)!='hidden')
+                                    <th nzWidth="100px">$field.comment.split("-").get(0)</th>
+                                #end
+                        #end
+                    #end
+                    <th *ngIf="editStatus">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data;index as i">
+                    <!-- <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled"
+                    (nzCheckedChange)="refreshStatus()"></td> -->
+                    #foreach($field in ${table.fields})
+                        #if(!${field.keyFlag})
+                            #if($field.comment.split("-").get(1)!='hidden')
+                                <td>{{data.${field.propertyName}}}</td>
+                            #end
+                        #end
+                    #end
+                    <td *ngIf="editStatus">
+                        <button (click)="editModel(data,i)" nz-button nzType="primary" nzGhost  nzSize="small">
+                            <i nz-icon type="edit"></i>修改
+                        </button>
+                        <button (click)="delModel(data)" nz-button nzType="primary" nzGhost nzSize="small">
+                            <i nz-icon type="delete"></i>删除
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <div class="pageWrap">
+            每页
+            <nz-select [(ngModel)]="selectedValue" (ngModelChange)="selectedChange()">
+                <nz-option nzValue="20" nzLabel="20"></nz-option>
+                <nz-option nzValue="50" nzLabel="50"></nz-option>
+                <nz-option nzValue="100" nzLabel="100"></nz-option>
+                <nz-option nzValue="200" nzLabel="200"></nz-option>
+            </nz-select> 条&nbsp;&nbsp;&nbsp;总共<span class="pageTotal">{{pageTotal}}</span>条
+        </div>
+        <div class="pageInation">
+            <nz-pagination [nzPageSize]="selectedValue" [nzPageIndex]="pageIndexTable" [nzTotal]="pageTotal"
+                (nzPageIndexChange)="rowChangeTable($event)"></nz-pagination>
+        </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="addVisible" nzTitle="新增" (nzOnCancel)="addCancel()" (nzOnOk)="addOk()">
+        #foreach($field in ${table.fields})
+            #if(!${field.keyFlag})
+            <div class="mb10">
+                <nz-input-group nzAddOnBefore="${field.comment}">
+                    #if($field.comment.split("-").get(1)=='hidden')
+                        <input type="text" nz-input [(ngModel)]="addData.${field.propertyName}" hidden/>
+                    #elseif($field.comment.split("-").get(1)=='select')
+                        <nz-select [(ngModel)]="addData.${field.propertyName}" (ngModelChange)="selectedChange${field.propertyName}($event)">
+                            <nz-option *ngFor="let data of ${field.propertyName}List" [nzValue]="data.id" [nzLabel]="data.text"></nz-option>
+                            <nz-option *ngFor="let data of ${field.propertyName}List" [nzValue]="data.id" [nzLabel]="data.text"></nz-option>
+                        </nz-select>
+##                        #elseif($element.get(1)=='select')
+                    #else
+                        <input type="text" nz-input [(ngModel)]="addData.${field.propertyName}" />
+                #end
+                </nz-input-group>
+            </div>
+           #end
+        #end
+    </nz-modal>
+
+    <nz-modal [(nzVisible)]="editVisible" nzTitle="修改" (nzOnCancel)="editCancel()" (nzOnOk)="editOk()">
+        #foreach($field in ${table.fields})
+            #if(!${field.keyFlag})
+            <div class="mb10">
+                <nz-input-group nzAddOnBefore="${field.comment}">
+                    <input type="text" nz-input [(ngModel)]="editData.${field.propertyName}" />
+                </nz-input-group>
+            </div>
+            #end
+        #end
+    </nz-modal>
+</div>

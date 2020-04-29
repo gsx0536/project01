@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.dicRackItem.DicRackItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.dicRackItem.DicRackItem">
+        <id column="ID" property="id"/>
+        <result column="RACKID" property="rackid"/>
+        <result column="ITEM" property="item"/>
+    </resultMap>
+
+    <select id="queryByRackId" parameterType="long" resultMap="BaseResultMap">
+        select ID, RACKID, ITEM
+        from DIC_RACK_ITEM
+        where rackid = #{id}
+    </select>
+
+    <!-- 根据主键查询对象 -->
+    <select id="getDicRackItemById" parameterType="long" resultMap="BaseResultMap">
+        select ID, RACKID, ITEM
+        from DIC_RACK_ITEM
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getDicRackItemList" parameterType="map" resultMap="BaseResultMap">
+        select ID, RACKID, ITEM from DIC_RACK_ITEM
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="rackid != null and rackid != ''">
+                and RACKID = #{rackid}
+            </if>
+            <if test="item != null and item != ''">
+                and ITEM = #{item}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addDicRackItem" parameterType="com.tieda.alarm.entity.dicRackItem.DicRackItem">
+        insert into DIC_RACK_ITEM (ID, RACKID, ITEM)
+        values (#{id,jdbcType = VARCHAR}, #{rackid,jdbcType = VARCHAR}, #{item,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchDicRackItem" parameterType="list">
+        insert into DIC_RACK_ITEM (ID, RACKID, ITEM ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.rackid}, #{item.item} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateDicRackItem" parameterType="com.tieda.alarm.entity.dicRackItem.DicRackItem">
+        update DIC_RACK_ITEM
+        <set>
+            <if test="rackid != null and rackid != ''">
+                RACKID = #{rackid},
+            </if>
+            <if test="item != null and item != ''">
+                ITEM = #{item}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathDicRackItem" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update DIC_RACK_ITEM
+            <set>
+                RACKID = #{item.rackid}, ITEM = #{item.item}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteDicRackItemById" parameterType="long">
+        delete
+        from DIC_RACK_ITEM
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchDicRackItem" parameterType="list">
+        delete from DIC_RACK_ITEM
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

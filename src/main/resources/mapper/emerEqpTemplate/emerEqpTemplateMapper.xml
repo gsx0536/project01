@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.emerEqpTemplate.EmerEqpTemplateMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.emerEqpTemplate.EmerEqpTemplate">
+                <id column="ID" property="id"/>
+            <result column="STATION" property="station"/>
+<result column="EQUIP_NAME" property="equipName"/>
+<result column="EQUIP_POSITION" property="equipPosition"/>
+<result column="WORK_DOOR" property="workDoor"/>
+<result column="RESTRICT_RUN" property="restrictRun"/>
+<result column="APPLY_TO_RAIL" property="applyToRail"/>
+<result column="EQUIP_RECOVER" property="equipRecover"/>
+<result column="EXIT_RAIL" property="exitRail"/>
+<result column="TAKE_TRAIN" property="takeTrain"/>
+<result column="REMARK" property="remark"/>
+    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getEmerEqpTemplateById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  b.vc_name STATION,  EQUIP_NAME,  EQUIP_POSITION,  WORK_DOOR,  RESTRICT_RUN,  APPLY_TO_RAIL,  EQUIP_RECOVER,  EXIT_RAIL,  TAKE_TRAIN,  REMARK
+        from EMER_EQP_TEMPLATE a,sys_t_station b where a.station=b.vc_station$id
+                        where ID = #{id}
+        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getEmerEqpTemplateList" parameterType="map" resultMap="BaseResultMap">
+        select ID, STATION, EQUIP_NAME, EQUIP_POSITION, WORK_DOOR, RESTRICT_RUN, APPLY_TO_RAIL, EQUIP_RECOVER, EXIT_RAIL, TAKE_TRAIN, REMARK
+        from EMER_EQP_TEMPLATE
+        <where>
+            <if test="station != null and station != ''">
+                and (STATION like '%|${station}|%' or STATION = #{station})
+            </if>
+            <if test="equipName != null and equipName != ''">
+                and EQUIP_NAME like concat(concat('%',#{equipName}),'%')
+            </if>
+            <if test="equipPosition != null and equipPosition != ''">
+                and EQUIP_POSITION = #{equipPosition}
+            </if>
+            <if test="workDoor != null and workDoor != ''">
+                and WORK_DOOR = #{workDoor}
+            </if>
+            <if test="restrictRun != null and restrictRun != ''">
+                and RESTRICT_RUN = #{restrictRun}
+            </if>
+            <if test="applyToRail != null and applyToRail != ''">
+                and APPLY_TO_RAIL = #{applyToRail}
+            </if>
+            <if test="equipRecover != null and equipRecover != ''">
+                and EQUIP_RECOVER = #{equipRecover}
+            </if>
+            <if test="exitRail != null and exitRail != ''">
+                and EXIT_RAIL = #{exitRail}
+            </if>
+            <if test="takeTrain != null and takeTrain != ''">
+                and TAKE_TRAIN = #{takeTrain}
+            </if>
+            <if test="remark != null and remark != ''">
+                and REMARK = #{remark}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addEmerEqpTemplate" parameterType="com.tieda.alarm.entity.emerEqpTemplate.EmerEqpTemplate">
+        insert into EMER_EQP_TEMPLATE (ID, STATION, EQUIP_NAME, EQUIP_POSITION, WORK_DOOR, RESTRICT_RUN, APPLY_TO_RAIL, EQUIP_RECOVER, EXIT_RAIL, TAKE_TRAIN, REMARK )
+        values (                #{id,jdbcType = VARCHAR},                        #{station,jdbcType = VARCHAR},                        #{equipName,jdbcType = VARCHAR},                        #{equipPosition,jdbcType = VARCHAR},                        #{workDoor,jdbcType = VARCHAR},                        #{restrictRun,jdbcType = VARCHAR},                        #{applyToRail,jdbcType = VARCHAR},                        #{equipRecover,jdbcType = VARCHAR},                        #{exitRail,jdbcType = VARCHAR},                        #{takeTrain,jdbcType = VARCHAR},                        #{remark,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchEmerEqpTemplate" parameterType="list">
+        insert into EMER_EQP_TEMPLATE (ID, STATION, EQUIP_NAME, EQUIP_POSITION, WORK_DOOR, RESTRICT_RUN, APPLY_TO_RAIL, EQUIP_RECOVER, EXIT_RAIL, TAKE_TRAIN, REMARK         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.station}, #{item.equipName}, #{item.equipPosition}, #{item.workDoor}, #{item.restrictRun}, #{item.applyToRail}, #{item.equipRecover}, #{item.exitRail}, #{item.takeTrain}, #{item.remark}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateEmerEqpTemplate" parameterType="com.tieda.alarm.entity.emerEqpTemplate.EmerEqpTemplate">
+        update EMER_EQP_TEMPLATE
+        <set>
+            <if test="station != null and station != ''">
+                      STATION = #{station},                    </if>
+<if test="equipName != null and equipName != ''">
+                      EQUIP_NAME = #{equipName},                    </if>
+<if test="equipPosition != null and equipPosition != ''">
+                      EQUIP_POSITION = #{equipPosition},                    </if>
+<if test="workDoor != null and workDoor != ''">
+                      WORK_DOOR = #{workDoor},                    </if>
+<if test="restrictRun != null and restrictRun != ''">
+                      RESTRICT_RUN = #{restrictRun},                    </if>
+<if test="applyToRail != null and applyToRail != ''">
+                      APPLY_TO_RAIL = #{applyToRail},                    </if>
+<if test="equipRecover != null and equipRecover != ''">
+                      EQUIP_RECOVER = #{equipRecover},                    </if>
+<if test="exitRail != null and exitRail != ''">
+                      EXIT_RAIL = #{exitRail},                    </if>
+<if test="takeTrain != null and takeTrain != ''">
+                      TAKE_TRAIN = #{takeTrain},                    </if>
+<if test="remark != null and remark != ''">
+                      REMARK = #{remark}                    </if>
+    </set>
+    where ID = #{id}
+</update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathEmerEqpTemplate" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update EMER_EQP_TEMPLATE
+            <set>
+             STATION = #{item.station},                EQUIP_NAME = #{item.equipName},                EQUIP_POSITION = #{item.equipPosition},                WORK_DOOR = #{item.workDoor},                RESTRICT_RUN = #{item.restrictRun},                APPLY_TO_RAIL = #{item.applyToRail},                EQUIP_RECOVER = #{item.equipRecover},                EXIT_RAIL = #{item.exitRail},                TAKE_TRAIN = #{item.takeTrain},                REMARK = #{item.remark}                </set>
+            where ID = #{item.id}
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteEmerEqpTemplateById" parameterType="long">
+        delete from EMER_EQP_TEMPLATE
+
+        where
+
+        
+        
+            ID = #{id}
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchEmerEqpTemplate" parameterType="list">
+        delete from EMER_EQP_TEMPLATE
+
+        
+            
+                where ID in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

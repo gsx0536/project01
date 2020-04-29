@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.emerProcedure.EmerProcedureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.emerProcedure.EmerProcedure">
+        <id column="ID" property="id"/>
+        <result column="CID" property="cid"/>
+        <result column="CONTENT" property="content"/>
+        <result column="STEP" property="step"/>
+        <result column="STEP_NO" property="stepNo"/>
+        <result column="NO" property="no"/>
+        <result column="PROCESS" property="process"/>
+        <result column="HANDLE_REQUIRE" property="handleRequire"/>
+        <result column="HANDLE_TIME" property="handleTime"/>
+        <result column="REMARK" property="remark"/>
+        <result column="TEMP_INDEX" property="tempIndex"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getEmerProcedureById" parameterType="long" resultMap="BaseResultMap">
+        select ID,
+               CID,
+               CONTENT,
+               STEP,
+               STEP_NO,
+               NO,
+               PROCESS,
+               HANDLE_REQUIRE,
+               HANDLE_TIME,
+               REMARK,
+               TEMP_INDEX
+        from EMER_PROCEDURE
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getEmerProcedureList" parameterType="map" resultMap="BaseResultMap">
+        select ID, CID, CONTENT, STEP, STEP_NO, NO, PROCESS, HANDLE_REQUIRE, HANDLE_TIME, REMARK, TEMP_INDEX from
+        EMER_PROCEDURE
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="cid != null and cid != ''">
+                and CID = #{cid}
+            </if>
+            <if test="content != null and content != ''">
+                and CONTENT like concat(concat('%',#{content}),'%')
+            </if>
+            <if test="step != null and step != ''">
+                and STEP like concat(concat('%',#{step}),'%')
+            </if>
+            <if test="stepNo != null and stepNo != ''">
+                and STEP_NO = #{stepNo}
+            </if>
+            <if test="no != null and no != ''">
+                and NO = #{no}
+            </if>
+            <if test="process != null and process != ''">
+                and PROCESS = #{process}
+            </if>
+            <if test="handleRequire != null and handleRequire != ''">
+                and HANDLE_REQUIRE = #{handleRequire}
+            </if>
+            <if test="handleTime != null and handleTime != ''">
+                and HANDLE_TIME = #{handleTime}
+            </if>
+            <if test="remark != null and remark != ''">
+                and REMARK = #{remark}
+            </if>
+            <if test="tempIndex != null and tempIndex != ''">
+                and TEMP_INDEX = #{tempIndex}
+            </if>
+        </where>
+         order by cid asc ,step_no asc,no asc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addEmerProcedure" parameterType="com.tieda.alarm.entity.emerProcedure.EmerProcedure">
+        insert into EMER_PROCEDURE (ID, CID, CONTENT, STEP, STEP_NO, NO, PROCESS, HANDLE_REQUIRE, HANDLE_TIME, REMARK,
+    TEMP_INDEX)
+        values (#{id,jdbcType = VARCHAR}, #{cid,jdbcType = VARCHAR}, #{content,jdbcType = VARCHAR},
+                #{step,jdbcType = VARCHAR}, #{stepNo,jdbcType = VARCHAR}, #{no,jdbcType = VARCHAR},
+                #{process,jdbcType = VARCHAR}, #{handleRequire,jdbcType = VARCHAR}, #{handleTime,jdbcType = VARCHAR},
+                #{remark,jdbcType = VARCHAR}, #{tempIndex,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchEmerProcedure" parameterType="list">
+        insert into EMER_PROCEDURE (ID, CID, CONTENT, STEP, STEP_NO, NO, PROCESS, HANDLE_REQUIRE, HANDLE_TIME, REMARK,
+        TEMP_INDEX ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.cid}, #{item.content}, #{item.step}, #{item.stepNo}, #{item.no}, #{item.process},
+            #{item.handleRequire}, #{item.handleTime}, #{item.remark}, #{item.tempIndex} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateEmerProcedure" parameterType="com.tieda.alarm.entity.emerProcedure.EmerProcedure">
+        update EMER_PROCEDURE
+        <set>
+            <if test="cid != null and cid != ''">
+                CID = #{cid},
+            </if>
+            <if test="content != null and content != ''">
+                CONTENT = #{content},
+            </if>
+            <if test="step != null and step != ''">
+                STEP = #{step},
+            </if>
+            <if test="stepNo != null and stepNo != ''">
+                STEP_NO = #{stepNo},
+            </if>
+            <if test="no != null and no != ''">
+                NO = #{no},
+            </if>
+            <if test="process != null and process != ''">
+                PROCESS = #{process},
+            </if>
+            <if test="handleRequire != null and handleRequire != ''">
+                HANDLE_REQUIRE = #{handleRequire},
+            </if>
+            <if test="handleTime != null and handleTime != ''">
+                HANDLE_TIME = #{handleTime},
+            </if>
+            <if test="remark != null and remark != ''">
+                REMARK = #{remark},
+            </if>
+            <if test="tempIndex != null and tempIndex != ''">
+                TEMP_INDEX = #{tempIndex}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathEmerProcedure" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update EMER_PROCEDURE
+            <set>
+                CID = #{item.cid}, CONTENT = #{item.content}, STEP = #{item.step}, STEP_NO = #{item.stepNo}, NO =
+                #{item.no}, PROCESS = #{item.process}, HANDLE_REQUIRE = #{item.handleRequire}, HANDLE_TIME =
+                #{item.handleTime}, REMARK = #{item.remark}, TEMP_INDEX = #{item.tempIndex}
+            </set>
+            where
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteEmerProcedureById" parameterType="long">
+        delete
+        from EMER_PROCEDURE
+
+        where
+            ID = #{id}
+
+
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchEmerProcedure" parameterType="list">
+        delete from EMER_PROCEDURE
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

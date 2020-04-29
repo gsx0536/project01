@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testJjsb.TestJjsbMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testJjsb.TestJjsb">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <result column="ID" property="id"/>
+                                                                <result column="XHJMC" property="xhjmc"/>
+                                                                <result column="JJ1" property="jj1"/>
+                                                                <result column="JJ2" property="jj2"/>
+                                                                <result column="JJ3" property="jj3"/>
+                                                                <result column="JJ4" property="jj4"/>
+                                                                <result column="JJ5" property="jj5"/>
+                                                                <result column="JJ6" property="jj6"/>
+                                                                <result column="JJ7" property="jj7"/>
+                                                                <result column="JJ8" property="jj8"/>
+                                                                <result column="JJ9" property="jj9"/>
+                                                                <result column="JJ10" property="jj10"/>
+                                                                <result column="JJYCSY" property="jjycsy"/>
+                                                                <result column="WJWC" property="wjwc"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestJjsbById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  XHJMC,  JJ1,  JJ2,  JJ3,  JJ4,  JJ5,  JJ6,  JJ7,  JJ8,  JJ9,  JJ10,  JJYCSY,  WJWC,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_JJSB
+                                                                                                                                                                                                                                                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestJjsbList" parameterType="map" resultMap="BaseResultMap">
+        select ID, XHJMC, JJ1, JJ2, JJ3, JJ4, JJ5, JJ6, JJ7, JJ8, JJ9, JJ10, JJYCSY, WJWC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         from TEST_JJSB
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="xhjmc != null and xhjmc != ''">
+                    and XHJMC = #{xhjmc}
+                </if>
+                            <if test="jj1 != null and jj1 != ''">
+                    and JJ1 = #{jj1}
+                </if>
+                            <if test="jj2 != null and jj2 != ''">
+                    and JJ2 = #{jj2}
+                </if>
+                            <if test="jj3 != null and jj3 != ''">
+                    and JJ3 = #{jj3}
+                </if>
+                            <if test="jj4 != null and jj4 != ''">
+                    and JJ4 = #{jj4}
+                </if>
+                            <if test="jj5 != null and jj5 != ''">
+                    and JJ5 = #{jj5}
+                </if>
+                            <if test="jj6 != null and jj6 != ''">
+                    and JJ6 = #{jj6}
+                </if>
+                            <if test="jj7 != null and jj7 != ''">
+                    and JJ7 = #{jj7}
+                </if>
+                            <if test="jj8 != null and jj8 != ''">
+                    and JJ8 = #{jj8}
+                </if>
+                            <if test="jj9 != null and jj9 != ''">
+                    and JJ9 = #{jj9}
+                </if>
+                            <if test="jj10 != null and jj10 != ''">
+                    and JJ10 = #{jj10}
+                </if>
+                            <if test="jjycsy != null and jjycsy != ''">
+                    and JJYCSY = #{jjycsy}
+                </if>
+                            <if test="wjwc != null and wjwc != ''">
+                    and WJWC = #{wjwc}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestJjsb" parameterType="com.tieda.alarm.entity.testJjsb.TestJjsb">
+        insert into TEST_JJSB (ID, XHJMC, JJ1, JJ2, JJ3, JJ4, JJ5, JJ6, JJ7, JJ8, JJ9, JJ10, JJYCSY, WJWC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{xhjmc,jdbcType = VARCHAR},                    #{jj1,jdbcType = VARCHAR},                    #{jj2,jdbcType = VARCHAR},                    #{jj3,jdbcType = VARCHAR},                    #{jj4,jdbcType = VARCHAR},                    #{jj5,jdbcType = VARCHAR},                    #{jj6,jdbcType = VARCHAR},                    #{jj7,jdbcType = VARCHAR},                    #{jj8,jdbcType = VARCHAR},                    #{jj9,jdbcType = VARCHAR},                    #{jj10,jdbcType = VARCHAR},                    #{jjycsy,jdbcType = VARCHAR},                    #{wjwc,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestJjsb" parameterType="list">
+        insert into TEST_JJSB (ID, XHJMC, JJ1, JJ2, JJ3, JJ4, JJ5, JJ6, JJ7, JJ8, JJ9, JJ10, JJYCSY, WJWC, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.xhjmc}, #{item.jj1}, #{item.jj2}, #{item.jj3}, #{item.jj4}, #{item.jj5}, #{item.jj6}, #{item.jj7}, #{item.jj8}, #{item.jj9}, #{item.jj10}, #{item.jjycsy}, #{item.wjwc}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestJjsb" parameterType="com.tieda.alarm.entity.testJjsb.TestJjsb">
+        update TEST_JJSB
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="xhjmc != null and xhjmc != ''">
+                        XHJMC = #{xhjmc},                    </if>
+                                                                <if test="jj1 != null and jj1 != ''">
+                        JJ1 = #{jj1},                    </if>
+                                                                <if test="jj2 != null and jj2 != ''">
+                        JJ2 = #{jj2},                    </if>
+                                                                <if test="jj3 != null and jj3 != ''">
+                        JJ3 = #{jj3},                    </if>
+                                                                <if test="jj4 != null and jj4 != ''">
+                        JJ4 = #{jj4},                    </if>
+                                                                <if test="jj5 != null and jj5 != ''">
+                        JJ5 = #{jj5},                    </if>
+                                                                <if test="jj6 != null and jj6 != ''">
+                        JJ6 = #{jj6},                    </if>
+                                                                <if test="jj7 != null and jj7 != ''">
+                        JJ7 = #{jj7},                    </if>
+                                                                <if test="jj8 != null and jj8 != ''">
+                        JJ8 = #{jj8},                    </if>
+                                                                <if test="jj9 != null and jj9 != ''">
+                        JJ9 = #{jj9},                    </if>
+                                                                <if test="jj10 != null and jj10 != ''">
+                        JJ10 = #{jj10},                    </if>
+                                                                <if test="jjycsy != null and jjycsy != ''">
+                        JJYCSY = #{jjycsy},                    </if>
+                                                                <if test="wjwc != null and wjwc != ''">
+                        WJWC = #{wjwc},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                                                        </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestJjsb" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_JJSB
+            <set>
+                                                            ID = #{item.id},                                                                                XHJMC = #{item.xhjmc},                                                                                JJ1 = #{item.jj1},                                                                                JJ2 = #{item.jj2},                                                                                JJ3 = #{item.jj3},                                                                                JJ4 = #{item.jj4},                                                                                JJ5 = #{item.jj5},                                                                                JJ6 = #{item.jj6},                                                                                JJ7 = #{item.jj7},                                                                                JJ8 = #{item.jj8},                                                                                JJ9 = #{item.jj9},                                                                                JJ10 = #{item.jj10},                                                                                JJYCSY = #{item.jjycsy},                                                                                WJWC = #{item.wjwc},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestJjsbById" parameterType="long">
+        delete from TEST_JJSB
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestJjsb" parameterType="list">
+        delete from TEST_JJSB
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

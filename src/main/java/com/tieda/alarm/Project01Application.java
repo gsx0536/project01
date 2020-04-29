@@ -1,0 +1,14 @@
+package com.tieda.alarm;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Project01Application {
+    //authorization
+//BearereyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjAxNTQ3Nzc1NDYsInBheWxvYWQiOiJ7XCJ2Y1NlcnZlclwiOm51bGwsXCJ2Y09yZ0lkXCI6XCJLTUJVUl9LTU5TRUdcIixcInZjTnVtYmVyXCI6XCJhZG1pblwiLFwidmNOYW1lXCI6XCLnrqHnkIblkZhcIixcInZjT3RoZXJQZXJzb25cIjpudWxsLFwidmNHa2VJZFwiOlwiXCIsXCJhZG1pblwiOnRydWUsXCJ2Y09yZ05hbWVcIjpcIuaYhuaYjuWNl-eUteWKoeautVwiLFwicGFnZVNpemVcIjpcIlwiLFwib3JnTGV2ZWxcIjpcIjUwXCIsXCJ2Y1Bhck9yZ0lkXCI6XCJcIixcInNob3dJbmZvXCI6XCLnrqHnkIblkZhcIn0ifQ.D54_60FM4Z6Ej6IbHQqfpX9kacd-znjAEBFh0YtqGcA
+    public static void main(String[] args) {
+        SpringApplication.run(Project01Application.class, args);
+    }
+
+}

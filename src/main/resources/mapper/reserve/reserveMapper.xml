@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.reserve.ReserveMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.reserve.Reserve">
+        <id column="ID" property="id"/>
+        <result column="WORKSHOP" property="workshop"/>
+        <result column="WORKAREA" property="workarea"/>
+        <result column="STATION" property="station"/>
+        <result column="PLACE" property="place"/>
+        <result column="INDATE" property="indate"/>
+        <result column="VALIDDATE" property="validdate"/>
+        <result column="NAME" property="name"/>
+        <result column="TYPE" property="type"/>
+        <result column="NUM" property="num"/>
+        <result column="FACTORY" property="factory"/>
+        <result column="NOTE" property="note"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getReserveById" parameterType="long" resultMap="BaseResultMap">
+        select  WORKSHOP,  WORKAREA,  STATION,  PLACE,  INDATE,  VALIDDATE,  NAME,  TYPE,  NUM,  FACTORY,  NOTE,  ID         from RESERVE
+                            where ID = #{id}
+                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getReserveList" parameterType="map" resultMap="BaseResultMap">
+        select WORKSHOP, WORKAREA, STATION, PLACE, INDATE, VALIDDATE, NAME, TYPE, NUM, FACTORY, NOTE, ID from RESERVE
+        <where>
+            <if test="workshop != null and workshop != ''">
+                and WORKSHOP = #{workshop}
+            </if>
+            <if test="workarea != null and workarea != ''">
+                and WORKAREA = #{workarea}
+            </if>
+            <if test="station != null and station != ''">
+                and STATION = #{station}
+            </if>
+            <if test="place != null and place != ''">
+                and PLACE = #{place}
+            </if>
+            <if test="indate != null and indate != ''">
+                and INDATE = #{indate}
+            </if>
+            <if test="validdate != null and validdate != ''">
+                and VALIDDATE = #{validdate}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE = #{type}
+            </if>
+            <if test="num != null and num != ''">
+                and NUM = #{num}
+            </if>
+            <if test="factory != null and factory != ''">
+                and FACTORY = #{factory}
+            </if>
+            <if test="note != null and note != ''">
+                and NOTE = #{note}
+            </if>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addReserve" parameterType="com.tieda.alarm.entity.reserve.Reserve">
+        insert into RESERVE (WORKSHOP, WORKAREA, STATION, PLACE, INDATE, VALIDDATE, NAME, TYPE, NUM, FACTORY, NOTE, ID )
+        values (                #{workshop},                        #{workarea},                        #{station},                        #{place},                        #{indate},                        #{validdate},                        #{name},                        #{type},                        #{num},                        #{factory},                        #{note},                        #{id}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchReserve" parameterType="list">
+        insert into RESERVE (WORKSHOP, WORKAREA, STATION, PLACE, INDATE, VALIDDATE, NAME, TYPE, NUM, FACTORY, NOTE, ID )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.workshop}, #{item.workarea}, #{item.station}, #{item.place}, #{item.indate}, #{item.validdate},
+            #{item.name}, #{item.type}, #{item.num}, #{item.factory}, #{item.note}, #{item.id} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateReserve" parameterType="com.tieda.alarm.entity.reserve.Reserve">
+        update RESERVE
+        <set>
+            <if test="workshop != null and workshop != ''">
+                WORKSHOP = #{workshop},
+            </if>
+            <if test="workarea != null and workarea != ''">
+                WORKAREA = #{workarea},
+            </if>
+            <if test="station != null and station != ''">
+                STATION = #{station},
+            </if>
+            <if test="place != null and place != ''">
+                PLACE = #{place},
+            </if>
+            <if test="indate != null and indate != ''">
+                INDATE = #{indate},
+            </if>
+            <if test="validdate != null and validdate != ''">
+                VALIDDATE = #{validdate},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="type != null and type != ''">
+                TYPE = #{type},
+            </if>
+            <if test="num != null and num != ''">
+                NUM = #{num},
+            </if>
+            <if test="factory != null and factory != ''">
+                FACTORY = #{factory},
+            </if>
+            <if test="note != null and note != ''">
+                NOTE = #{note},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathReserve" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update RESERVE
+            <set>
+                WORKSHOP = #{item.workshop}, WORKAREA = #{item.workarea}, STATION = #{item.station}, PLACE =
+                #{item.place}, INDATE = #{item.indate}, VALIDDATE = #{item.validdate}, NAME = #{item.name}, TYPE =
+                #{item.type}, NUM = #{item.num}, FACTORY = #{item.factory}, NOTE = #{item.note},
+            </set>
+            where
+
+
+            ID = #{item.id}
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteReserveById" parameterType="long">
+        delete from RESERVE
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            ID = #{id}
+
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchReserve" parameterType="list">
+        delete from RESERVE
+
+
+        where ID in
+
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testLkJh.TestLkJhMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testLkJh.TestLkJh">
+        <result column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="INSIDE" property="inside"/>
+        <result column="LZFC" property="lzfc"/>
+        <result column="LZJC" property="lzjc"/>
+        <result column="ZJTXZC" property="zjtxzc"/>
+        <result column="ZJTXZD" property="zjtxzd"/>
+        <result column="ZJZ_YZ" property="zjzYz"/>
+        <result column="ZJZ_WFX" property="zjzWfx"/>
+        <result column="ZDBZBB" property="zdbzbb"/>
+        <result column="ZDQJBB" property="zdqjbb"/>
+        <result column="NOTE" property="note"/>
+        <result column="OPERATOR" property="operator"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="CHARGE" property="charge"/>
+        <result column="STATIONNAME" property="stationname"/>
+        <result column="DIRECTOR" property="director"/>
+        <result column="DESIGNID" property="designId"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getTestLkJhById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  INSIDE,  LZFC,  LZJC,  ZJTXZC,  ZJTXZD,  ZJZ_YZ,  ZJZ_WFX,  ZDBZBB,  ZDQJBB,  NOTE,  OPERATOR,  CREATEDATE,  CHARGE,  STATIONNAME,  DIRECTOR,DESIGNID         from TEST_LK_JH
+                                                                                                                                                                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestLkJhList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, INSIDE, LZFC, LZJC, ZJTXZC, ZJTXZD, ZJZ_YZ, ZJZ_WFX, ZDBZBB, ZDQJBB, NOTE, OPERATOR,
+        CREATEDATE, CHARGE, STATIONNAME, DIRECTOR,DESIGNID from TEST_LK_JH
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and NAME = #{name}
+            </if>
+            <if test="inside != null and inside != ''">
+                and INSIDE = #{inside}
+            </if>
+            <if test="lzfc != null and lzfc != ''">
+                and LZFC = #{lzfc}
+            </if>
+            <if test="lzjc != null and lzjc != ''">
+                and LZJC = #{lzjc}
+            </if>
+            <if test="zjtxzc != null and zjtxzc != ''">
+                and ZJTXZC = #{zjtxzc}
+            </if>
+            <if test="zjtxzd != null and zjtxzd != ''">
+                and ZJTXZD = #{zjtxzd}
+            </if>
+            <if test="zjzYz != null and zjzYz != ''">
+                and ZJZ_YZ = #{zjzYz}
+            </if>
+            <if test="zjzWfx != null and zjzWfx != ''">
+                and ZJZ_WFX = #{zjzWfx}
+            </if>
+            <if test="zdbzbb != null and zdbzbb != ''">
+                and ZDBZBB = #{zdbzbb}
+            </if>
+            <if test="zdqjbb != null and zdqjbb != ''">
+                and ZDQJBB = #{zdqjbb}
+            </if>
+            <if test="note != null and note != ''">
+                and NOTE = #{note}
+            </if>
+            <if test="operator != null and operator != ''">
+                and OPERATOR = #{operator}
+            </if>
+            <if test="createdate != null and createdate != ''">
+                and CREATEDATE = #{createdate}
+            </if>
+            <if test="charge != null and charge != ''">
+                and CHARGE = #{charge}
+            </if>
+            <if test="stationname != null and stationname != ''">
+                and STATIONNAME = #{stationname}
+            </if>
+            <if test="director != null and director != ''">
+                and DIRECTOR = #{director}
+            </if>
+            <if test="designId != null and designId != ''">
+                and DESIGNID = #{designId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestLkJh" parameterType="com.tieda.alarm.entity.testLkJh.TestLkJh">
+        insert into TEST_LK_JH (ID, NAME, INSIDE, LZFC, LZJC, ZJTXZC, ZJTXZD, ZJZ_YZ, ZJZ_WFX, ZDBZBB, ZDQJBB, NOTE, OPERATOR, CREATEDATE, CHARGE, STATIONNAME, DIRECTOR,DESIGNID )
+        values (                #{id,jdbcType = VARCHAR},                    #{name,jdbcType = VARCHAR},                    #{inside,jdbcType = VARCHAR},                    #{lzfc,jdbcType = VARCHAR},                    #{lzjc,jdbcType = VARCHAR},                    #{zjtxzc,jdbcType = VARCHAR},                    #{zjtxzd,jdbcType = VARCHAR},                    #{zjzYz,jdbcType = VARCHAR},                    #{zjzWfx,jdbcType = VARCHAR},                    #{zdbzbb,jdbcType = VARCHAR},                    #{zdqjbb,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR},                    #{charge,jdbcType = VARCHAR},                    #{stationname,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},#{designId,jdbcType = VARCHAR}              )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestLkJh" parameterType="list">
+        insert into TEST_LK_JH (ID, NAME, INSIDE, LZFC, LZJC, ZJTXZC, ZJTXZD, ZJZ_YZ, ZJZ_WFX, ZDBZBB, ZDQJBB, NOTE,
+        OPERATOR, CREATEDATE, CHARGE, STATIONNAME, DIRECTOR ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.inside}, #{item.lzfc}, #{item.lzjc}, #{item.zjtxzc}, #{item.zjtxzd},
+            #{item.zjzYz}, #{item.zjzWfx}, #{item.zdbzbb}, #{item.zdqjbb}, #{item.note}, #{item.operator},
+            #{item.createdate}, #{item.charge}, #{item.stationname}, #{item.director} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestLkJh" parameterType="com.tieda.alarm.entity.testLkJh.TestLkJh">
+        update TEST_LK_JH
+        <set>
+            <if test="id != null and id != ''">
+                ID = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="inside != null and inside != ''">
+                INSIDE = #{inside},
+            </if>
+            <if test="lzfc != null and lzfc != ''">
+                LZFC = #{lzfc},
+            </if>
+            <if test="lzjc != null and lzjc != ''">
+                LZJC = #{lzjc},
+            </if>
+            <if test="zjtxzc != null and zjtxzc != ''">
+                ZJTXZC = #{zjtxzc},
+            </if>
+            <if test="zjtxzd != null and zjtxzd != ''">
+                ZJTXZD = #{zjtxzd},
+            </if>
+            <if test="zjzYz != null and zjzYz != ''">
+                ZJZ_YZ = #{zjzYz},
+            </if>
+            <if test="zjzWfx != null and zjzWfx != ''">
+                ZJZ_WFX = #{zjzWfx},
+            </if>
+            <if test="zdbzbb != null and zdbzbb != ''">
+                ZDBZBB = #{zdbzbb},
+            </if>
+            <if test="zdqjbb != null and zdqjbb != ''">
+                ZDQJBB = #{zdqjbb},
+            </if>
+            <if test="note != null and note != ''">
+                NOTE = #{note},
+            </if>
+            <if test="operator != null and operator != ''">
+                OPERATOR = #{operator},
+            </if>
+            <if test="createdate != null and createdate != ''">
+                CREATEDATE = #{createdate},
+            </if>
+            <if test="charge != null and charge != ''">
+                CHARGE = #{charge},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                STATIONNAME = #{stationname},
+            </if>
+            <if test="director != null and director != ''">
+                DIRECTOR = #{director}
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestLkJh" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_LK_JH
+            <set>
+                ID = #{item.id}, NAME = #{item.name}, INSIDE = #{item.inside}, LZFC = #{item.lzfc}, LZJC = #{item.lzjc},
+                ZJTXZC = #{item.zjtxzc}, ZJTXZD = #{item.zjtxzd}, ZJZ_YZ = #{item.zjzYz}, ZJZ_WFX = #{item.zjzWfx},
+                ZDBZBB = #{item.zdbzbb}, ZDQJBB = #{item.zdqjbb}, NOTE = #{item.note}, OPERATOR = #{item.operator},
+                CREATEDATE = #{item.createdate}, CHARGE = #{item.charge}, STATIONNAME = #{item.stationname}, DIRECTOR =
+                #{item.director}
+            </set>
+            where
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestLkJhById" parameterType="long">
+        delete from TEST_LK_JH
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestLkJh" parameterType="list">
+        delete from TEST_LK_JH
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

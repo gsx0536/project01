@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.emAlarmwrongtree.EmAlarmwrongtreeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.emAlarmwrongtree.EmAlarmwrongtree">
+        <id column="N_ID" property="nId"/>
+        <result column="DEVTYPEID" property="devtypeid"/>
+        <result column="DEVTYPENAME" property="devtypename"/>
+        <result column="ALARMTYPEID" property="alarmtypeid"/>
+        <result column="ALARMTYPENAME" property="alarmtypename"/>
+        <result column="WRONGTREEID" property="wrongtreeid"/>
+        <result column="WRONGTREENAME" property="wrongtreename"/>
+        <result column="NODEID" property="nodeid"/>
+        <result column="NODENAME" property="nodename"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getEmAlarmwrongtreeById" parameterType="long" resultMap="BaseResultMap">
+        select  N_ID,  DEVTYPEID,  DEVTYPENAME,  ALARMTYPEID,  ALARMTYPENAME,  WRONGTREEID,  WRONGTREENAME,  NODEID,  NODENAME         from EM_ALARMWRONGTREE
+                        where N_ID = #{nId}
+                </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getEmAlarmwrongtreeList" parameterType="map" resultMap="BaseResultMap">
+        select N_ID, DEVTYPEID, DEVTYPENAME, ALARMTYPEID, ALARMTYPENAME, WRONGTREEID, WRONGTREENAME, NODEID, NODENAME
+        from EM_ALARMWRONGTREE
+        <where>
+            <if test="nId != null and nId != ''">
+                and N_ID = #{nId}
+            </if>
+            <if test="devtypeid != null and devtypeid != ''">
+                and DEVTYPEID = #{devtypeid}
+            </if>
+            <if test="devtypename != null and devtypename != ''">
+                and DEVTYPENAME = #{devtypename}
+            </if>
+            <if test="alarmtypeid != null and alarmtypeid != ''">
+                and ALARMTYPEID = #{alarmtypeid}
+            </if>
+            <if test="alarmtypename != null and alarmtypename != ''">
+                and ALARMTYPENAME = #{alarmtypename}
+            </if>
+            <if test="wrongtreeid != null and wrongtreeid != ''">
+                and WRONGTREEID = #{wrongtreeid}
+            </if>
+            <if test="wrongtreename != null and wrongtreename != ''">
+                and WRONGTREENAME = #{wrongtreename}
+            </if>
+            <if test="nodeid != null and nodeid != ''">
+                and NODEID = #{nodeid}
+            </if>
+            <if test="nodename != null and nodename != ''">
+                and NODENAME = #{nodename}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addEmAlarmwrongtree" parameterType="com.tieda.alarm.entity.emAlarmwrongtree.EmAlarmwrongtree">
+        insert into EM_ALARMWRONGTREE (N_ID, DEVTYPEID, DEVTYPENAME, ALARMTYPEID, ALARMTYPENAME, WRONGTREEID, WRONGTREENAME, NODEID, NODENAME )
+        values (                #{nId,jdbcType = VARCHAR},                        #{devtypeid,jdbcType = VARCHAR},                        #{devtypename,jdbcType = VARCHAR},                        #{alarmtypeid,jdbcType = VARCHAR},                        #{alarmtypename,jdbcType = VARCHAR},                        #{wrongtreeid,jdbcType = VARCHAR},                        #{wrongtreename,jdbcType = VARCHAR},                        #{nodeid,jdbcType = VARCHAR},                        #{nodename,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchEmAlarmwrongtree" parameterType="list">
+        insert into EM_ALARMWRONGTREE (N_ID, DEVTYPEID, DEVTYPENAME, ALARMTYPEID, ALARMTYPENAME, WRONGTREEID,
+        WRONGTREENAME, NODEID, NODENAME ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nId}, #{item.devtypeid}, #{item.devtypename}, #{item.alarmtypeid}, #{item.alarmtypename},
+            #{item.wrongtreeid}, #{item.wrongtreename}, #{item.nodeid}, #{item.nodename} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateEmAlarmwrongtree" parameterType="com.tieda.alarm.entity.emAlarmwrongtree.EmAlarmwrongtree">
+        update EM_ALARMWRONGTREE
+        <set>
+            <if test="devtypeid != null and devtypeid != ''">
+                DEVTYPEID = #{devtypeid},
+            </if>
+            <if test="devtypename != null and devtypename != ''">
+                DEVTYPENAME = #{devtypename},
+            </if>
+            <if test="alarmtypeid != null and alarmtypeid != ''">
+                ALARMTYPEID = #{alarmtypeid},
+            </if>
+            <if test="alarmtypename != null and alarmtypename != ''">
+                ALARMTYPENAME = #{alarmtypename},
+            </if>
+            <if test="wrongtreeid != null and wrongtreeid != ''">
+                WRONGTREEID = #{wrongtreeid},
+            </if>
+            <if test="wrongtreename != null and wrongtreename != ''">
+                WRONGTREENAME = #{wrongtreename},
+            </if>
+            <if test="nodeid != null and nodeid != ''">
+                NODEID = #{nodeid},
+            </if>
+            <if test="nodename != null and nodename != ''">
+                NODENAME = #{nodename}
+            </if>
+        </set>
+        where N_ID = #{nId}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathEmAlarmwrongtree" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update EM_ALARMWRONGTREE
+            <set>
+                DEVTYPEID = #{item.devtypeid}, DEVTYPENAME = #{item.devtypename}, ALARMTYPEID = #{item.alarmtypeid},
+                ALARMTYPENAME = #{item.alarmtypename}, WRONGTREEID = #{item.wrongtreeid}, WRONGTREENAME =
+                #{item.wrongtreename}, NODEID = #{item.nodeid}, NODENAME = #{item.nodename}
+            </set>
+            where
+            N_ID = #{item.nId}
+        </foreach>
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteEmAlarmwrongtreeById" parameterType="long">
+        delete from EM_ALARMWRONGTREE
+        where
+            N_ID = #{nId}
+    </delete>
+    <!-- 批量删除 -->
+    <delete id="deleteBatchEmAlarmwrongtree" parameterType="list">
+        delete from EM_ALARMWRONGTREE
+        where N_ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--树查询-->
+    <select id="getWrongTreeIdByAlarmId" parameterType="String" resultType="java.util.HashMap">
+        select N_ID key,parentid parent ,nodename name,TREEID treeid
+        from wrongtree where treeid in (select t.wrongtreeid from EM_ALARMWRONGTREE t where t.alarmtypeid=#{alarmtypeid})
+        start with parentid is null
+         connect by parentid=prior N_ID order by to_number(n_id)
+    </select>
+
+    <!--节点查询-->
+    <select id="getNodeIdByAlarmId" parameterType="String" resultType="java.util.HashMap">
+        select nodeid,wrongtreeid from EM_ALARMWRONGTREE t where t.alarmtypeid=#{alarmtypeid}
+    </select>
+
+
+    <!--树查询-->
+    <select id="getWrongTreeIdByDevId" parameterType="String" resultType="java.util.HashMap">
+        select N_ID key,parentid parent ,nodename name,TREEID treeid
+        from wrongtree where treeid in (select min(t.wrongtreeid) from em_alarmwrongtree t where t.devtypeid=#{devtypeid})
+        start with parentid is null
+         connect by parentid=prior nodeid order by to_number(n_id)
+    </select>
+</mapper>

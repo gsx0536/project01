@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.alarmTab2.AlarmTab2Mapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.alarmTab2.AlarmTab2">
+        <result column="Y_DAY" property="yDay"/>
+        <result column="U_TIME" property="uTime"/>
+        <result column="DBM" property="dbm"/>
+        <result column="ALARMLEVEL" property="alarmlevel"/>
+        <result column="ALARMTYPE" property="alarmtype"/>
+        <result column="EX_TYPE" property="exType"/>
+        <result column="DEV_TYPE" property="devType"/>
+        <result column="DEV_NO" property="devNo"/>
+        <result column="STATUE" property="statue"/>
+        <result column="TC_FLAG" property="tcFlag"/>
+        <result column="E_TIME" property="eTime"/>
+        <result column="D_TIME" property="dTime"/>
+        <result column="DEVNAME" property="devname"/>
+        <result column="ALARMTEXT" property="alarmtext"/>
+        <result column="CONFIRMNAME" property="confirmname"/>
+        <result column="CONFIRMTIME" property="confirmtime"/>
+        <result column="CONFIRMTEXT" property="confirmtext"/>
+        <result column="ALARMCODE" property="alarmcode"/>
+        <result column="ALARMSOURCEFLAG" property="alarmsourceflag"/>
+        <result column="ALARMFROMTABLE" property="alarmfromtable"/>
+        <result column="EXPERT_REL_LIST" property="expertRelList"/>
+        <result column="EQUIPMENTTYPECODE" property="equipmenttypecode"/>
+        <result column="EQUIPMENTSUBID" property="equipmentsubid"/>
+        <result column="ALARMID" property="alarmid"/>
+        <result column="ALARMSUBID" property="alarmsubid"/>
+        <result column="REASON" property="reason"/>
+        <result column="ALARMDESCRIPTION" property="alarmdescription"/>
+        <result column="PRIORITY" property="priority"/>
+        <result column="DIAGNOSEPATH" property="diagnosepath"/>
+        <result column="BDISPOSE" property="bdispose"/>
+        <result column="ANALOGDATATRANSFER" property="analogdatatransfer"/>
+        <result column="POSITION" property="position"/>
+        <result column="PROPOSE" property="propose"/>
+        <result column="STATIONNAME" property="stationname"/>
+        <result column="N_ID" property="nId"/>
+        <result column="TYPE" property="type"/>
+        <result column="STATIONID" property="stationid"/>
+        <result column="alarmTypeName" property="alarmTypeName"/>
+        <result column="devTypeName" property="devTypeName"/>
+        <result column="workshop" property="workshop"/>
+        <result column="workarea" property="workarea"/>
+        <result column="beginTime" property="beginTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+
+    <!-- 根据主键查询对象 -->
+    <select id="getAlarmTab2ById" parameterType="long" resultMap="BaseResultMap">
+        select  Y_DAY,  U_TIME,  DBM,  ALARMLEVEL,  ALARMTYPE,  EX_TYPE,  DEV_TYPE,  DEV_NO,  STATUE,  TC_FLAG,  E_TIME,  D_TIME,  DEVNAME,  ALARMTEXT,  CONFIRMNAME,  CONFIRMTIME,  CONFIRMTEXT,  ALARMCODE,  ALARMSOURCEFLAG,  ALARMFROMTABLE,  EXPERT_REL_LIST,  EQUIPMENTTYPECODE,  EQUIPMENTSUBID,  ALARMID,  ALARMSUBID,  REASON,  ALARMDESCRIPTION,  PRIORITY,  DIAGNOSEPATH,  BDISPOSE,  ANALOGDATATRANSFER,  POSITION,  PROPOSE,  STATIONNAME,  N_ID,  TYPE,  STATIONID         from ALARM_TAB2
+        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getAlarmTab2List" parameterType="map" resultMap="BaseResultMap">
+        SELECT o.workshop workshop,tab.score,
+        t.name alarmTypeName,dev.vc_devtypename devTypeName,c.czjy,tab.U_TIME,tab.STATUE,tab.E_TIME,tab.D_TIME,tab.DEVNAME,tab.stationname,
+        tab.ALARMTEXT,tab.STATIONID,tab.alarmlevel,tab.N_ID,tab.ALARMTYPE,dev.vc_devtypeid DEV_TYPE,tab.EXPERT_REL_LIST
+        FROM ALARM_TAB2 tab,alarm_code t,DEV_T_WJJCDETYPE dev,
+        (select * from station_v_workshop )  o,
+        czjy c
+        WHERE tab.alarmtype = t.id(+)
+        and tab.dev_type = dev.vc_devtypeid(+)
+        and tab.stationid = o.stationid(+)
+        and tab.n_id = c.bjid(+)
+        <if test="beginTime != null and beginTime != ''">
+            and tab.U_TIME &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and tab.U_TIME &lt;= #{endTime}
+        </if>
+        <if test="workshop != null and workshop != ''">
+            and o.workshopid = #{workshop}
+        </if>
+        <if test="stationid != null and stationid != ''">
+             and tab.stationid = #{stationid}
+        </if>
+
+        <if test="alarmTypeName != null and alarmTypeName != ''">
+            and t.name = #{alarmTypeName}
+        </if>
+        <if test="devname != null and devname != ''">
+            and tab.devname = #{devname}
+        </if>
+        <if test="alarmlevel != null and alarmlevel != ''">
+            and tab.alarmlevel = #{alarmlevel}
+        </if>
+        <if test="devTypeName != null and devTypeName != ''">
+            and dev.vc_devtypename = #{devTypeName}
+        </if>
+        <if test="devType != null and devType != ''">
+            and dev.vc_devtypeid=#{devType}
+        </if>
+        <if test="alarmfromtable != null and alarmfromtable != ''">
+            and tab.alarmfromtable = #{alarmfromtable}
+        </if>
+        <if test="czjy != null and czjy != ''">
+            and nvl(c.czjy,'+') ='+'
+        </if>
+        <if test="notice != null and notice != ''">
+            and t.notice='1'
+        </if>
+        <if test="userlevel == 10">
+            and tab.stationid in (select vc_cop$id from sys_t_org$sta$tf$itz$way where vc_org$id=#{org})
+        </if>
+        <if test="userlevel == 30">
+            and tab.stationid in (select stationid from station_v_workshop where workshopid=#{org})
+        </if>
+        order by u_time desc
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addAlarmTab2" parameterType="com.tieda.alarm.entity.alarmTab2.AlarmTab2">
+        insert into ALARM_TAB2 (Y_DAY, U_TIME, DBM, ALARMLEVEL, ALARMTYPE, EX_TYPE, DEV_TYPE, DEV_NO, STATUE, TC_FLAG, E_TIME, D_TIME, DEVNAME, ALARMTEXT, CONFIRMNAME, CONFIRMTIME, CONFIRMTEXT, ALARMCODE, ALARMSOURCEFLAG, ALARMFROMTABLE, EXPERT_REL_LIST, EQUIPMENTTYPECODE, EQUIPMENTSUBID, ALARMID, ALARMSUBID, REASON, ALARMDESCRIPTION, PRIORITY, DIAGNOSEPATH, BDISPOSE, ANALOGDATATRANSFER, POSITION, PROPOSE, STATIONNAME, N_ID, TYPE, STATIONID )
+        values (                #{yDay,jdbcType = VARCHAR},                        #{uTime,jdbcType = VARCHAR},                        #{dbm,jdbcType = VARCHAR},                        #{alarmlevel,jdbcType = VARCHAR},                        #{alarmtype,jdbcType = VARCHAR},                        #{exType,jdbcType = VARCHAR},                        #{devType,jdbcType = VARCHAR},                        #{devNo,jdbcType = VARCHAR},                        #{statue,jdbcType = VARCHAR},                        #{tcFlag,jdbcType = VARCHAR},                        #{eTime,jdbcType = VARCHAR},                        #{dTime,jdbcType = VARCHAR},                        #{devname,jdbcType = VARCHAR},                        #{alarmtext,jdbcType = VARCHAR},                        #{confirmname,jdbcType = VARCHAR},                        #{confirmtime,jdbcType = VARCHAR},                        #{confirmtext,jdbcType = VARCHAR},                        #{alarmcode,jdbcType = VARCHAR},                        #{alarmsourceflag,jdbcType = VARCHAR},                        #{alarmfromtable,jdbcType = VARCHAR},                        #{expertRelList,jdbcType = VARCHAR},                        #{equipmenttypecode,jdbcType = VARCHAR},                        #{equipmentsubid,jdbcType = VARCHAR},                        #{alarmid,jdbcType = VARCHAR},                        #{alarmsubid,jdbcType = VARCHAR},                        #{reason,jdbcType = VARCHAR},                        #{alarmdescription,jdbcType = VARCHAR},                        #{priority,jdbcType = VARCHAR},                        #{diagnosepath,jdbcType = VARCHAR},                        #{bdispose,jdbcType = VARCHAR},                        #{analogdatatransfer,jdbcType = VARCHAR},                        #{position,jdbcType = VARCHAR},                        #{propose,jdbcType = VARCHAR},                        #{stationname,jdbcType = VARCHAR},                        #{nId,jdbcType = VARCHAR},                        #{type,jdbcType = VARCHAR},                        #{stationid,jdbcType = VARCHAR}                )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchAlarmTab2" parameterType="list">
+        insert into ALARM_TAB2 (Y_DAY, U_TIME, DBM, ALARMLEVEL, ALARMTYPE, EX_TYPE, DEV_TYPE, DEV_NO, STATUE, TC_FLAG,
+        E_TIME, D_TIME, DEVNAME, ALARMTEXT, CONFIRMNAME, CONFIRMTIME, CONFIRMTEXT, ALARMCODE, ALARMSOURCEFLAG,
+        ALARMFROMTABLE, EXPERT_REL_LIST, EQUIPMENTTYPECODE, EQUIPMENTSUBID, ALARMID, ALARMSUBID, REASON,
+        ALARMDESCRIPTION, PRIORITY, DIAGNOSEPATH, BDISPOSE, ANALOGDATATRANSFER, POSITION, PROPOSE, STATIONNAME, N_ID,
+        TYPE, STATIONID ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.yDay}, #{item.uTime}, #{item.dbm}, #{item.alarmlevel}, #{item.alarmtype}, #{item.exType},
+            #{item.devType}, #{item.devNo}, #{item.statue}, #{item.tcFlag}, #{item.eTime}, #{item.dTime},
+            #{item.devname}, #{item.alarmtext}, #{item.confirmname}, #{item.confirmtime}, #{item.confirmtext},
+            #{item.alarmcode}, #{item.alarmsourceflag}, #{item.alarmfromtable}, #{item.expertRelList},
+            #{item.equipmenttypecode}, #{item.equipmentsubid}, #{item.alarmid}, #{item.alarmsubid}, #{item.reason},
+            #{item.alarmdescription}, #{item.priority}, #{item.diagnosepath}, #{item.bdispose},
+            #{item.analogdatatransfer}, #{item.position}, #{item.propose}, #{item.stationname}, #{item.nId},
+            #{item.type}, #{item.stationid} )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateAlarmTab2" parameterType="com.tieda.alarm.entity.alarmTab2.AlarmTab2">
+        update ALARM_TAB2
+        <set>
+            <if test="yDay != null and yDay != ''">
+                Y_DAY = #{yDay},
+            </if>
+            <if test="uTime != null and uTime != ''">
+                U_TIME = #{uTime},
+            </if>
+            <if test="dbm != null and dbm != ''">
+                DBM = #{dbm},
+            </if>
+            <if test="alarmlevel != null and alarmlevel != ''">
+                ALARMLEVEL = #{alarmlevel},
+            </if>
+            <if test="alarmtype != null and alarmtype != ''">
+                ALARMTYPE = #{alarmtype},
+            </if>
+            <if test="exType != null and exType != ''">
+                EX_TYPE = #{exType},
+            </if>
+            <if test="devType != null and devType != ''">
+                DEV_TYPE = #{devType},
+            </if>
+            <if test="devNo != null and devNo != ''">
+                DEV_NO = #{devNo},
+            </if>
+            <if test="statue != null and statue != ''">
+                STATUE = #{statue},
+            </if>
+            <if test="tcFlag != null and tcFlag != ''">
+                TC_FLAG = #{tcFlag},
+            </if>
+            <if test="eTime != null and eTime != ''">
+                E_TIME = #{eTime},
+            </if>
+            <if test="dTime != null and dTime != ''">
+                D_TIME = #{dTime},
+            </if>
+            <if test="devname != null and devname != ''">
+                DEVNAME = #{devname},
+            </if>
+            <if test="alarmtext != null and alarmtext != ''">
+                ALARMTEXT = #{alarmtext},
+            </if>
+            <if test="confirmname != null and confirmname != ''">
+                CONFIRMNAME = #{confirmname},
+            </if>
+            <if test="confirmtime != null and confirmtime != ''">
+                CONFIRMTIME = #{confirmtime},
+            </if>
+            <if test="confirmtext != null and confirmtext != ''">
+                CONFIRMTEXT = #{confirmtext},
+            </if>
+            <if test="alarmcode != null and alarmcode != ''">
+                ALARMCODE = #{alarmcode},
+            </if>
+            <if test="alarmsourceflag != null and alarmsourceflag != ''">
+                ALARMSOURCEFLAG = #{alarmsourceflag},
+            </if>
+            <if test="alarmfromtable != null and alarmfromtable != ''">
+                ALARMFROMTABLE = #{alarmfromtable},
+            </if>
+            <if test="expertRelList != null and expertRelList != ''">
+                EXPERT_REL_LIST = #{expertRelList},
+            </if>
+            <if test="equipmenttypecode != null and equipmenttypecode != ''">
+                EQUIPMENTTYPECODE = #{equipmenttypecode},
+            </if>
+            <if test="equipmentsubid != null and equipmentsubid != ''">
+                EQUIPMENTSUBID = #{equipmentsubid},
+            </if>
+            <if test="alarmid != null and alarmid != ''">
+                ALARMID = #{alarmid},
+            </if>
+            <if test="alarmsubid != null and alarmsubid != ''">
+                ALARMSUBID = #{alarmsubid},
+            </if>
+            <if test="reason != null and reason != ''">
+                REASON = #{reason},
+            </if>
+            <if test="alarmdescription != null and alarmdescription != ''">
+                ALARMDESCRIPTION = #{alarmdescription},
+            </if>
+            <if test="priority != null and priority != ''">
+                PRIORITY = #{priority},
+            </if>
+            <if test="diagnosepath != null and diagnosepath != ''">
+                DIAGNOSEPATH = #{diagnosepath},
+            </if>
+            <if test="bdispose != null and bdispose != ''">
+                BDISPOSE = #{bdispose},
+            </if>
+            <if test="analogdatatransfer != null and analogdatatransfer != ''">
+                ANALOGDATATRANSFER = #{analogdatatransfer},
+            </if>
+            <if test="position != null and position != ''">
+                POSITION = #{position},
+            </if>
+            <if test="propose != null and propose != ''">
+                PROPOSE = #{propose},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                STATIONNAME = #{stationname},
+            </if>
+            <if test="nId != null and nId != ''">
+                N_ID = #{nId},
+            </if>
+            <if test="type != null and type != ''">
+                TYPE = #{type},
+            </if>
+            <if test="stationid != null and stationid != ''">
+                STATIONID = #{stationid}
+            </if>
+        </set>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathAlarmTab2" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update ALARM_TAB2
+            <set>
+                Y_DAY = #{item.yDay}, U_TIME = #{item.uTime}, DBM = #{item.dbm}, ALARMLEVEL = #{item.alarmlevel},
+                ALARMTYPE = #{item.alarmtype}, EX_TYPE = #{item.exType}, DEV_TYPE = #{item.devType}, DEV_NO =
+                #{item.devNo}, STATUE = #{item.statue}, TC_FLAG = #{item.tcFlag}, E_TIME = #{item.eTime}, D_TIME =
+                #{item.dTime}, DEVNAME = #{item.devname}, ALARMTEXT = #{item.alarmtext}, CONFIRMNAME =
+                #{item.confirmname}, CONFIRMTIME = #{item.confirmtime}, CONFIRMTEXT = #{item.confirmtext}, ALARMCODE =
+                #{item.alarmcode}, ALARMSOURCEFLAG = #{item.alarmsourceflag}, ALARMFROMTABLE = #{item.alarmfromtable},
+                EXPERT_REL_LIST = #{item.expertRelList}, EQUIPMENTTYPECODE = #{item.equipmenttypecode}, EQUIPMENTSUBID =
+                #{item.equipmentsubid}, ALARMID = #{item.alarmid}, ALARMSUBID = #{item.alarmsubid}, REASON =
+                #{item.reason}, ALARMDESCRIPTION = #{item.alarmdescription}, PRIORITY = #{item.priority}, DIAGNOSEPATH =
+                #{item.diagnosepath}, BDISPOSE = #{item.bdispose}, ANALOGDATATRANSFER = #{item.analogdatatransfer},
+                POSITION = #{item.position}, PROPOSE = #{item.propose}, STATIONNAME = #{item.stationname}, N_ID =
+                #{item.nId}, TYPE = #{item.type}, STATIONID = #{item.stationid}
+            </set>
+            where
+
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteAlarmTab2ById" parameterType="long">
+        delete from ALARM_TAB2
+        where
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchAlarmTab2" parameterType="list">
+        delete from ALARM_TAB2
+    </delete>
+
+
+    <!--<select id="groupbyAlarmType" parameterType="map" resultType="java.util.Map">
+        select tab.c,tab.alarmtype,t.name alarmTypeName from (
+          select count(1)c,alarmtype from alarm_tab2  group by alarmtype )tab
+          left join alarm_code t on to_char(tab.alarmtype)=t.id where name is not null
+    </select>-->
+
+    <select id="groupbyStation" parameterType="map" resultType="java.util.Map">
+        select t.*,rownum rn from (
+        select count(1)c,stationid,stationname  from alarm_tab2  where stationid is not null group by stationid,stationname
+        order by c desc) t where  rownum &lt;= 20
+    </select>
+
+    <select id="groupbyTime" parameterType="map" resultType="java.util.Map">
+        select to_date(substr(TO_CHAR(u_time / ( 60 * 60 * 24) +TO_DATE('1970-01-01 08:00:00', 'YYYY-MM-DD HH:MI:SS'),
+        'YYYY-MM-DD HH:MI:SS'),1,10),'yyyy-MM-dd') time,
+        count(1)c from alarm_tab2 tab
+        <where>
+            <if test="begintime != null and begintime != ''">
+                and tab.U_TIME &gt;= #{begintime}
+            </if>
+            <if test="endtime != null and endtime != ''">
+                and tab.U_TIME &lt;= #{endtime}
+            </if>
+            <if test="1==1">
+                and tab.alarmfromtable not in ('alarmtable')
+            </if>
+        </where>
+        group by to_date(substr(TO_CHAR(u_time / ( 60 * 60 * 24) +TO_DATE('1970-01-01 08:00:00', 'YYYY-MM-DD HH:MI:SS'),
+        'YYYY-MM-DD HH:MI:SS'),1,10),'yyyy-MM-dd')
+        order by time asc
+    </select>
+
+    <select id="charts" parameterType="map" resultType="java.util.Map">
+        select nvl(${groupby},'其他') g ,count(1) c from (
+         select o.chejian workshop ,o.gongqu workarea,dev.vc_devtypename devTypeName ,
+            to_char(time_unix_to_oracle( tab.U_TIME),'yyyy-MM-dd') utime,tab.stationname,tab.STATIONID,tab.N_ID
+            from ALARM_TAB2 tab,DEV_T_WJJCDETYPE dev,pub_v_org$line$station o
+            where tab.dev_type = dev.vc_devtypeid(+) and tab.stationid = o.vc_station$id
+             and u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}
+          )  group by ${groupby}
+    </select>
+    <select id="chartsWorkarea" parameterType="map" resultType="java.util.Map">
+        select nvl(workarea,'其他') g ,sum(c) c from (
+         select s.c,s.vc_station$id,s.vc_name,o1.vc_org$id,o1.vc_name workarea
+         from (select count(1)c,stationid vc_station$id,stationname vc_name from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}
+         group by stationid,stationname) s,sys_t_org$sta$tf$itz$way wa,sys_t_org o1
+         where s.vc_station$id=wa.vc_cop$id(+) and wa.vc_org$id=o1.vc_org$id(+)
+       )  group by workarea
+    </select>
+
+    <select id="chartsWorkshop" parameterType="map" resultType="java.util.Map">
+        select nvl(workshop,'其他') g ,sum(c) c from (
+         select distinct c ,vc_name,workshop from(
+         select s.c,s.vc_station$id,s.vc_name,o1.vc_org$id,o1.vc_name workarea,o2.vc_name workshop
+         from
+        (select count(1)c,stationid vc_station$id,stationname vc_name from alarm_tab2 where
+          u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}
+        <if test="stationid != null and stationid != ''">
+            and tab.stationid &gt;= #{stationid}
+        </if>
+        <if test="devtype != null and devtype != ''">
+            and tab.dev_Type &gt;= #{devtype}
+        </if>
+         group by stationid,stationname) s,sys_t_org$sta$tf$itz$way wa,sys_t_org o1,sys_t_org o2
+         where s.vc_station$id=wa.vc_cop$id(+) and wa.vc_org$id=o1.vc_org$id(+) and o1.vc_par$org$id=o2.vc_org$id(+)
+       ))  group by workshop
+    </select>
+    <select id="chartsDevTypeName" parameterType="map" resultType="java.util.Map">
+        select nvl(vc_devtypename,'其他') g ,c from (
+        select count(1)c,dev_type,t.vc_devtypeid from alarm_tab2 a,DEV_T_WJJCDETYPE t where a.dev_type=t.vc_devtypeid(+)
+          and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+        <if test="stationid != null and stationid != ''">
+            and tab.stationid &gt;= #{stationid}
+        </if>
+        <if test="devtype != null and devtype != ''">
+            and tab.dev_Type &gt;= #{devtype}
+        </if>
+        group by vc_devtypeid,vc_devtypename)
+    </select>
+    <select id="chartsStationName" parameterType="map" resultType="java.util.Map">
+        select count(1) c,stationname g from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}  group by stationname
+    </select>
+    <select id="chartsUTime" parameterType="map" resultType="java.util.Map">
+        select nvl(utime,'其他') g ,count(1) c from (
+              select to_char(time_unix_to_oracle( tab.U_TIME),'yyyy-MM-dd') utime from ALARM_TAB2 tab
+              where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}
+        <if test="stationid != null and stationid != ''">
+            and tab.stationid &gt;= #{stationid}
+        </if>
+        <if test="devtype != null and devtype != ''">
+            and tab.dev_Type &gt;= #{devtype}
+        </if>
+          )  group by utime
+    </select>
+
+
+    <select id="analyseWorkshop" parameterType="map" resultType="java.util.Map">
+        select s.workshop name,s.workshopid id,nvl(sum(a.c),'0') c from station_v_workshop s,
+        (select count(1)c,stationid stationid,stationname vc_name from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}  group by stationid,stationname) a
+        where s.stationid=a.stationid(+) group by s.workshop,s.workshopid order by s.workshopid
+    </select>
+    <select id="analyseLine" parameterType="map" resultType="java.util.Map">
+        select s.linename name,s.lineid id,nvl(sum(a.c),'0') c from (
+        select s.vc_name stationname,s.vc_station$id,l.vc_name linename,l.vc_line$id lineid from sys_t_station s,
+        (select * from sys_t_line where vc_del='0') l where s.vc_line$id=l.vc_line$id(+)) s,
+        (select count(1)c,stationid stationid,stationname vc_name from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}  group by stationid,stationname) a
+        where s.vc_station$id=a.stationid(+) group by s.linename,s.lineid order by s.lineid
+    </select>
+    <select id="analyseStationByWorkshop" parameterType="map" resultType="java.util.Map">
+        select s.stationname name,s.stationid id,nvl(sum(a.c),'0') c from station_v_workshop s,
+        (select count(1)c,stationid stationid,stationname vc_name from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}  group by stationid,stationname) a
+        where s.stationid=a.stationid(+) and workshopid=#{workshopid} group by s.stationname,s.stationid order by s.stationid
+    </select>
+    <select id="analyseStationByLine" parameterType="map" resultType="java.util.Map">
+        select s.stationname name,s.stationid id,nvl(sum(a.c),'0') c from (
+        select s.vc_name stationname,s.vc_station$id stationid,l.vc_name linename,l.vc_line$id lineid from sys_t_station s,
+        (select * from sys_t_line where vc_del='0' ) l where s.vc_line$id=l.vc_line$id(+) and l.vc_line$id=#{lineid}) s,
+        (select count(1)c,stationid stationid,stationname vc_name from alarm_tab2 where u_time  &lt;=#{endtime} and u_time  &gt;= #{begintime}  group by stationid,stationname) a
+        where s.stationid=a.stationid(+) group by s.stationname,s.stationid order by s.stationid
+    </select>
+    <select id="analyseDevType" parameterType="map" resultType="java.util.Map">
+        select t.vc_devtypeid id,nvl(t.vc_devtypename,'未知设备类型') name,count(1) c from sys_t_station s,ALARM_tab2 a,DEV_T_WJJCDETYPE t
+        where s.vc_station$id=a.stationid(+) and a.dev_type=t.vc_devtypeid(+)
+        <if test="workshopid != null and workshopid != ''">
+            and a.stationid  in (select stationid from station_v_workshop where workshopid=#{workshopid})
+        </if>
+        <if test="lineid != null and lineid != ''">
+            and a.stationid in (select vc_station$id from sys_t_station where vc_line$id=#{lineid})
+        </if>
+        <if test="stationid != null and stationid != ''">
+            and a.stationid = #{stationid}
+        </if>
+          and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+        group by t.vc_devtypeid,t.vc_devtypename order by t.vc_devtypeid
+    </select>
+    <select id="analyseDev" parameterType="map" resultType="java.util.Map">
+        select a.devname name,count(1) c from sys_t_station s,ALARM_tab2 a
+        where s.vc_station$id=a.stationid(+)
+        <if test="workshopid != null and workshopid != ''">
+            and a.stationid  in (select stationid from station_v_workshop where workshopid=#{workshopid})
+        </if>
+        <if test="lineid != null and lineid != ''">
+            and a.stationid  in (select vc_station$id from sys_t_station where vc_line$id=#{lineid})
+        </if>
+        <if test="stationid != null and stationid != ''">
+            and a.stationid = #{stationid}
+        </if>
+          and a.dev_type=#{devtypeid}
+          and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+        group by a.devname order by a.devname
+    </select>
+    <select id="analyseAlarmType" parameterType="map" resultType="java.util.Map">
+        select nvl(c.name,'预警')name,count(1) c from alarm_tab2 a,alarm_code c where a.alarmtype=c.id(+)
+        <if test="workshopid != null and workshopid != ''">
+            and a.stationid  in (select stationid from station_v_workshop where workshopid=#{workshopid})
+        </if>
+        <if test="lineid != null and lineid != ''">
+            and a.stationid  in (select vc_station$id from sys_t_station where vc_line$id=#{lineid})
+        </if>
+        <if test="stationid != null and stationid != ''">
+            and a.stationid = #{stationid}
+        </if>
+        and a.dev_type=#{devtypeid} and a.devname=#{devname} and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+        group by c.name
+    </select>
+
+    <select id="alarmAnalyseByTime" parameterType="map" resultType="java.util.Map">
+        select utime time ,count(1) c from (
+        select to_char(time_unix_to_oracle( a.U_TIME),'yyyy-MM-dd') utime from ALARM_TAB2 a
+        where a.U_TIME &gt;= #{begintime} and a.U_TIME &lt;= #{endtime}
+        <if test="workshopid != null and workshopid != ''">
+            and stationid in (select stationid from station_v_workshop where workshopid=#{workshopid})
+        </if>
+        <if test="lineid != null and lineid != ''">
+            and stationid in (select vc_station$id from sys_t_station where vc_line$id=#{lineid})
+        </if>
+        <if test="stationid != null and stationid != ''">
+            and stationid = #{stationid}
+        </if>
+        <if test="devtypeid != null and devtypeid != ''">
+            and dev_type=#{devtypeid}
+        </if>
+        <if test="devname != null and devname != ''">
+            and devname=#{devname}
+        </if>
+          )group by utime order by time
+    </select>
+    <select id="alarmDev" parameterType="map" resultType="java.util.Map">
+        select nvl(c.name,'其他') name,
+          sum(case when a.ALARMFROMTABLE='expertsystem$prealarm' then 1 else 0 end) as 预警,
+         sum(case when a.ALARMFROMTABLE='alarmtable' or a.ALARMFROMTABLE='expertsystem$alarm' then 1 else 0 end) as 报警
+        from alarm_tab2 a,alarm_code c
+        where a.alarmtype=c.id(+)
+        and a.stationid=#{stationid} and a.dev_type=#{devtypeid} and a.devname=#{devname} and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+        group by c.name
+    </select>
+
+    <select id="alarmTime" parameterType="map" resultType="java.util.Map">
+        select utime ,
+               sum(case when ALARMFROMTABLE='expertsystem$prealarm' then 1 else 0 end) as 预警,
+               sum(case when ALARMFROMTABLE='alarmtable' or ALARMFROMTABLE='expertsystem$alarm' then 1 else 0 end) as 报警
+        from (
+          select to_char(time_unix_to_oracle( a.U_TIME),'yyyy-MM-dd') utime,ALARMFROMTABLE from ALARM_TAB2 a
+          where a.stationid=#{stationid} and a.dev_type=#{devtypeid} and a.devname=#{devname} and a.u_time  &lt;=#{endtime} and a.u_time  &gt;= #{begintime}
+          )
+        group by utime order by utime
+    </select>
+
+
+    <select id="groupByAlarmType" parameterType="map" resultType="java.util.Map">
+        select count(1)c,c.id,nvl(c.name,'未知原因')name from alarm_tab2 a,alarm_code c
+        where a.alarmtype=c.id(+) and to_char(time_unix_to_oracle(u_time),'yyyy-MM-dd')=#{utime}
+        <if test="alarmfromtable == 1">
+            and alarmfromtable= 'expertsystem$prealarm'
+        </if>
+        <if test="alarmfromtable == 2">
+            and alarmfromtable &lt;&gt; 'expertsystem$prealarm'
+        </if>
+        group by c.id,c.name order by c desc
+    </select>
+
+    <select id="alarmScore" parameterType="map" resultType="java.util.Map">
+        select a.*,c.name alarmtypename,d.vc_devtypename devtypename  from alarm_tab2 a,alarm_code c,DEV_T_WJJCDETYPE d
+        where a.alarmtype=c.id(+) and a.dev_type=d.vc_devtypeid(+) and a.stationid=#{stationid}
+      and a.devname in (select b_devname from dev_t_match where n_id='1' and a_devtypeid=#{devtypeid} and a_devname=#{dev})
+          and to_char(time_unix_to_oracle(a.u_time),'yyyy-MM-dd')=#{utime} order by a.score desc
+    </select>
+</mapper>

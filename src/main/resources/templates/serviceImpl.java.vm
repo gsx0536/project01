@@ -1,0 +1,114 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+@Transactional
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+        }
+#else
+        public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>implements ${table.serviceName} {
+
+## 将mapper首字母转小写
+    #set ($mapperAlias = $table.mapperName.substring(0,1).toLowerCase() + $table.mapperName.substring(1))
+
+        @Autowired
+    ${table.mapperName} ${mapperAlias};
+
+        /**
+         * 根据 id 查询对象
+         * @param id    对象 id
+         * @return  ${entity}
+         */
+        @Override
+        public ${entity} get${entity}ById(Long id){
+        return ${mapperAlias}.get${entity}ById(id);
+        }
+
+        /**
+         * 查询对象列表信息
+         * @param params    查询参数
+         * @return List<${entity}>
+         */
+        @Override
+        public List<${entity}>get${entity}List(Map<String,Object>params){
+        return ${mapperAlias}.get${entity}List(params);
+        }
+
+        /**
+         * 添加对象实体
+         * @param obj   对象实体
+         */
+        @Override
+        public void add${entity}(${entity} obj){
+    ${mapperAlias}.add${entity}(obj);
+        }
+
+        /**
+         * 批量添加对象实体
+         * @param list   对象实体集合
+         */
+        @Override
+        public void addBatch${entity}(List<${entity}>list){
+    ${mapperAlias}.addBatch${entity}(list);
+        }
+
+        /**
+         * 更新对象实体
+         * @param obj   对象实体
+         */
+        @Override
+        public void update${entity}(${entity} obj){
+    ${mapperAlias}.update${entity}(obj);
+        }
+
+        /**
+        * 批量更新对象实体
+        * @param list  对象实体集合
+        */
+        @Override
+        public void updateBatch${entity}(List<${entity}>list){
+    ${mapperAlias}.updateBatch${entity}(list);
+        }
+
+        /**
+         * 根据ID删除对象实体
+         * @param id 对象ID
+         */
+        @Override
+        public void delete${entity}ById(Long id){
+    ${mapperAlias}.delete${entity}ById(id);
+        }
+
+        /**
+         * 批量删除对象实体
+         * @param ids 对象实体ID集合
+         * @return
+         */
+        @Override
+        public void deleteBatch${entity}(List<Long>ids){
+    ${mapperAlias}.deleteBatch${entity}(ids);
+        }
+
+        }
+#end

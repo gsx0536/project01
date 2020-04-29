@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testZdzbs.TestZdzbsMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testZdzbs.TestZdzbs">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <result column="ID" property="id"/>
+                                                                <result column="BSLX" property="bslx"/>
+                                                                <result column="JFCZCBS" property="jfczcbs"/>
+                                                                <result column="WBTSFCJL" property="wbtsfcjl"/>
+                                                                <result column="FCBSDDGZ" property="fcbsddgz"/>
+                                                                <result column="FCXHGB" property="fcxhgb"/>
+                                                                <result column="JCZBSGDLZ" property="jczbsgdlz"/>
+                                                                <result column="SGFYBS" property="sgfybs"/>
+                                                                <result column="QXFCJL" property="qxfcjl"/>
+                                                                <result column="LCWDD" property="lcwdd"/>
+                                                                <result column="BSGDDLDC" property="bsgddldc"/>
+                                                                <result column="BKFXH" property="bkfxh"/>
+                                                                <result column="NOTE" property="note"/>
+                                                                <result column="OPERATOR" property="operator"/>
+                                                                <result column="DIRECTOR" property="director"/>
+                                                                <result column="DESIGNID" property="designid"/>
+                                                                <result column="CREATEDATE" property="createdate"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestZdzbsById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  BSLX,  JFCZCBS,  WBTSFCJL,  FCBSDDGZ,  FCXHGB,  JCZBSGDLZ,  SGFYBS,  QXFCJL,  LCWDD,  BSGDDLDC,  BKFXH,  NOTE,  OPERATOR,  DIRECTOR,  DESIGNID,  CREATEDATE         from TEST_ZDZBS
+                                                                                                                                                                                                                        </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestZdzbsList" parameterType="map" resultMap="BaseResultMap">
+        select ID, BSLX, JFCZCBS, WBTSFCJL, FCBSDDGZ, FCXHGB, JCZBSGDLZ, SGFYBS, QXFCJL, LCWDD, BSGDDLDC, BKFXH, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         from TEST_ZDZBS
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="bslx != null and bslx != ''">
+                    and BSLX = #{bslx}
+                </if>
+                            <if test="jfczcbs != null and jfczcbs != ''">
+                    and JFCZCBS = #{jfczcbs}
+                </if>
+                            <if test="wbtsfcjl != null and wbtsfcjl != ''">
+                    and WBTSFCJL = #{wbtsfcjl}
+                </if>
+                            <if test="fcbsddgz != null and fcbsddgz != ''">
+                    and FCBSDDGZ = #{fcbsddgz}
+                </if>
+                            <if test="fcxhgb != null and fcxhgb != ''">
+                    and FCXHGB = #{fcxhgb}
+                </if>
+                            <if test="jczbsgdlz != null and jczbsgdlz != ''">
+                    and JCZBSGDLZ = #{jczbsgdlz}
+                </if>
+                            <if test="sgfybs != null and sgfybs != ''">
+                    and SGFYBS = #{sgfybs}
+                </if>
+                            <if test="qxfcjl != null and qxfcjl != ''">
+                    and QXFCJL = #{qxfcjl}
+                </if>
+                            <if test="lcwdd != null and lcwdd != ''">
+                    and LCWDD = #{lcwdd}
+                </if>
+                            <if test="bsgddldc != null and bsgddldc != ''">
+                    and BSGDDLDC = #{bsgddldc}
+                </if>
+                            <if test="bkfxh != null and bkfxh != ''">
+                    and BKFXH = #{bkfxh}
+                </if>
+                            <if test="note != null and note != ''">
+                    and NOTE = #{note}
+                </if>
+                            <if test="operator != null and operator != ''">
+                    and OPERATOR = #{operator}
+                </if>
+                            <if test="director != null and director != ''">
+                    and DIRECTOR = #{director}
+                </if>
+                            <if test="designid != null and designid != ''">
+                    and DESIGNID = #{designid}
+                </if>
+                            <if test="createdate != null and createdate != ''">
+                    and CREATEDATE = #{createdate}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestZdzbs" parameterType="com.tieda.alarm.entity.testZdzbs.TestZdzbs">
+        insert into TEST_ZDZBS (ID, BSLX, JFCZCBS, WBTSFCJL, FCBSDDGZ, FCXHGB, JCZBSGDLZ, SGFYBS, QXFCJL, LCWDD, BSGDDLDC, BKFXH, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE )
+        values (                #{id,jdbcType = VARCHAR},                    #{bslx,jdbcType = VARCHAR},                    #{jfczcbs,jdbcType = VARCHAR},                    #{wbtsfcjl,jdbcType = VARCHAR},                    #{fcbsddgz,jdbcType = VARCHAR},                    #{fcxhgb,jdbcType = VARCHAR},                    #{jczbsgdlz,jdbcType = VARCHAR},                    #{sgfybs,jdbcType = VARCHAR},                    #{qxfcjl,jdbcType = VARCHAR},                    #{lcwdd,jdbcType = VARCHAR},                    #{bsgddldc,jdbcType = VARCHAR},                    #{bkfxh,jdbcType = VARCHAR},                    #{note,jdbcType = VARCHAR},                    #{operator,jdbcType = VARCHAR},                    #{director,jdbcType = VARCHAR},                    #{designid,jdbcType = VARCHAR},                    #{createdate,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestZdzbs" parameterType="list">
+        insert into TEST_ZDZBS (ID, BSLX, JFCZCBS, WBTSFCJL, FCBSDDGZ, FCXHGB, JCZBSGDLZ, SGFYBS, QXFCJL, LCWDD, BSGDDLDC, BKFXH, NOTE, OPERATOR, DIRECTOR, DESIGNID, CREATEDATE         ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.bslx}, #{item.jfczcbs}, #{item.wbtsfcjl}, #{item.fcbsddgz}, #{item.fcxhgb}, #{item.jczbsgdlz}, #{item.sgfybs}, #{item.qxfcjl}, #{item.lcwdd}, #{item.bsgddldc}, #{item.bkfxh}, #{item.note}, #{item.operator}, #{item.director}, #{item.designid}, #{item.createdate}             )
+        </foreach>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestZdzbs" parameterType="com.tieda.alarm.entity.testZdzbs.TestZdzbs">
+        update TEST_ZDZBS
+        <set>
+                                                <if test="id != null and id != ''">
+                        ID = #{id},                    </if>
+                                                                <if test="bslx != null and bslx != ''">
+                        BSLX = #{bslx},                    </if>
+                                                                <if test="jfczcbs != null and jfczcbs != ''">
+                        JFCZCBS = #{jfczcbs},                    </if>
+                                                                <if test="wbtsfcjl != null and wbtsfcjl != ''">
+                        WBTSFCJL = #{wbtsfcjl},                    </if>
+                                                                <if test="fcbsddgz != null and fcbsddgz != ''">
+                        FCBSDDGZ = #{fcbsddgz},                    </if>
+                                                                <if test="fcxhgb != null and fcxhgb != ''">
+                        FCXHGB = #{fcxhgb},                    </if>
+                                                                <if test="jczbsgdlz != null and jczbsgdlz != ''">
+                        JCZBSGDLZ = #{jczbsgdlz},                    </if>
+                                                                <if test="sgfybs != null and sgfybs != ''">
+                        SGFYBS = #{sgfybs},                    </if>
+                                                                <if test="qxfcjl != null and qxfcjl != ''">
+                        QXFCJL = #{qxfcjl},                    </if>
+                                                                <if test="lcwdd != null and lcwdd != ''">
+                        LCWDD = #{lcwdd},                    </if>
+                                                                <if test="bsgddldc != null and bsgddldc != ''">
+                        BSGDDLDC = #{bsgddldc},                    </if>
+                                                                <if test="bkfxh != null and bkfxh != ''">
+                        BKFXH = #{bkfxh},                    </if>
+                                                                <if test="note != null and note != ''">
+                        NOTE = #{note},                    </if>
+                                                                <if test="operator != null and operator != ''">
+                        OPERATOR = #{operator},                    </if>
+                                                                <if test="director != null and director != ''">
+                        DIRECTOR = #{director},                    </if>
+                                                                <if test="designid != null and designid != ''">
+                        DESIGNID = #{designid},                    </if>
+                                                                <if test="createdate != null and createdate != ''">
+                        CREATEDATE = #{createdate}                    </if>
+                                    </set>
+                                                                                                                                                                                                                                                                                                                                                                </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestZdzbs" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_ZDZBS
+            <set>
+                                                            ID = #{item.id},                                                                                BSLX = #{item.bslx},                                                                                JFCZCBS = #{item.jfczcbs},                                                                                WBTSFCJL = #{item.wbtsfcjl},                                                                                FCBSDDGZ = #{item.fcbsddgz},                                                                                FCXHGB = #{item.fcxhgb},                                                                                JCZBSGDLZ = #{item.jczbsgdlz},                                                                                SGFYBS = #{item.sgfybs},                                                                                QXFCJL = #{item.qxfcjl},                                                                                LCWDD = #{item.lcwdd},                                                                                BSGDDLDC = #{item.bsgddldc},                                                                                BKFXH = #{item.bkfxh},                                                                                NOTE = #{item.note},                                                                                OPERATOR = #{item.operator},                                                                                DIRECTOR = #{item.director},                                                                                DESIGNID = #{item.designid},                                                                                CREATEDATE = #{item.createdate}                                                </set>
+            where
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestZdzbsById" parameterType="long">
+        delete from TEST_ZDZBS
+
+        where
+
+        
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestZdzbs" parameterType="list">
+        delete from TEST_ZDZBS
+
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>

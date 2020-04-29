@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.jzjcProblem.JzjcProblemMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.jzjcProblem.JzjcProblem">
+        <id column="ID" property="id"/>
+        <result column="CREATEDATE" property="createdate"/>
+        <result column="CREATOR" property="creator"/>
+        <result column="STATIONID" property="stationid"/>
+        <result column="STATIONNAME" property="stationname"/>
+        <result column="PROBLEMTYPE" property="problemtype"/>
+        <result column="PROBLEMLEVEL" property="problemlevel"/>
+        <result column="PROBLEM" property="problem"/>
+        <result column="STATUS" property="status"/>
+        <result column="CHARGEORG" property="chargeorg"/>
+        <result column="CHARGER" property="charger"/>
+        <result column="CANCLE" property="cancle"/>
+        <result column="NOTE" property="note"/>
+        <result column="chargeorgname" property="chargeorgname"/>
+        <result column="ORGNAMES" property="orgnames"/>
+        <result column="HANDLERS" property="handlers"/>
+        <result column="HANDLEINFO" property="handleinfo"/>
+        <result column="PROBLEMTYPEID" property="problemtypeid"/>
+        <result column="ASSISTORG" property="assistorg"/>
+        <result column="RECTDATE" property="rectdate"/>
+        <result column="PC" property="pc"/>
+        <result column="APPLYRECTDATE" property="applyrectdate"/>
+        <result column="ASSISTORGNAME" property="assistorgname"/>
+    </resultMap>
+    <!-- 根据主键查询对象 -->
+    <select id="getJzjcProblemById" parameterType="string" resultMap="BaseResultMap">
+        select ID,CREATOR,STATIONID,STATIONNAME,PROBLEMTYPE,PROBLEMLEVEL,PROBLEM,STATUS,CHARGEORG,CHARGER,CANCLE,NOTE,
+        CHARGEORGNAME,CREATEDATE,HANDLEINFO,ORGNAMES,HANDLERS,PROBLEMTYPEID,ASSISTORG,RECTDATE,PC,APPLYRECTDATE,ASSISTORGNAME
+        from JZJC_PROBLEM
+        where ID = #{id}
+    </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getJzjcProblemList" parameterType="map" resultMap="BaseResultMap">
+        select ID, CREATEDATE, CREATOR, STATIONID, STATIONNAME, PROBLEMTYPE, PROBLEMLEVEL, PROBLEM, STATUS, CHARGEORG,
+        CHARGER, CANCLE,
+        NOTE,chargeorgname,HANDLEINFO,ORGNAMES,HANDLERS,PROBLEMTYPEID,ASSISTORG,RECTDATE,PC,ASSISTORGNAME,
+        APPLYRECTDATE from JZJC_PROBLEM p where 1=1
+        <if test="stationid != null and stationid != ''">
+            and p.STATIONID = #{stationid}
+        </if>
+        <if test="problemtypeid != null and problemtypeid != ''">
+            and p.PROBLEMTYPEID = #{problemtypeid}
+        </if>
+        <if test="problemlevel != null and problemlevel != ''">
+            and p.PROBLEMLEVEL = #{problemlevel}
+        </if>
+        <if test="cancle != null and cancle != ''">
+            and p.CANCLE = #{cancle}
+        </if>
+        <if test="pc != null and pc != '' and pc != 'all'">
+            and p.PC = #{pc}
+        </if>
+        <if test="status != null and status != ''">
+            and p.STATUS = #{status}
+        </if>
+        <!--本部门负责的 - 改成本部门待处理 -->
+        <if test="tabtype!=null and tabtype == 1">
+            <if test="chargeorg != null and chargeorg!=''">
+                and (p.CHARGEORG = #{chargeorg}
+                )
+            </if>
+            <if test="status ==null or status ==''">
+                and status not in ('8','10')
+            </if>
+        </if>
+        <!--本部门协助的 -->
+        <if test="tabtype!=null and tabtype == 2">
+            <if test="assistorg!=null and assistorg!=''">
+                and p.ASSISTORG LIKE concat(concat('%',#{assistorg}),',%')
+            </if>
+            <if test="chargeorgSearch!=null and chargeorgSearch!=''">
+                and P.CHARGEORG = #{chargeorgSearch}
+            </if>
+        </if>
+        <!--未整改的 -->
+        <if test="tabtype!=null and tabtype == 3">
+            and p.STATUS not in ('8','10')
+            <if test="userType!=null and userType =='fxcenter'">
+                <if test="chargeorg != null and chargeorg!=''">
+                    AND p.CHARGEORG = #{chargeorg}
+                </if>
+            </if>
+            <if test="userType!=null and userType =='jxkcenter'">
+                <if test="chargeorgSearch != null and chargeorgSearch!=''">
+                    AND p.CHARGEORG = #{chargeorgSearch}
+                </if>
+            </if>
+            <if test="userType!=null and userType =='other'">
+                <!--责任部门参与的都能看到该监测问题（如果责任部门是筛选项） -->
+                <if test="chargeorgSearch != null and chargeorgSearch != ''">
+                    AND p.CHARGEORG = #{chargeorgSearch}
+                    <if test="assistorg != null and assistorg != ''">
+                        and (p.ASSISTORG like concat(concat('%',#{assistorg}),',%')
+                        or #{assistorg} IN (select OPERORG from JZJC_PROBLEM_LOG h where p.id=h.problemid))
+                    </if>
+                </if>
+                <!--责任部门参与的都能看到该监测问题（如果责任部门是登录用户） -->
+                <if test="chargeorgSearch == null or chargeorgSearch == ''">
+                    <if test="chargeorg != null and chargeorg!=''">
+                        AND (
+                        p.CHARGEORG = #{chargeorg}
+                        <if test="parchargeorg != null">
+                            or p.CHARGEORG in
+                            <foreach collection="parchargeorg" item="item" index="index" open="(" separator=","
+                                     close=")">
+                                #{item.ORGID}
+                            </foreach>
+                        </if>
+
+                        or #{chargeorg} IN (select OPERORG from JZJC_PROBLEM_LOG h where p.id=h.problemid)
+                        <if test="assistorg != null and assistorg != ''">
+                            or (p.ASSISTORG like concat(concat('%',#{assistorg}),',%'))
+                        </if>
+                        )
+                    </if>
+                </if>
+            </if>
+        </if>
+        <!--已销号的 -->
+        <if test="tabtype!=null and tabtype == 4">
+            and p.STATUS in ('8','10')
+            <if test="userType!=null and userType =='fxcenter'">
+                <if test="chargeorg != null and chargeorg != ''">
+                    AND p.CHARGEORG = #{chargeorg}
+                </if>
+            </if>
+            <if test="userType!=null and userType =='jxkcenter'">
+                <if test="chargeorgSearch != null and chargeorgSearch != ''">
+                    AND p.CHARGEORG = #{chargeorgSearch}
+                </if>
+            </if>
+            <if test="userType!=null and userType =='other'">
+                <!--责任部门参与的都能看到该监测问题（如果责任部门是筛选项） -->
+                <if test="chargeorgSearch != null and chargeorgSearch != ''">
+                    AND p.CHARGEORG = #{chargeorg}
+                    <if test="assistorg != null and assistorg != ''">
+                        and (p.ASSISTORG like concat(concat('%',#{assistorg}),',%')
+                        or #{chargeorg} IN (select OPERORG from JZJC_PROBLEM_LOG h where p.id=h.problemid))
+                    </if>
+                </if>
+                <!--责任部门参与的都能看到该监测问题（如果责任部门是登录用户） -->
+                <if test="chargeorgSearch == null or chargeorgSearch == ''">
+                    <if test="chargeorg != null and chargeorg != ''">
+                        AND (
+                        p.CHARGEORG = #{chargeorg}
+                        <if test="parchargeorg!=null">
+                            or p.CHARGEORG in
+                            <foreach collection="parchargeorg" item="item" index="index" open="(" separator=","
+                                     close=")">
+                                #{item.ORGID}
+                            </foreach>
+                        </if>
+
+                        or #{chargeorg} IN (select OPERORG from JZJC_PROBLEM_LOG h where p.id=h.problemid)
+                        <if test="assistorg != null and assistorg != ''">
+                            or (p.ASSISTORG like concat(concat('%',#{assistorg}),',%'))
+                        </if>
+                        )
+                    </if>
+                </if>
+            </if>
+        </if>
+        <!--调度待处理 -->
+        <if test="tabtype!=null and tabtype == 5">
+            and p.STATUS in ('0','3','4','7')
+            <if test="chargeorg!=null and chargeorg!=''">
+                and P.CHARGEORG = #{chargeorg}
+            </if>
+        </if>
+        <!--调度汇总表 -->
+        <if test="tabtype!=null and tabtype == 6">
+            <if test="chargeorg!=null and chargeorg!=''">
+                and P.CHARGEORG = #{chargeorg}
+            </if>
+        </if>
+        <if test="userType!=null and userType =='other'">
+            and P.STATUS NOT IN ('0')
+        </if>
+        <if test="userType!=null and userType =='jxkcenter'">
+            and P.STATUS NOT IN ('0')
+        </if>
+        <!--问题创建时间筛选-->
+        <if test="startdate!=null and startdate!=''">
+            and to_char(CREATEDATE,'yyyy-MM-dd') &gt;= #{startdate}
+        </if>
+        <if test="enddate!=null and enddate!=''">
+            and to_char(CREATEDATE,'yyyy-MM-dd') &lt;= #{enddate}
+        </if>
+        <if test="station!=null and station!=''">
+            and STATIONID = #{station}
+        </if>
+        order by TRUNC(CREATEDATE) desc,to_number(STATUS) ASC
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addJzjcProblem" parameterType="com.tieda.alarm.entity.jzjcProblem.JzjcProblem">
+        insert into JZJC_PROBLEM (ID, CREATEDATE, CREATOR, STATIONID, STATIONNAME, PROBLEMTYPE, PROBLEMLEVEL, PROBLEM,
+                                  STATUS, CHARGEORG, CHARGER, CANCLE, NOTE,chargeorgname,HANDLEINFO,ORGNAMES,HANDLERS,PROBLEMTYPEID,ASSISTORG,RECTDATE,PC,ASSISTORGNAME)
+        values (#{id,jdbcType = VARCHAR}, #{createdate,jdbcType = VARCHAR}, #{creator,jdbcType = VARCHAR},
+                #{stationid,jdbcType = VARCHAR}, #{stationname,jdbcType = VARCHAR}, #{problemtype,jdbcType = VARCHAR},
+                #{problemlevel,jdbcType = VARCHAR}, #{problem,jdbcType = VARCHAR}, #{status,jdbcType = VARCHAR},
+                #{chargeorg,jdbcType = VARCHAR}, #{charger,jdbcType = VARCHAR}, #{cancle,jdbcType = VARCHAR},
+                #{note,jdbcType = VARCHAR}, #{chargeorgname,jdbcType = VARCHAR}, #{handleinfo,jdbcType = VARCHAR},
+                 #{orgnames,jdbcType = VARCHAR},#{handlers,jdbcType = VARCHAR},#{problemtypeid,jdbcType = VARCHAR},
+                 #{assistorg,jdbcType = VARCHAR},#{rectdate,jdbcType = VARCHAR},#{pc,jdbcType = VARCHAR},#{assistorgname,jdbcType = VARCHAR})
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateJzjcProblem" parameterType="com.tieda.alarm.entity.jzjcProblem.JzjcProblem">
+        update JZJC_PROBLEM
+        <set>
+            <if test="stationid != null and stationid != ''">
+                STATIONID = #{stationid},
+            </if>
+            <if test="stationname != null and stationname != ''">
+                STATIONNAME = #{stationname},
+            </if>
+            <if test="problemtype != null and problemtype != ''">
+                PROBLEMTYPE = #{problemtype},
+            </if>
+            <if test="problemtypeid != null and problemtypeid != ''">
+                PROBLEMTYPEID = #{problemtypeid},
+            </if>
+            <if test="problemlevel != null and problemlevel != ''">
+                PROBLEMLEVEL = #{problemlevel},
+            </if>
+            <if test="problem != null and problem != ''">
+                PROBLEM = #{problem},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="chargeorg != null and chargeorg != ''">
+                CHARGEORG = #{chargeorg},
+            </if>
+            <if test="charger != null and charger != ''">
+                CHARGER = #{charger},
+            </if>
+            <if test="cancle != null and cancle != ''">
+                CANCLE = #{cancle},
+            </if>
+            <if test="note != null and note != ''">
+                NOTE = #{note},
+            </if>
+            <if test="chargeorgname != null and chargeorgname != ''">
+                CHARGEORGNAME = #{chargeorgname},
+            </if>
+            <if test="assistorg != null and assistorg != ''">
+                ASSISTORG = #{assistorg},
+            </if>
+            <if test="assistorgname != null and assistorgname != ''">
+                ASSISTORGNAME = #{assistorgname},
+            </if>
+            <if test="rectdate != null">
+                RECTDATE = #{rectdate},
+            </if>
+            <if test="pc != null and pc != ''">
+                PC = #{pc},
+            </if>
+            <if test="applyrectdate != null">
+                applyrectdate = #{applyrectdate},
+            </if>
+
+            <if test="handleinfo != null and handleinfo!=''">
+                HANDLEINFO = #{handleinfo},
+            </if>
+            <if test="orgnames != null and orgnames!=''">
+                ORGNAMES = #{orgnames},
+            </if>
+            <if test="handlers != null and handlers!=''">
+                HANDLERS = #{handlers},
+            </if>
+        </set>
+        <where>
+            ID = #{id}
+            <if test="status != null and status != ''">
+                <if test="status == '1'"><!--1已下发-->
+                    AND STATUS not in ('1','8','10')
+                </if>
+                <if test="status == '2'"><!--2已签收-->
+                    AND STATUS in ('1')
+                </if>
+                <if test="status == '3'"><!--3上报调度-->
+                    AND STATUS in ('2','4','5','6','9')
+                </if>
+                <if test="status == '4'"><!--4申请延期-->
+                    AND STATUS in ('2','5','6','9')
+                </if>
+                <if test="status == '5'"><!--5延期同意-->
+                    AND STATUS in ('4')
+                </if>
+                <if test="status == '6'"><!--6延期驳回-->
+                    AND STATUS in ('4')
+                </if>
+                <if test="status == '7'"><!--7申请销号-->
+                    AND STATUS in ('2','4','5','6')
+                </if>
+                <if test="status == '8'"><!--8销号同意-->
+                    AND STATUS in ('7')
+                </if>
+                <if test="status == '9'"><!--9销号驳回-->
+                    AND STATUS in ('7')
+                </if>
+                <if test="status == '10'"><!--10逾期销号-->
+                    AND STATUS in ('7')
+                </if>
+            </if>
+        </where>
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteJzjcProblemById" parameterType="string">
+        delete
+        from JZJC_PROBLEM
+        where
+            ID = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchJzjcProblem" parameterType="list">
+        delete from JZJC_PROBLEM
+        where ID in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="groupbyLvl" parameterType="map" resultType="java.util.Map">
+        select count(1) c, t2.vc_org$id workshopid,t2.vc_name workshopname
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        ,sum(case when problemlevel='1' then 1 else 0 end) as I级
+        ,sum(case when problemlevel='2' then 1 else 0 end) as II级
+        ,sum(case when problemlevel='3' then 1 else 0 end) as III级
+        from Jzjc_Problem t,sys_t_org t1,sys_t_org t2 where 1=1
+        and t.chargeorg = t1.vc_org$id and t.status not in ('0')
+        and (t1.vc_par$org$id = t2.vc_org$id or t1.vc_org$id = t2.vc_org$id)
+        and t2.n_level in ('30','50') and t2.vc_par$org$id is not null
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        group by t2.vc_org$id,t2.vc_name order by case when t2.vc_name like '%车间%' then 2 else 1 end
+    </select>
+    <select id="groupbyLvl2" parameterType="map" resultType="java.util.Map">
+        select count(1) c, t2.vc_org$id workshopid,decode(t2.vc_org$id,null,'总计',t2.vc_name) workshopname
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        ,sum(case when problemlevel='1' then 1 else 0 end) as I级
+        ,sum(case when problemlevel='2' then 1 else 0 end) as II级
+        ,sum(case when problemlevel='3' then 1 else 0 end) as III级
+        from Jzjc_Problem t,sys_t_org t1,sys_t_org t2 where 1=1
+        and t.chargeorg = t1.vc_org$id and t.status not in ('0')
+        and (t1.vc_par$org$id = t2.vc_org$id or t1.vc_org$id = t2.vc_org$id)
+        and t2.n_level in ('30','50') and t2.vc_par$org$id is not null
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        group by rollup(t2.vc_org$id, t2.vc_name)
+        having decode(t2.vc_org$id,null,'总计',t2.vc_name) is not null
+        order by case
+        when t2.vc_name is null then
+        3
+        when t2.vc_name like '%车间%' then
+        2
+        else
+        1
+        end
+    </select>
+    <select id="groupbyType" parameterType="map" resultType="java.util.Map">
+        select count(1) c, t2.vc_org$id workshopid,t2.vc_name workshopname
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481010' then 1 else 0 end) as 电源
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481011' then 1 else 0 end) as 道岔
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481012' then 1 else 0 end) as 轨道电路
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481013' then 1 else 0 end) as 信号机
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481014' then 1 else 0 end) as 电子设备
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481015' then 1 else 0 end) as 电缆绝缘
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481016' then 1 else 0 end) as 网络设备
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481017' then 1 else 0 end) as 其他,
+        sum(decode(t.status,'8',1,'10',1,0)) sum_over,
+        sum(decode(t.status,'8',0,'10',0,1)) sum_process
+        from Jzjc_Problem t,sys_t_org t1,sys_t_org t2 where 1=1
+        and t.chargeorg = t1.vc_org$id and t.status not in ('0')
+        and (t1.vc_par$org$id = t2.vc_org$id or t1.vc_org$id = t2.vc_org$id)
+        and t2.n_level in ('30','50') and t2.vc_par$org$id is not null
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        group by t2.vc_org$id,t2.vc_name order by case when t2.vc_name like '%车间%' then 2 else 1 end
+    </select>
+    <select id="groupbyType2" parameterType="map" resultType="java.util.Map">
+        select count(1) c, t2.vc_org$id workshopid,decode(t2.vc_org$id,null,'总计',t2.vc_name) workshopname
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481010' then 1 else 0 end) as 电源
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481011' then 1 else 0 end) as 道岔
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481012' then 1 else 0 end) as 轨道电路
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481013' then 1 else 0 end) as 信号机
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481014' then 1 else 0 end) as 电子设备
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481015' then 1 else 0 end) as 电缆绝缘
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481016' then 1 else 0 end) as 网络设备
+        ,sum(case when PROBLEMTYPEID='KMBUR_KMNSEG_DIC_481017' then 1 else 0 end) as 其他,
+        sum(decode(t.status,'8',1,'10',1,0)) sum_over,
+        sum(decode(t.status,'8',0,'10',0,1)) sum_process
+        from Jzjc_Problem t,sys_t_org t1,sys_t_org t2 where 1=1
+        and t.chargeorg = t1.vc_org$id and t.status not in ('0')
+        and (t1.vc_par$org$id = t2.vc_org$id or t1.vc_org$id = t2.vc_org$id)
+        and t2.n_level in ('30','50') and t2.vc_par$org$id is not null
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        group by rollup(t2.vc_org$id,t2.vc_name)
+        having decode(t2.vc_org$id,null,'总计',t2.vc_name) is not null
+        order by case
+        when t2.vc_name is null then
+        3
+        when t2.vc_name like '%车间%' then
+        2
+        else
+        1
+        end
+    </select>
+    <select id="groupbyLine" parameterType="map" resultType="java.util.Map">
+        select count(1) c, vc_name name,vc_line$id id
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        from (select l.vc_name,l.vc_line$id,p.* from Jzjc_Problem p,sys_t_station s,sys_t_line l
+        where p.stationid=s.vc_station$id(+) and s.vc_line$id=l.vc_line$id(+) and p.status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(p.createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(p.createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        )
+        group by vc_name,vc_line$id order by c desc
+    </select>
+    <select id="groupbyLine2" parameterType="map" resultType="java.util.Map">
+        select count(1) c, nvl(vc_name,'总计') name,
+        min(vc_line$id) id
+        ,trunc((count(1)/(select count(1) c from Jzjc_Problem where status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        ))*100,2.1)||'%' percent
+        from (select l.vc_name,l.vc_line$id,p.* from Jzjc_Problem p,sys_t_station s,sys_t_line l
+        where p.stationid=s.vc_station$id(+) and s.vc_line$id=l.vc_line$id(+) and p.status not in ('0')
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(p.createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(p.createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        )
+        group by rollup(vc_name)
+        order by nvl(vc_name,'a') desc
+    </select>
+    <select id="getStationByjcpc" parameterType="map" resultType="java.util.Map">
+        select distinct vc_station$id stationid, vc_station$name stationname
+        from sys_v_org$station_query t, sys_t_org t1
+        where t.vc_org$id = t1.vc_org$id
+        and t1.vc_del = '0'
+        <if test="pc!=null and pc!='' and pc != 'all'">
+            and t1.vc_par$org$id in
+            (select workshop from jcjc_pc_shroshop where pccode = #{pc})
+        </if>
+    </select>
+    <update id="scheduleTaskOverdue">
+        update jzjc_problem t
+        set t.cancle = '3'
+      where t.status not in ('0', '7', '8', '10')
+        and trunc(sysdate) > trunc(t.rectdate)
+    </update>
+    <select id="getOrgDatasByLogin" parameterType="map" resultType="com.tieda.alarm.entity.jzjcProblem.TreeEntity">
+        select o.vc_org$id id,
+        o.vc_par$org$id pid,
+        o.vc_name text,
+        o.n_level nlevel,
+        o.n_order norder
+        from sys_v_org_query o
+        where o.vc_par$org$id is not null
+        <if test="userType == 'fxcenter'">
+            and vc_org$id not in
+            ('KMBUR_KMNSEG_ORG_40', 'KMBUR_KMNSEG_ORG_52', 'KMBUR_KMNSEG_ORG_41')
+        </if>
+        <if test="userType == 'jishuke'">
+            and vc_org$id not in
+            ('KMBUR_KMNSEG_ORG_40', 'KMBUR_KMNSEG_ORG_52', 'KMBUR_KMNSEG_ORG_41')
+        </if>
+        <if test="userType == 'seg'">
+            and (n_level in (30,10) or vc_org$id = #{orgid})
+        </if>
+        <if test="userType == 'workshop'">
+            and (o.vc_par$org$id = #{orgid} or o.vc_org$id = #{orgid})
+        </if>
+        order by o.n_level desc, o.n_order
+    </select>
+    <!-- 车间相关统计明细查看-->
+    <select id="groupdetaiByWorkshopType" parameterType="map" resultMap="BaseResultMap">
+        select t.ID,
+        t.CREATOR,
+        t.STATIONID,
+        t.STATIONNAME,
+        t.PROBLEMTYPE,
+        t.PROBLEMLEVEL,
+        t.PROBLEM,
+        t.STATUS,
+        t.CHARGEORG,
+        t.CHARGER,
+        t.CANCLE,
+        t.NOTE,
+        t.CHARGEORGNAME,
+        t.CREATEDATE,
+        t.HANDLEINFO,
+        t.ORGNAMES,
+        t.HANDLERS,
+        t.PROBLEMTYPEID,
+        t.ASSISTORG,
+        t.RECTDATE,
+        t.PC,
+        t.APPLYRECTDATE,
+        t.ASSISTORGNAME
+        from jzjc_problem t, sys_t_org t1
+        where t.chargeorg = t1.vc_org$id and t.status not in ('0')
+        <if test="orgid!=null and orgid!='' and orgid !='TYPE' and orgid !='LEVEL'">
+            and (t1.vc_org$id = #{orgid} or t1.vc_par$org$id = #{orgid})
+        </if>
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(t.createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(t.createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        <if test="nodetype != null and nodetype == 'problemtype'">
+            <!--已消号数量 -->
+            <if test="problemtype!=null and problemtype=='sum_over'">
+                and t.status in ('8','10')
+            </if>
+            <!--未整改数量 -->
+            <if test="problemtype!=null and problemtype=='sum_process'">
+                and t.status not in ('8','10')
+            </if>
+            <!--其他按类型统计数量 -->
+            <if test="problemtype!=null and problemtype!='sum_over' and problemtype!='sum_process' and problemtype!=''">
+                and t.PROBLEMTYPE = #{problemtype}
+            </if>
+        </if>
+        <if test="nodetype != null and nodetype == 'problemlevel'">
+            <if test="problemlevel!=null and problemlevel!=''">
+                and t.PROBLEMLEVEL = #{problemlevel}
+            </if>
+        </if>
+    </select>
+    <!-- 线路相关明细查看-->
+    <select id="groupdetaiByLineType" parameterType="map" resultMap="BaseResultMap">
+        select t.ID,
+        t.CREATOR,
+        t.STATIONID,
+        t.STATIONNAME,
+        t.PROBLEMTYPE,
+        t.PROBLEMLEVEL,
+        t.PROBLEM,
+        t.STATUS,
+        t.CHARGEORG,
+        t.CHARGER,
+        t.CANCLE,
+        t.NOTE,
+        t.CHARGEORGNAME,
+        t.CREATEDATE,
+        t.HANDLEINFO,
+        t.ORGNAMES,
+        t.HANDLERS,
+        t.PROBLEMTYPEID,
+        t.ASSISTORG,
+        t.RECTDATE,
+        t.PC,
+        t.APPLYRECTDATE,
+        t.ASSISTORGNAME
+        from jzjc_problem t, sys_t_station t1,sys_t_line t2
+        where t.stationid = t1.vc_station$id
+        and t1.vc_line$id = t2.vc_line$id and t.status not in ('0')
+        <if test="orgid!=null and orgid!='' and orgid !='LINE'">
+            and t2.vc_line$id = #{orgid}
+        </if>
+        <if test="begindate != null and begindate != ''">
+            and TRUNC(t.createdate) &gt;=to_date(#{begindate},'yyyy-MM-dd')
+        </if>
+        <if test="enddate != null and enddate != ''">
+            and TRUNC(t.createdate) &lt;=to_date(#{enddate},'yyyy-MM-dd')
+        </if>
+        <if test="nodetype != null and nodetype == 'problemtype'">
+            <if test="problemtype!=null and problemtype!=''">
+                and t.PROBLEMTYPE = #{problemtype}
+            </if>
+        </if>
+        <if test="nodetype != null and nodetype == 'problemlevel'">
+            <if test="problemlevel!=null and problemlevel!=''">
+                and t.PROBLEMLEVEL = #{problemlevel}
+            </if>
+        </if>
+    </select>
+    <select id="getOrgZjzByWorkshop" parameterType="string" resultType="java.util.Map">
+      select vc_org$id orgid from sys_t_org where vc_par$org$id = #{orgId} union all select #{orgId} orgid from dual
+    </select>
+</mapper>

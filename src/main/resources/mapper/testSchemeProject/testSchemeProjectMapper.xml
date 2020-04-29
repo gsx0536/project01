@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tieda.alarm.mapper.testSchemeProject.TestSchemeProjectMapper">
+
+                <!-- 通用查询映射结果 -->
+        <resultMap id="BaseResultMap" type="com.tieda.alarm.entity.testSchemeProject.TestSchemeProject">
+                                                <id column="ID" property="id"/>
+                                                                                                                                                                                                                                                                                                        <result column="NAME" property="name"/>
+                                                                                                        <result column="RANGE" property="range"/>
+                                                                                                        <result column="PROJECT" property="project"/>
+                                                                                                        <result column="TAB" property="tab"/>
+                                                                                                        <result column="SCHEMEID" property="schemeid"/>
+                                    </resultMap>
+
+        
+    <!-- 根据主键查询对象 -->
+    <select id="getTestSchemeProjectById" parameterType="long" resultMap="BaseResultMap">
+        select  ID,  NAME,  RANGE,  PROJECT,  TAB,  SCHEMEID         from TEST_SCHEME_PROJECT
+                
+                                            where ID = #{id}
+                                                                            </select>
+
+    <!-- 多条件参数查询 -->
+    <select id="getTestSchemeProjectList" parameterType="map" resultMap="BaseResultMap">
+        select ID, NAME, RANGE, PROJECT, TAB, SCHEMEID         from TEST_SCHEME_PROJECT
+        <where>
+                            <if test="id != null and id != ''">
+                    and ID = #{id}
+                </if>
+                            <if test="name != null and name != ''">
+                    and NAME = #{name}
+                </if>
+                            <if test="range != null and range != ''">
+                    and RANGE = #{range}
+                </if>
+                            <if test="project != null and project != ''">
+                    and PROJECT = #{project}
+                </if>
+                            <if test="tab != null and tab != ''">
+                    and TAB = #{tab}
+                </if>
+                            <if test="schemeid != null and schemeid != ''">
+                    and SCHEMEID = #{schemeid}
+                </if>
+                    </where>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addTestSchemeProject" parameterType="com.tieda.alarm.entity.testSchemeProject.TestSchemeProject">
+        insert into TEST_SCHEME_PROJECT (ID, NAME, RANGE, PROJECT, TAB, SCHEMEID )
+        values (
+                                        #{id,jdbcType = VARCHAR},    
+                                        #{name,jdbcType = VARCHAR},    
+                                        #{range,jdbcType = VARCHAR},    
+                                        #{project,jdbcType = VARCHAR},    
+                                        #{tab,jdbcType = VARCHAR},    
+                                        #{schemeid,jdbcType = VARCHAR}            )
+    </insert>
+
+    <!-- 批量添加 -->
+    <insert id="addBatchTestSchemeProject" parameterType="list">
+        insert into TEST_SCHEME_PROJECT (ID, NAME, RANGE, PROJECT, TAB, SCHEMEID         )
+        select A.* from (
+        <foreach collection="list" item="item" index="index" separator=" union all">
+            select 
+                                                #{item.id,jdbcType = VARCHAR},
+                                                #{item.name,jdbcType = VARCHAR},
+                                                #{item.range,jdbcType = VARCHAR},
+                                                #{item.project,jdbcType = VARCHAR},
+                                                #{item.tab,jdbcType = VARCHAR},
+                                                #{item.schemeid,jdbcType = VARCHAR}             from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateTestSchemeProject" parameterType="com.tieda.alarm.entity.testSchemeProject.TestSchemeProject">
+        update TEST_SCHEME_PROJECT
+        <set>
+                                                                            <if test="name != null and name != ''">
+                        NAME = #{name},                    </if>
+                                                                <if test="range != null and range != ''">
+                        RANGE = #{range},                    </if>
+                                                                <if test="project != null and project != ''">
+                        PROJECT = #{project},                    </if>
+                                                                <if test="tab != null and tab != ''">
+                        TAB = #{tab},                    </if>
+                                                                <if test="schemeid != null and schemeid != ''">
+                        SCHEMEID = #{schemeid}                    </if>
+                                    </set>
+                                    where ID = #{id}
+                                                                                                                            </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBathTestSchemeProject" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update TEST_SCHEME_PROJECT
+            <set>
+                                                                                                NAME = #{item.name},                                                                                RANGE = #{item.range},                                                                                PROJECT = #{item.project},                                                                                TAB = #{item.tab},                                                                                SCHEMEID = #{item.schemeid}                                                </set>
+            where
+                            
+                    ID = #{item.id}
+
+                
+                            
+                            
+                            
+                            
+                            
+            
+
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteTestSchemeProjectById" parameterType="long">
+        delete from TEST_SCHEME_PROJECT
+
+            where
+
+            
+                
+                    ID = #{id}
+
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchTestSchemeProject" parameterType="list">
+        delete from TEST_SCHEME_PROJECT
+
+        
+            
+                where ID in
+
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </delete>
+
+
+</mapper>
